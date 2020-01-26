@@ -1,14 +1,27 @@
+" coc-fzf - use FZF for CocList sources
+" Maintainer:   Antoine Madec <aja.madec@gmail.com>
+" Version:      0.1
+
+if exists('g:loaded_coc_fzf')
+  finish
+else
+  let g:loaded_coc_fzf = 'yes'
+endif
+
+command CocFzfListDiagnostics call CocFzfListDiagnostics()
+
 function! s:format_coc_diagnostic(item) abort
   return (has_key(a:item,'file')  ? bufname(a:item.file) : '')
         \ . '|' . (a:item.lnum  ? a:item.lnum : '')
         \ . (a:item.col ? ' col ' . a:item.col : '')
         \ . '| ' . a:item.severity
-        \ . ': ' . a:item.message 
+        \ . ' ' . a:item.message
 endfunction
 
 function! s:get_current_diagnostics() abort
-  " Remove entries not belonging to the current file.
-  let l:diags = filter(copy(CocAction('diagnosticList')), {key, val -> val.file ==# expand('%:p')})
+  " let l:diags = filter(copy(CocAction('diagnosticList')), {key, val -> val.file ==# expand('%:p')})
+  let l:diags = filter(copy(CocAction('diagnosticList')), 1)
+  echom "BITE"
   return map(l:diags, 's:format_coc_diagnostic(v:val)')
 endfunction
 
@@ -38,7 +51,7 @@ function! s:action_for(key, ...)
   return l:Cmd
 endfunction
 
-function! GetFzfDiags() abort
+function! CocFzfListDiagnostics() abort
   let l:diags = CocAction('diagnosticList')
   if !empty(l:diags)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
@@ -54,19 +67,26 @@ endfunction
 
 function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
-    syntax match FzfQuickFixFileName '^[^|]*' nextgroup=FzfQuickFixSeparator
-    syntax match FzfQuickFixSeparator '|' nextgroup=FzfQuickFixLineNumber contained
-    syntax match FzfQuickFixLineNumber '[^|]*' contained contains=FzfQuickFixError
-    syntax match FzfQuickFixError 'error' contained
-
-    highlight default link FzfQuickFixFileName Directory
-    highlight default link FzfQuickFixLineNumber LineNr
-    highlight default link FzfQuickFixError Error
+    syntax case ignore
+    syntax match CocFzfDiagnosticHeader /\v^.*$/
+    syntax match CocFzfDiagnosticFile '^[^|]*' nextgroup=CocFzfQuickFixSeparator
+    syntax match CocFzfQuickFixSeparator '|' nextgroup=CocFzfQuickFixLineNumber contained
+    syntax match CocFzfQuickFixLineNumber '[^|]*' contained
+    syntax match CocFzfDiagnosticError /\sError\s/
+    syntax match CocFzfDiagnosticWarning /\sWarning\s/
+    syntax match CocFzfDiagnosticInfo /\sInformation\s/
+    syntax match CocFzfDiagnosticHint /\sHint\s/
+    highlight default link CocFzfDiagnosticFile Comment
+    highlight default link CocFzfQuickFixLineNumber Comment
+    highlight default link CocFzfDiagnosticError CocErrorSign
+    highlight default link CocFzfDiagnosticWarning CocWarningSign
+    highlight default link CocFzfDiagnosticInfo CocInfoSign
+    highlight default link CocFzfDiagnosticHint CocHintSign
   endif
 endfunction
 
 function! s:error_handler(err) abort
-   
+
   let l:Cmd = s:action_for(a:err[0])
 
   if !empty(l:Cmd) && type(l:Cmd) == s:TYPE.string && stridx('edit', l:Cmd) < 0
