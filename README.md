@@ -6,10 +6,10 @@ Use [fzf][fzf] instead of [coc.nvim][coc.nvim] built-in fuzzy finder.
 Rationale
 ---------
 
-Forked from those [RobertBuhren][functions], this plugin aims
+Forked from [Robert Buhren's functions][RobertBuhren], this plugin aims
 to use [fzf][fzf] for CocList sources when possible.
 
-The goal is to keep the [coc.nvim][coc.nvim] style and leverage your FZF Vim [fzf_vim_integration][integration], such as layout, shortcuts, options etc.
+The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim integration][fzf_vim_integration], such as layout, shortcuts, options etc.
 
 Commands
 ---------
