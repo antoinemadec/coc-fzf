@@ -1,0 +1,51 @@
+*coc-fzf.txt*  fzf :heart: coc.nvim
+
+===============================================================================
+Contents ~
+
+ 1. Introduction                                         |coc-fzf-introduction|
+ 2. Rationale                                               |coc-fzf-rationale|
+ 3. Commands                                                 |coc-fzf-commands|
+ 4. License                                                   |coc-fzf-license|
+ 5. References                                             |coc-fzf-references|
+
+===============================================================================
+                                                         *coc-fzf-introduction*
+Introduction ~
+
+Use fzf [1] instead of coc.nvim [2] built-in fuzzy finder.
+
+===============================================================================
+                                                            *coc-fzf-rationale*
+Rationale ~
+
+Forked from Robert Buhren's functions [3], this plugin aims to use fzf [1] for
+CocList sources when possible.
+
+The goal is to keep the coc.nvim [2] style and leverage your FZF Vim
+integration [4], such as layout, shortcuts, options etc.
+
+===============================================================================
+                                                             *coc-fzf-commands*
+Commands ~
+
+| Command                 | List                                                    |~
+| `:CocFzfListDiagnostics`  | Equvalent to :CocList diagnostics                       |
+| `:BCocFzfListDiagnostics` | Equvalent to :CocList diagnostics in the current buffer |
+
+===============================================================================
+                                                              *coc-fzf-license*
+License ~
+
+MIT
+
+===============================================================================
+                                                           *coc-fzf-references*
+References ~
+
+[1] https://github.com/junegunn/fzf
+[2] https://github.com/neoclide/coc.nvim
+[3] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
+[4] https://github.com/junegunn/fzf/blob/master/README-VIM.md
+
+vim: ft=help
