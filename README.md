@@ -14,9 +14,10 @@ The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim in
 Commands
 ---------
 
-| Command                     | List                                |
-| ---                         | ---                                 |
-| `:CocFzfListDiagnostics`    | Equvalent to :CocList diagnostics   |
+| Command                     | List                                                      |
+| ---                         | ---                                                       |
+| `:CocFzfListDiagnostics`    | Equvalent to :CocList diagnostics                         |
+| `:BCocFzfListDiagnostics`   | Equvalent to :CocList diagnostics in the current buffer   |
 
 License
 -------
