@@ -6,7 +6,7 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
   if !empty(l:diags)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
     let l:opts = {
-          \ 'source': s:get_current_diagnostics(l:current_buffer_only),
+          \ 'source': s:get_diagnostics(l:current_buffer_only),
           \ 'sink*': function('s:error_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
@@ -22,11 +22,11 @@ function! s:format_coc_diagnostic(item) abort
         \ . a:item.severity . ' ' . a:item.message
 endfunction
 
-function! s:get_current_diagnostics(current_buffer_only) abort
+function! s:get_diagnostics(current_buffer_only) abort
   if a:current_buffer_only
-    let l:diags = filter(copy(CocAction('diagnosticList')), {key, val -> val.file ==# expand('%:p')})
+    let l:diags = filter(CocAction('diagnosticList'), {key, val -> val.file ==# expand('%:p')})
   else
-    let l:diags = filter(copy(CocAction('diagnosticList')), 1)
+    let l:diags = CocAction('diagnosticList')
   endif
   return map(l:diags, 's:format_coc_diagnostic(v:val)')
 endfunction
