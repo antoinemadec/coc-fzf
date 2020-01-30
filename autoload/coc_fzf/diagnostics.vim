@@ -46,17 +46,17 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzfDiagnosticHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzfDiagnosticFile /^>\?\s*\S\+/ contained containedin=CocFzfDiagnosticHeader
-    syntax match CocFzfDiagnosticError /\sError\s/ contained containedin=CocFzfDiagnosticHeader
-    syntax match CocFzfDiagnosticWarning /\sWarning\s/ contained containedin=CocFzfDiagnosticHeader
-    syntax match CocFzfDiagnosticInfo /\sInformation\s/ contained containedin=CocFzfDiagnosticHeader
-    syntax match CocFzfDiagnosticHint /\sHint\s/ contained containedin=CocFzfDiagnosticHeader
-    highlight default link CocFzfDiagnosticFile Comment
-    highlight default link CocFzfDiagnosticError CocErrorSign
-    highlight default link CocFzfDiagnosticWarning CocWarningSign
-    highlight default link CocFzfDiagnosticInfo CocInfoSign
-    highlight default link CocFzfDiagnosticHint CocHintSign
+    exec 'syntax match CocFzf_DiagnosticHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocFzf_DiagnosticFile /^>\?\s*\S\+/ contained containedin=CocFzf_DiagnosticHeader
+    syntax match CocFzf_DiagnosticError /\sError\s/ contained containedin=CocFzf_DiagnosticHeader
+    syntax match CocFzf_DiagnosticWarning /\sWarning\s/ contained containedin=CocFzf_DiagnosticHeader
+    syntax match CocFzf_DiagnosticInfo /\sInformation\s/ contained containedin=CocFzf_DiagnosticHeader
+    syntax match CocFzf_DiagnosticHint /\sHint\s/ contained containedin=CocFzf_DiagnosticHeader
+    highlight default link CocFzf_DiagnosticFile Comment
+    highlight default link CocFzf_DiagnosticError CocErrorSign
+    highlight default link CocFzf_DiagnosticWarning CocWarningSign
+    highlight default link CocFzf_DiagnosticInfo CocInfoSign
+    highlight default link CocFzf_DiagnosticHint CocHintSign
   endif
 endfunction
 
