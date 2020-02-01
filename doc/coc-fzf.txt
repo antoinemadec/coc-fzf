@@ -6,8 +6,9 @@ Contents ~
  1. Introduction                                         |coc-fzf-introduction|
  2. Rationale                                               |coc-fzf-rationale|
  3. Commands                                                 |coc-fzf-commands|
- 4. License                                                   |coc-fzf-license|
- 5. References                                             |coc-fzf-references|
+ 4. Vimrc Example                                       |coc-fzf-vimrc-example|
+ 5. License                                                   |coc-fzf-license|
+ 6. References                                             |coc-fzf-references|
 
 ===============================================================================
                                                          *coc-fzf-introduction*
@@ -19,20 +20,28 @@ Use fzf [1] instead of coc.nvim [2] built-in fuzzy finder.
                                                             *coc-fzf-rationale*
 Rationale ~
 
-Forked from Robert Buhren's functions [3], this plugin aims to use fzf [1] for
-CocList sources when possible.
+Inspired by Robert Buhren's functions [3] and coc-denite [4] this plugin aims
+to use fzf [1] for CocList sources when possible.
 
 The goal is to keep the coc.nvim [2] style and leverage your FZF Vim
-integration [4], such as layout, shortcuts, options etc.
+integration [5], such as layout, shortcuts, options etc.
 
 ===============================================================================
                                                              *coc-fzf-commands*
 Commands ~
 
-| Command                 | List                                                    |~
+| Command                 | List                                                    | ~
 | `:CocFzfListDiagnostics`  | Equvalent to :CocList diagnostics                       |
 | `:BCocFzfListDiagnostics` | Equvalent to :CocList diagnostics in the current buffer |
+| `:CocFzfListExtensions`   | Equvalent to :CocList extensions                        |
 
+===============================================================================
+                                                        *coc-fzf-vimrc-example*
+Vimrc Example ~
+>
+  nnoremap <silent> <space>a  :<C-u>CocFzfListDiagnostics<CR>
+  nnoremap <silent> <space>e  :<C-u>CocFzfListExtensions<CR>
+<
 ===============================================================================
                                                               *coc-fzf-license*
 License ~
@@ -46,6 +55,7 @@ References ~
 [1] https://github.com/junegunn/fzf
 [2] https://github.com/neoclide/coc.nvim
 [3] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
-[4] https://github.com/junegunn/fzf/blob/master/README-VIM.md
+[4] https://github.com/neoclide/coc-denite
+[5] https://github.com/junegunn/fzf/blob/master/README-VIM.md
 
 vim: ft=help

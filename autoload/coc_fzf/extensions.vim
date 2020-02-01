@@ -1,6 +1,7 @@
 let s:prompt = 'Coc Extensions> '
 
-function! coc_fzf#extensions#fzf_run() abort
+function! coc_fzf#extensions#fzf_run(...) abort
+  let l:first_call = a:0 ? a:1 : 1
   let l:exts = CocAction('extensionStats')
   if !empty(l:exts)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
@@ -12,6 +13,10 @@ function! coc_fzf#extensions#fzf_run() abort
           \ }
     call fzf#run(fzf#wrap(l:opts))
     call s:syntax()
+    if (!l:first_call)
+      call feedkeys('i')
+      call coc_fzf#common#fzf_selector_restore()
+    endif
   endif
 endfunction
 
@@ -73,7 +78,7 @@ function! s:extension_handler(ext) abort
   elseif l:parsed.state == '+'
     call CocAction('activeExtension', l:parsed.id)
   endif
-  call coc_fzf#extensions#fzf_run()
+  call coc_fzf#extensions#fzf_run(0)
 endfunction
 
 function! s:parse_extension(ext) abort
