@@ -14,8 +14,6 @@ augroup CocFzfSelector
   autocmd TermLeave  * if &ft == 'fzf' | call coc_fzf#common#unmap_enter() | endif
 augroup END
 
-tnoremap <CR> <C-\><C-n>:call coc_fzf#common#fzf_selector_line()<CR>i<CR>
-
 command CocFzfListDiagnostics  call coc_fzf#diagnostics#fzf_run(0)
 command BCocFzfListDiagnostics call coc_fzf#diagnostics#fzf_run(1)
 command CocFzfListExtensions   call coc_fzf#extensions#fzf_run()
