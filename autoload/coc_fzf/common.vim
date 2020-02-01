@@ -10,7 +10,7 @@ endfunction
 function! coc_fzf#common#unmap_enter() abort
   tunmap <CR>
   if exists('s:enter_map')
-    exe 'tnoremap <silent><expr> <BS> ' . s:enter_map
+    exe 'tnoremap <silent><expr> <CR> ' . s:enter_map
   endif
 endfunction
 
