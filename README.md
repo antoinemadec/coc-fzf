@@ -12,12 +12,12 @@ The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim in
 Commands
 ---------
 
-| Command                     | List                                                                |
-| ---                         | ---                                                                 |
-| `:CocFzfListDiagnostics`    | Equvalent to :CocList diagnostics                                   |
-| `:BCocFzfListDiagnostics`   | Equvalent to :CocList diagnostics in the current buffer             |
-| `:CocFzfListExtensions`     | Equvalent to :CocList extensions                                    |
-| `:CocFzfListOutline`        | Equvalent to :CocList outline, with colors. Requires [ctags][ctags] |
+| Command                     | List                                                                 |
+| ---                         | ---                                                                  |
+| `:CocFzfListDiagnostics`    | Equivalent to :CocList diagnostics                                   |
+| `:BCocFzfListDiagnostics`   | Equivalent to :CocList diagnostics in the current buffer             |
+| `:CocFzfListExtensions`     | Equivalent to :CocList extensions                                    |
+| `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags] |
 
 Vimrc Example
 ---------
