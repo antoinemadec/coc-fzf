@@ -17,3 +17,4 @@ augroup END
 command CocFzfListDiagnostics  call coc_fzf#diagnostics#fzf_run(0)
 command BCocFzfListDiagnostics call coc_fzf#diagnostics#fzf_run(1)
 command CocFzfListExtensions   call coc_fzf#extensions#fzf_run()
+command CocFzfListOutline      call coc_fzf#outline#fzf_run()
