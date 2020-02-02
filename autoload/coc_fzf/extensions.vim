@@ -6,7 +6,7 @@ function! coc_fzf#extensions#fzf_run(...) abort
   if !empty(l:exts)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
     let l:opts = {
-          \ 'source': s:get_extensions(),
+          \ 'source': s:get_extensions(l:exts),
           \ 'sink*': function('s:extension_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
@@ -31,11 +31,10 @@ function! s:format_coc_extension(item) abort
   return l:state . ' ' . a:item.id . ' ' . a:item.root
 endfunction
 
-function! s:get_extensions() abort
-  let l:exts = CocAction('extensionStats')
-  let l:exts_activated = filter(copy(l:exts), {key, val -> val.state == 'activated'})
-  let l:exts_loaded = filter(copy(l:exts), {key, val -> val.state == 'loaded'})
-  let l:exts_disabled = filter(copy(l:exts), {key, val -> val.state == 'disabled'})
+function! s:get_extensions(exts) abort
+  let l:exts_activated = filter(copy(a:exts), {key, val -> val.state == 'activated'})
+  let l:exts_loaded = filter(copy(a:exts), {key, val -> val.state == 'loaded'})
+  let l:exts_disabled = filter(copy(a:exts), {key, val -> val.state == 'disabled'})
   let l:exts = extend(l:exts_activated, l:exts_loaded)
   let l:exts = extend(l:exts, l:exts_disabled)
   return map(l:exts, 's:format_coc_extension(v:val)')

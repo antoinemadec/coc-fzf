@@ -2,11 +2,11 @@ let s:prompt = 'Coc Services> '
 
 function! coc_fzf#services#fzf_run(...) abort
   let l:first_call = a:0 ? a:1 : 1
-  let l:exts = CocAction('services')
-  if !empty(l:exts)
+  let l:serv = CocAction('services')
+  if !empty(l:serv)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
     let l:opts = {
-          \ 'source': s:get_services(),
+          \ 'source': s:get_services(l:serv),
           \ 'sink*': function('s:service_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
@@ -30,9 +30,8 @@ function! s:format_coc_service(item) abort
   return l:state . ' ' . a:item.id . ' [' . a:item.state . '] '. l:languages
 endfunction
 
-function! s:get_services() abort
-  let l:exts = CocAction('services')
-  return map(l:exts, 's:format_coc_service(v:val)')
+function! s:get_services(serv) abort
+  return map(a:serv, 's:format_coc_service(v:val)')
 endfunction
 
 let s:default_action = {
