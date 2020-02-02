@@ -3,6 +3,8 @@ fzf :heart: coc.nvim
 
 Use [fzf][fzf] instead of [coc.nvim][coc.nvim] built-in fuzzy finder.
 
+![](https://raw.githubusercontent.com/antoinemadec/gif/master/coc_fzf.gif)
+
 Rationale
 ---------
 

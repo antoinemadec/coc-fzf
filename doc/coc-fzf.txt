@@ -16,13 +16,15 @@ Introduction ~
 
 Use fzf [1] instead of coc.nvim [2] built-in fuzzy finder.
 
+  Image: (see reference [3])
+
 ===============================================================================
                                                             *coc-fzf-rationale*
 Rationale ~
 
-Inspired by Robert Buhren's functions [3] and coc-denite [4] this plugin aims
+Inspired by Robert Buhren's functions [4] and coc-denite [5] this plugin aims
 to use fzf [1] for CocList sources when possible. The goal is to keep the
-coc.nvim [2] style and leverage your FZF Vim integration [5], such as layout,
+coc.nvim [2] style and leverage your FZF Vim integration [6], such as layout,
 shortcuts, options etc.
 
 ===============================================================================
@@ -33,7 +35,7 @@ Commands ~
 | `:CocFzfListDiagnostics`  | Equivalent to :CocList diagnostics                              |
 | `:BCocFzfListDiagnostics` | Equivalent to :CocList diagnostics in the current buffer        |
 | `:CocFzfListExtensions`   | Equivalent to :CocList extensions                               |
-| `:CocFzfListOutline`      | Equivalent to :CocList outline, with colors. Requires ctags [6] |
+| `:CocFzfListOutline`      | Equivalent to :CocList outline, with colors. Requires ctags [7] |
 
 ===============================================================================
                                                         *coc-fzf-vimrc-example*
@@ -55,9 +57,10 @@ References ~
 
 [1] https://github.com/junegunn/fzf
 [2] https://github.com/neoclide/coc.nvim
-[3] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
-[4] https://github.com/neoclide/coc-denite
-[5] https://github.com/junegunn/fzf/blob/master/README-VIM.md
-[6] https://github.com/universal-ctags/ctags
+[3] https://raw.githubusercontent.com/antoinemadec/gif/master/coc_fzf.gif
+[4] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
+[5] https://github.com/neoclide/coc-denite
+[6] https://github.com/junegunn/fzf/blob/master/README-VIM.md
+[7] https://github.com/universal-ctags/ctags
 
 vim: ft=help
