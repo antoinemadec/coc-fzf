@@ -20,6 +20,7 @@ Commands
 | `:BCocFzfListDiagnostics`   | Equivalent to :CocList diagnostics in the current buffer             |
 | `:CocFzfListExtensions`     | Equivalent to :CocList extensions                                    |
 | `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags] |
+| `:CocFzfListServices`       | Equivalent to :CocList services                                      |
 
 Vimrc Example
 ---------
@@ -28,6 +29,7 @@ Vimrc Example
 nnoremap <silent> <space>a  :<C-u>CocFzfListDiagnostics<CR>
 nnoremap <silent> <space>e  :<C-u>CocFzfListExtensions<CR>
 nnoremap <silent> <space>o  :<C-u>CocFzfListOutline<CR>
+nnoremap <silent> <space>S  :<C-u>CocFzfListServices<CR>
 ```
 
 License
