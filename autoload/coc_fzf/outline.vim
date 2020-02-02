@@ -62,14 +62,12 @@ function! s:syntax() abort
 endfunction
 
 function! s:symbol_handler(sym) abort
-  normal! m'
   let cmd = s:action_for(a:sym[0])
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
   endif
   let l:line_nb = s:parse_symbol(a:sym[1:])
   execute l:line_nb
-  normal! ^zvzz
 endfunction
 
 function! s:parse_symbol(sym) abort

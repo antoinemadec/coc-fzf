@@ -71,12 +71,11 @@ function! s:syntax() abort
 endfunction
 
 function! s:extension_handler(ext) abort
-  " normal! m'
   let l:parsed = s:parse_extension(a:ext[1:])
   if l:parsed.state == '*'
-    call CocAction('deactivateExtension', l:parsed.id)
+    silent call CocAction('deactivateExtension', l:parsed.id)
   elseif l:parsed.state == '+'
-    call CocAction('activeExtension', l:parsed.id)
+    silent call CocAction('activeExtension', l:parsed.id)
   endif
   call coc_fzf#extensions#fzf_run(0)
 endfunction
@@ -84,9 +83,6 @@ endfunction
 function! s:parse_extension(ext) abort
   let l:match = matchlist(a:ext, '\v^(.)\s(\S*)\s(.*)')[1:4]
   if empty(l:match) || empty(l:match[0])
-    return
-  endif
-  if empty(l:match[1]) && (bufnr(l:match[0]) == bufnr('%'))
     return
   endif
   return ({'state' : l:match[0], 'id' : l:match[1], 'root' : l:match[2]})
