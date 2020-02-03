@@ -61,7 +61,6 @@ function! s:syntax() abort
 endfunction
 
 function! s:error_handler(err) abort
-  normal! m'
   let cmd = s:action_for(a:err[0])
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
@@ -69,7 +68,7 @@ function! s:error_handler(err) abort
   let l:parsed = s:parse_error(a:err[1:])
   execute 'buffer' bufnr(l:parsed["bufnr"])
   call cursor(l:parsed["linenr"], l:parsed["colnr"])
-  normal! ^zvzz
+  normal! zz
 endfunction
 
 function! s:parse_error(err) abort
