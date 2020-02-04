@@ -74,15 +74,15 @@ function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
     " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_DiagnosticHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_DiagnosticSymbol /\v^>\?\s*\S\+/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticType /\v\s\[.*\]\s/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticLine /\d\+/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticColumn /,\d\+$/ contained containedin=CocFzf_DiagnosticHeader
-    highlight default link CocFzf_DiagnosticSymbol Normal
-    highlight default link CocFzf_DiagnosticType Typedef
-    highlight default link CocFzf_DiagnosticLine Comment
-    highlight default link CocFzf_DiagnosticColumn Ignore
+    exec 'syntax match CocFzf_OutlineHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocFzf_OutlineSymbol /\v^>\?\s*\S\+/ contained containedin=CocFzf_OutlineHeader
+    syntax match CocFzf_OutlineType /\v\s\[.*\]/ contained containedin=CocFzf_OutlineHeader
+    syntax match CocFzf_OutlineLine /\s\d\+/ contained containedin=CocFzf_OutlineHeader
+    syntax match CocFzf_OutlineColumn /,\d\+$/ contained containedin=CocFzf_OutlineHeader
+    highlight default link CocFzf_OutlineSymbol Normal
+    highlight default link CocFzf_OutlineType Typedef
+    highlight default link CocFzf_OutlineLine Comment
+    highlight default link CocFzf_OutlineColumn Ignore
   endif
 endfunction
 
