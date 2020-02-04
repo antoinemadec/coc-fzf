@@ -8,6 +8,8 @@ Use [fzf][fzf] instead of [coc.nvim][coc.nvim] built-in fuzzy finder.
 Rationale
 ---------
 
+**❗coc-fzf only supports nvim❗**, PR are welcome if you want to change this.
+
 Inspired by [Robert Buhren's functions][RobertBuhren] and [coc-denite][coc_denite] this plugin aims to use [fzf][fzf] for CocList sources when possible.
 The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim integration][fzf_vim_integration], such as layout, shortcuts, options etc.
 

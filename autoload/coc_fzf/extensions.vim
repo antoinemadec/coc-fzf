@@ -71,12 +71,14 @@ endfunction
 
 function! s:extension_handler(ext) abort
   let l:parsed = s:parse_extension(a:ext[1:])
-  if l:parsed.state == '*'
-    silent call CocAction('deactivateExtension', l:parsed.id)
-  elseif l:parsed.state == '+'
-    silent call CocAction('activeExtension', l:parsed.id)
+  if type(l:parsed) == v:t_dict
+    if l:parsed.state == '*'
+      silent call CocAction('deactivateExtension', l:parsed.id)
+    elseif l:parsed.state == '+'
+      silent call CocAction('activeExtension', l:parsed.id)
+    endif
+    call coc_fzf#extensions#fzf_run(0)
   endif
-  call coc_fzf#extensions#fzf_run(0)
 endfunction
 
 function! s:parse_extension(ext) abort

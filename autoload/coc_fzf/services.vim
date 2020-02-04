@@ -63,8 +63,10 @@ endfunction
 
 function! s:service_handler(ext) abort
   let l:parsed = s:parse_service(a:ext[1:])
-  silent call CocAction('toggleService', l:parsed.id)
-  call coc_fzf#services#fzf_run(0)
+  if type(l:parsed) == v:t_dict
+    silent call CocAction('toggleService', l:parsed.id)
+    call coc_fzf#services#fzf_run(0)
+  endif
 endfunction
 
 function! s:parse_service(ext) abort

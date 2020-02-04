@@ -22,6 +22,8 @@ Use fzf [1] instead of coc.nvim [2] built-in fuzzy finder.
                                                             *coc-fzf-rationale*
 Rationale ~
 
+**❗coc-fzf only supports nvim❗**, PR are welcome if you want to change this.
+
 Inspired by Robert Buhren's functions [4] and coc-denite [5] this plugin aims
 to use fzf [1] for CocList sources when possible. The goal is to keep the
 coc.nvim [2] style and leverage your FZF Vim integration [6], such as layout,

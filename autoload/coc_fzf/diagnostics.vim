@@ -66,9 +66,11 @@ function! s:error_handler(err) abort
     execute 'silent' cmd
   endif
   let l:parsed = s:parse_error(a:err[1:])
-  execute 'buffer' bufnr(l:parsed["bufnr"])
-  call cursor(l:parsed["linenr"], l:parsed["colnr"])
-  normal! zz
+  if type(l:parsed) == v:t_dict
+    execute 'buffer' bufnr(l:parsed["bufnr"])
+    call cursor(l:parsed["linenr"], l:parsed["colnr"])
+    normal! zz
+  endif
 endfunction
 
 function! s:parse_error(err) abort

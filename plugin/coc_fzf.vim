@@ -8,11 +8,18 @@ else
   let g:loaded_coc_fzf = 'yes'
 endif
 
-augroup CocFzfSelector
-  autocmd!
-  autocmd TermEnter  * if &ft == 'fzf' | call coc_fzf#common#remap_enter() | endif
-  autocmd TermLeave  * if &ft == 'fzf' | call coc_fzf#common#unmap_enter() | endif
-augroup END
+if !has('nvim')
+  " coc-fzf only supports nvim, PR are welcome if you want to change this
+  finish
+endif
+
+if has('nvim')
+  augroup CocFzfSelector
+    autocmd!
+    autocmd TermEnter  * if &ft == 'fzf' | call coc_fzf#common#remap_enter() | endif
+    autocmd TermLeave  * if &ft == 'fzf' | call coc_fzf#common#unmap_enter() | endif
+  augroup END
+endif
 
 command CocFzfListDiagnostics  call coc_fzf#diagnostics#fzf_run(0)
 command BCocFzfListDiagnostics call coc_fzf#diagnostics#fzf_run(1)

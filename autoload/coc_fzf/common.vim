@@ -21,11 +21,13 @@ endfunction
 
 function! coc_fzf#common#fzf_selector_restore() abort
   " TODO: normal gg
-  let l:c = 1
-  while c < t:fzf_selector_line_nb
-    call feedkeys("\<Down>")
-    let l:c += 1
-  endwhile
+  if exists('t:fzf_selector_line_nb')
+    let l:c = 1
+    while c < t:fzf_selector_line_nb
+      call feedkeys("\<Down>")
+      let l:c += 1
+    endwhile
+  endif
 endfunction
 
 function! s:redir_exec(command) abort
