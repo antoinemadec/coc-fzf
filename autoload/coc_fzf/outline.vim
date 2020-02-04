@@ -91,8 +91,8 @@ function! s:symbol_handler(sym) abort
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
   endif
+  let l:parsed = s:parse_symbol(a:sym[1:])
   if type(l:parsed) == v:t_dict
-    let l:parsed = s:parse_symbol(a:sym[1:])
     call cursor(l:parsed["lnum"], l:parsed["col"])
     normal! zz
   endif
