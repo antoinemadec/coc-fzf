@@ -19,7 +19,7 @@ function! s:format_coc_outline_ctags(item) abort
     let l:line = substitute(parts[2], ';".*$', '', '')
     let l:type = '[' . parts[3] . ']'
     call cursor(l:line, 0)
-    let [l:l, l:col] = searchpos(l:sym, 'nc', l:line)
+    let [l:l, l:col] = searchpos('\V'.l:sym, 'nc', l:line)
     return l:sym . " " . l:type . " " . l:line . ',' . l:col
   else
     return ''
