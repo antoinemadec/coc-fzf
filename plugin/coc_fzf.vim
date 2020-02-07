@@ -13,6 +13,14 @@ if !has('nvim')
   finish
 endif
 
+" test plugin and bin availability
+let g:coc_fzf_location_available = 1
+try
+  call fzf#vim#with_preview()
+catch
+  let g:coc_fzf_location_available = 0
+endtry
+
 if has('nvim')
   augroup CocFzfSelector
     autocmd!
@@ -20,14 +28,19 @@ if has('nvim')
     autocmd TermLeave  * if &ft == 'fzf' | call coc_fzf#common#unmap_enter() | endif
   augroup END
 endif
-
-" TODO: uncomment once preview is ready
-" let g:coc_enable_locationlist = 0
-" autocmd User CocLocationsChange call coc_fzf#location#fzf_run()
+if g:coc_fzf_location_available
+  augroup CocFzfLocation
+    autocmd!
+    let g:coc_enable_locationlist = 0
+    autocmd User CocLocationsChange call coc_fzf#location#fzf_run()
+  augroup END
+endif
 
 command CocFzfListDiagnostics  call coc_fzf#diagnostics#fzf_run(0)
 command BCocFzfListDiagnostics call coc_fzf#diagnostics#fzf_run(1)
 command CocFzfListExtensions   call coc_fzf#extensions#fzf_run()
 command CocFzfListOutline      call coc_fzf#outline#fzf_run()
 command CocFzfListServices     call coc_fzf#services#fzf_run()
-command CocFzfListLocation     call coc_fzf#location#fzf_run()
+if g:coc_fzf_location_available
+  command CocFzfListLocation   call coc_fzf#location#fzf_run()
+endif

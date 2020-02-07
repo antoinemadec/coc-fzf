@@ -16,13 +16,14 @@ The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim in
 Commands
 ---------
 
-| Command                     | List                                                                 |
-| ---                         | ---                                                                  |
-| `:CocFzfListDiagnostics`    | Equivalent to :CocList diagnostics                                   |
-| `:BCocFzfListDiagnostics`   | Equivalent to :CocList diagnostics in the current buffer             |
-| `:CocFzfListExtensions`     | Equivalent to :CocList extensions                                    |
-| `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags] |
-| `:CocFzfListServices`       | Equivalent to :CocList services                                      |
+| Command                     | List                                                                              |
+| ---                         | ---                                                                               |
+| `:CocFzfListDiagnostics`    | Equivalent to :CocList diagnostics                                                |
+| `:BCocFzfListDiagnostics`   | Equivalent to :CocList diagnostics in the current buffer                          |
+| `:CocFzfListExtensions`     | Equivalent to :CocList extensions                                                 |
+| `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]              |
+| `:CocFzfListServices`       | Equivalent to :CocList services                                                   |
+| `:CocFzfListLocation`       | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]  |
 
 Vimrc Example
 ---------
@@ -45,3 +46,4 @@ MIT
 [RobertBuhren]:        https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
 [coc_denite]:          https://github.com/neoclide/coc-denite
 [ctags]:               https://github.com/universal-ctags/ctags
+[fzfvim]:              https://github.com/junegunn/fzf.vim

@@ -9,18 +9,24 @@ function! coc_fzf#location#fzf_run() abort
           \ 'source': s:get_location(l:locs),
           \ 'sink*': function('s:location_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
-          \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
+          \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt]
           \ }
-    call fzf#run(fzf#wrap(l:opts))
+    let extra = fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:50%', '?')
+    let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
+    let merged = extend(copy(l:opts), extra)
+    call s:merge_opts(merged, eopts)
+    call fzf#run(fzf#wrap(merged))
     call s:syntax()
   endif
 endfunction
 
 function! s:format_coc_location(item) abort
-  " 'filename' |'lnum' col 'col'| 'text'
+  " original is: 'filename' |'lnum' col 'col'| 'text'
+  " coc fzf  is: 'filename':'lnum':'col':'text'
+  " reason: this format is needed for fzf preview
   let l:cwd = getcwd()
   let l:filename = substitute(a:item.filename, l:cwd . "/", "", "")
-  return l:filename . ' |' . a:item.lnum . ' col ' . a:item.col . '| ' . a:item.text
+  return l:filename . ':' . a:item.lnum . ':' . a:item.col . ':' . a:item.text
 endfunction
 
 function! s:relpath(filename)
@@ -48,8 +54,9 @@ function! s:syntax() abort
     syntax case ignore
     " apply syntax on everything but prompt
     exec 'syntax match CocFzf_JumplocationHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_JumplocationFile /^>\?\s*\S\+/ contained containedin=CocFzf_JumplocationHeader
-    syntax match CocFzf_JumplocationLineNumber /\s|[^|]*|\s/ contained containedin=CocFzf_JumplocationHeader
+    syntax region CocFzf_JumplocationRegion start="^" end="[│┌└]" keepend contains=CocFzf_JumplocationHeader
+    syntax match CocFzf_JumplocationFile /^>\?\s*[^:│┌└]\+/ contained containedin=CocFzf_JumplocationHeader
+    syntax match CocFzf_JumplocationLineNumber /:\d\+:\d\+:/ contained containedin=CocFzf_JumplocationHeader
     highlight default link CocFzf_JumplocationFile Directory
     highlight default link CocFzf_JumplocationLineNumber LineNr
   endif
@@ -69,9 +76,39 @@ function! s:location_handler(loc) abort
 endfunction
 
 function! s:parse_location(loc) abort
-  let l:match = matchlist(a:loc, '^\(\S\+\)\s|\(\d\+\) col \(\d\+\)|\s\(.*\)')[1:4]
+  let l:match = matchlist(a:loc, '^\(\S\+\):\(\d\+\):\(\d\+\):\(.*\)')[1:4]
   if empty(l:match) || empty(l:match[0])
     return
   endif
   return ({'filename': l:match[0], 'lnum': l:match[1], 'col': l:match[2], 'text': l:match[3]})
+endfunction
+
+
+"--------------------------------------------------------------
+" from fzf-vim
+"--------------------------------------------------------------
+let s:TYPE = {'dict': type({}), 'funcref': type(function('call')), 'string': type(''), 'list': type([])}
+
+function! s:merge_opts(dict, eopts)
+  return s:extend_opts(a:dict, a:eopts, 0)
+endfunction
+
+function! s:extend_opts(dict, eopts, prepend)
+  if empty(a:eopts)
+    return
+  endif
+  if has_key(a:dict, 'options')
+    if type(a:dict.options) == s:TYPE.list && type(a:eopts) == s:TYPE.list
+      if a:prepend
+        let a:dict.options = extend(copy(a:eopts), a:dict.options)
+      else
+        call extend(a:dict.options, a:eopts)
+      endif
+    else
+      let all_opts = a:prepend ? [a:eopts, a:dict.options] : [a:dict.options, a:eopts]
+      let a:dict.options = join(map(all_opts, 'type(v:val) == s:TYPE.list ? join(map(copy(v:val), "fzf#shellescape(v:val)")) : v:val'))
+    endif
+  else
+    let a:dict.options = a:eopts
+  endif
 endfunction

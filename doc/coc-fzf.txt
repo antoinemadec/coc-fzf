@@ -33,12 +33,13 @@ shortcuts, options etc.
                                                              *coc-fzf-commands*
 Commands ~
 
-| Command                 | List                                                            | ~
-| `:CocFzfListDiagnostics`  | Equivalent to :CocList diagnostics                              |
-| `:BCocFzfListDiagnostics` | Equivalent to :CocList diagnostics in the current buffer        |
-| `:CocFzfListExtensions`   | Equivalent to :CocList extensions                               |
-| `:CocFzfListOutline`      | Equivalent to :CocList outline, with colors. Requires ctags [7] |
-| `:CocFzfListServices  `   | Equivalent to :CocList services                                 |
+| Command                 | List                                                                       | ~
+| `:CocFzfListDiagnostics`  | Equivalent to :CocList diagnostics                                         |
+| `:BCocFzfListDiagnostics` | Equivalent to :CocList diagnostics in the current buffer                   |
+| `:CocFzfListExtensions`   | Equivalent to :CocList extensions                                          |
+| `:CocFzfListOutline`      | Equivalent to :CocList outline, with colors. Requires ctags [7]            |
+| `:CocFzfListServices`     | Equivalent to :CocList services                                            |
+| `:CocFzfListLocation`     | Equivalent to :CocList location. Toggle preview: '?'. Requires fzf.vim [8] |
 
 ===============================================================================
                                                         *coc-fzf-vimrc-example*
@@ -66,5 +67,6 @@ References ~
 [5] https://github.com/neoclide/coc-denite
 [6] https://github.com/junegunn/fzf/blob/master/README-VIM.md
 [7] https://github.com/universal-ctags/ctags
+[8] https://github.com/junegunn/fzf.vim
 
 vim: ft=help
