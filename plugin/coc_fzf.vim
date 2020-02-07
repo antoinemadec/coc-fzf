@@ -21,8 +21,13 @@ if has('nvim')
   augroup END
 endif
 
+" TODO: uncomment once preview is ready
+" let g:coc_enable_locationlist = 0
+" autocmd User CocLocationsChange call coc_fzf#location#fzf_run()
+
 command CocFzfListDiagnostics  call coc_fzf#diagnostics#fzf_run(0)
 command BCocFzfListDiagnostics call coc_fzf#diagnostics#fzf_run(1)
 command CocFzfListExtensions   call coc_fzf#extensions#fzf_run()
 command CocFzfListOutline      call coc_fzf#outline#fzf_run()
 command CocFzfListServices     call coc_fzf#services#fzf_run()
+command CocFzfListLocation     call coc_fzf#location#fzf_run()
