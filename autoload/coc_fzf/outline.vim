@@ -41,13 +41,13 @@ function! s:get_outline() abort
   let l:symbols = CocAction('documentSymbols')
   if type(l:symbols) != v:t_list
     " ctags: try force language to filtetype
-    let l:shell_cmd = "ctags -f - --excmd=number --language-force=" . &ft . " " . expand("%")
-    let l:shell_cmd .= ' | sort -n --key=3'
+    let l:ctags_base_cmd = 'set -o pipefail && ctags -f - --excmd=number'
+    let l:shell_cmd = l:ctags_base_cmd . " --language-force=" . &ft . ' '  . expand("%")
+          \ . ' | sort -n --key=3'
     let l:symbols = systemlist(shell_cmd)
     if (!(len(l:symbols) && v:shell_error == 0))
       " ctags: try without forcing language
-      let l:shell_cmd = "ctags -f - --excmd=number " . expand("%")
-      let l:shell_cmd .= ' | sort -n --key=3'
+      let l:shell_cmd = l:ctags_base_cmd . ' '  . expand("%") . ' | sort -n --key=3'
       let l:symbols = systemlist(shell_cmd)
     endif
     let l:cur_pos = getpos('.')
