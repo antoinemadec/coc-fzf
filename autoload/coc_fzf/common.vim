@@ -30,6 +30,22 @@ function! coc_fzf#common#fzf_selector_restore() abort
   endif
 endfunction
 
+
+" [function_name, args_string]
+let s:last_func_call = []
+
+function! coc_fzf#common#log_function_call(sfile, args) abort
+  let l:func_name = substitute(a:sfile, '.*\(\.\.\|\s\)', '', '')
+  let l:args_string = join(a:args, ',')
+  let s:last_func_call = [l:func_name, l:args_string]
+endfunction
+
+function! coc_fzf#common#call_last_logged_function() abort
+  if !empty(s:last_func_call)
+    execute 'call ' . s:last_func_call[0] . '(' . s:last_func_call[1] . ')'
+  endif
+endfunction
+
 function! s:redir_exec(command) abort
     redir =>output
     silent exec a:command

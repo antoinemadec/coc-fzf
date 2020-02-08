@@ -1,6 +1,7 @@
 let s:prompt = 'Coc Services> '
 
 function! coc_fzf#services#fzf_run(...) abort
+  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let l:first_call = a:0 ? a:1 : 1
   let l:serv = CocAction('services')
   if !empty(l:serv)

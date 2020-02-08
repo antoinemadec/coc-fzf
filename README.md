@@ -24,6 +24,7 @@ Commands
 | `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]              |
 | `:CocFzfListServices`       | Equivalent to :CocList services                                                   |
 | `:CocFzfListLocation`       | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]  |
+| `:CocFzfListResume`         | Equivalent to :CocListResume                                                      |
 
 Vimrc Example
 ---------
@@ -31,7 +32,9 @@ Vimrc Example
 ```vim
 nnoremap <silent> <space>a  :<C-u>CocFzfListDiagnostics<CR>
 nnoremap <silent> <space>e  :<C-u>CocFzfListExtensions<CR>
+nnoremap <silent> <space>l  :<C-u>CocFzfListLocation<CR>
 nnoremap <silent> <space>o  :<C-u>CocFzfListOutline<CR>
+nnoremap <silent> <space>p  :<C-u>CocFzfListResume<CR>
 nnoremap <silent> <space>S  :<C-u>CocFzfListServices<CR>
 ```
 

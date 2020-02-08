@@ -1,6 +1,7 @@
 let s:prompt = 'Coc Diagnostics> '
 
 function! coc_fzf#diagnostics#fzf_run(...) abort
+  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let l:current_buffer_only = a:0 ? a:1 : 0
   let l:diags = CocAction('diagnosticList')
   if !empty(l:diags)

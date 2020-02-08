@@ -44,3 +44,5 @@ command CocFzfListServices     call coc_fzf#services#fzf_run()
 if g:coc_fzf_location_available
   command CocFzfListLocation   call coc_fzf#location#fzf_run()
 endif
+
+command CocFzfListResume       call coc_fzf#common#call_last_logged_function()

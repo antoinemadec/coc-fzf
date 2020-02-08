@@ -1,6 +1,7 @@
 let s:prompt = 'Coc Extensions> '
 
 function! coc_fzf#extensions#fzf_run(...) abort
+  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let l:first_call = a:0 ? a:1 : 1
   let l:exts = CocAction('extensionStats')
   if !empty(l:exts)

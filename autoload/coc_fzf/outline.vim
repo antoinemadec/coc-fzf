@@ -1,6 +1,7 @@
 let s:prompt = 'Coc Outline> '
 
 function! coc_fzf#outline#fzf_run() abort
+  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
   let l:opts = {
         \ 'source': s:get_outline(),
