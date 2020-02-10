@@ -30,7 +30,6 @@ function! coc_fzf#common#fzf_selector_restore() abort
   endif
 endfunction
 
-
 " [function_name, args_string]
 let s:last_func_call = []
 

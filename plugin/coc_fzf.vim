@@ -21,6 +21,9 @@ catch
   let g:coc_fzf_location_available = 0
 endtry
 
+let g:coc_fzf_plugin_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+let g:coc_fzf_plugin_dir = fnamemodify(g:coc_fzf_plugin_dir, ':h')
+
 if has('nvim')
   augroup CocFzfSelector
     autocmd!
