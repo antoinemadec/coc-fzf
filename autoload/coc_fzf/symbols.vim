@@ -3,14 +3,15 @@ let s:prompt = 'Coc Symbols> '
 function! coc_fzf#symbols#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-  let command_fmt = g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s'
-  let initial_command = printf(command_fmt, v:servername, bufnr(), "''")
-  let reload_command = printf(command_fmt, v:servername, bufnr(), '{q}')
+  let command_fmt = g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s %s'
+  let channel = coc#client#get_channel(coc#client#get_client('coc'))
+  let initial_command = printf(command_fmt, v:servername, channel, bufnr(), "''")
+  let reload_command = printf(command_fmt, v:servername, channel, bufnr(), '{q}')
   let l:opts = {
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys, '--bind', 'change:reload:'.reload_command,
-        \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
+        \ '--phony', '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
         \ }
   call fzf#run(fzf#wrap(l:opts))
   call s:syntax()

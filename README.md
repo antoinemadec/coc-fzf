@@ -21,10 +21,11 @@ Commands
 | `:CocFzfListDiagnostics`    | Equivalent to :CocList diagnostics                                                |
 | `:BCocFzfListDiagnostics`   | Equivalent to :CocList diagnostics in the current buffer                          |
 | `:CocFzfListExtensions`     | Equivalent to :CocList extensions                                                 |
-| `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]              |
-| `:CocFzfListServices`       | Equivalent to :CocList services                                                   |
 | `:CocFzfListLocation`       | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]  |
+| `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]              |
 | `:CocFzfListResume`         | Equivalent to :CocListResume                                                      |
+| `:CocFzfListSymbols`        | Equivalent to :CocList symbols                                                    |
+| `:CocFzfListServices`       | Equivalent to :CocList services                                                   |
 
 Vimrc Example
 ---------
@@ -35,6 +36,7 @@ nnoremap <silent> <space>e  :<C-u>CocFzfListExtensions<CR>
 nnoremap <silent> <space>l  :<C-u>CocFzfListLocation<CR>
 nnoremap <silent> <space>o  :<C-u>CocFzfListOutline<CR>
 nnoremap <silent> <space>p  :<C-u>CocFzfListResume<CR>
+nnoremap <silent> <space>s  :<C-u>CocFzfListSymbols<CR>
 nnoremap <silent> <space>S  :<C-u>CocFzfListServices<CR>
 ```
 

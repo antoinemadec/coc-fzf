@@ -33,14 +33,15 @@ shortcuts, options etc.
                                                              *coc-fzf-commands*
 Commands ~
 
-| Command                 | List                                                                       | ~
+| Command                 | List                                                                       |~
 | `:CocFzfListDiagnostics`  | Equivalent to :CocList diagnostics                                         |
 | `:BCocFzfListDiagnostics` | Equivalent to :CocList diagnostics in the current buffer                   |
 | `:CocFzfListExtensions`   | Equivalent to :CocList extensions                                          |
-| `:CocFzfListOutline`      | Equivalent to :CocList outline, with colors. Requires ctags [7]            |
-| `:CocFzfListServices`     | Equivalent to :CocList services                                            |
-| `:CocFzfListLocation`     | Equivalent to :CocList location. Toggle preview: '?'. Requires fzf.vim [8] |
+| `:CocFzfListLocation`     | Equivalent to :CocList location. Toggle preview: '?'. Requires fzf.vim [7] |
+| `:CocFzfListOutline`      | Equivalent to :CocList outline, with colors. Requires ctags [8]            |
 | `:CocFzfListResume`       | Equivalent to :CocListResume                                               |
+| `:CocFzfListSymbols`      | Equivalent to :CocList symbols                                             |
+| `:CocFzfListServices`     | Equivalent to :CocList services                                            |
 
 ===============================================================================
                                                         *coc-fzf-vimrc-example*
@@ -51,6 +52,7 @@ Vimrc Example ~
   nnoremap <silent> <space>l  :<C-u>CocFzfListLocation<CR>
   nnoremap <silent> <space>o  :<C-u>CocFzfListOutline<CR>
   nnoremap <silent> <space>p  :<C-u>CocFzfListResume<CR>
+  nnoremap <silent> <space>s  :<C-u>CocFzfListSymbols<CR>
   nnoremap <silent> <space>S  :<C-u>CocFzfListServices<CR>
 <
 ===============================================================================
@@ -69,7 +71,7 @@ References ~
 [4] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
 [5] https://github.com/neoclide/coc-denite
 [6] https://github.com/junegunn/fzf/blob/master/README-VIM.md
-[7] https://github.com/universal-ctags/ctags
-[8] https://github.com/junegunn/fzf.vim
+[7] https://github.com/junegunn/fzf.vim
+[8] https://github.com/universal-ctags/ctags
 
 vim: ft=help
