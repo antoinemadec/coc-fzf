@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import enum
 from pynvim import attach
 
 parser = argparse.ArgumentParser(
@@ -13,32 +12,35 @@ parser.add_argument('query', help="query to pass to CocAction('getWorkspaceSymbo
 args = parser.parse_args()
 
 # https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.languageserver.protocol.completionitemkind
-class Kind(enum.Enum):
-    Class         = 7
-    Color         = 16
-    Constant      = 21
-    Constructor   = 4
-    Enum          = 13
-    EnumMember    = 20
-    Event         = 23
-    Field         = 5
-    File          = 17
-    Folder        = 19
-    Function      = 3
-    Interface     = 8
-    Keyword       = 14
-    Method        = 2
-    Module        = 9
-    Operator      = 24
-    Property      = 10
-    Reference     = 18
-    Snippet       = 15
-    Struct        = 22
-    Text          = 1
-    TypeParameter = 25
-    Unit          = 11
-    Value         = 12
-    Variable      = 6
+kind_dict = {}
+kind_dict[7]  = 'Class'
+kind_dict[16] = 'Color'
+kind_dict[21] = 'Constant'
+kind_dict[4]  = 'Constructor'
+kind_dict[13] = 'Enum'
+kind_dict[20] = 'EnumMember'
+kind_dict[23] = 'Event'
+kind_dict[5]  = 'Field'
+kind_dict[17] = 'File'
+kind_dict[19] = 'Folder'
+kind_dict[3]  = 'Function'
+kind_dict[8]  = 'Interface'
+kind_dict[14] = 'Keyword'
+kind_dict[2]  = 'Method'
+kind_dict[9]  = 'Module'
+kind_dict[24] = 'Operator'
+kind_dict[10] = 'Property'
+kind_dict[18] = 'Reference'
+kind_dict[15] = 'Snippet'
+kind_dict[22] = 'Struct'
+kind_dict[1]  = 'Text'
+kind_dict[25] = 'TypeParameter'
+kind_dict[11] = 'Unit'
+kind_dict[12] = 'Value'
+kind_dict[6]  = 'Variable'
+
+def get_kind(val):
+    return kind_dict.get(val, 'Unkown')
 
 nvim = attach('socket', path=args.socket)
 items = nvim.call('rpcrequest', int(args.channel), 'CocAction', 'getWorkspaceSymbols', args.query, int(args.bufnr))
@@ -51,4 +53,4 @@ for item in items:
   lnum = item['location']['range']['end']['line'] + 1
   col = item['location']['range']['end']['character']
   filename = item['location']['uri'].replace('file://', '')
-  print("{0} [{1}] {2} {3},{4}".format(item['name'], Kind(item['kind']).name, filename, lnum, col))
+  print("{0} [{1}] {2} {3},{4}".format(item['name'], get_kind(item['kind']), filename, lnum, col))
