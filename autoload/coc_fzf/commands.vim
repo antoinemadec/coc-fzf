@@ -37,7 +37,7 @@ endfunction
 function! s:command_handler(cmd) abort
   let l:parsed = s:parse_command(a:cmd)
   if type(l:parsed) == v:t_dict
-    call CocAction('runCommand', l:parsed.id)
+    call CocActionAsync('runCommand', l:parsed.id)
   endif
 endfunction
 
