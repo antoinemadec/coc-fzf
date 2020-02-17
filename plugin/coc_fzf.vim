@@ -39,6 +39,7 @@ if g:coc_fzf_location_available
   augroup END
 endif
 
+command CocFzfListCommands     call coc_fzf#commands#fzf_run()
 command CocFzfListDiagnostics  call coc_fzf#diagnostics#fzf_run(0)
 command BCocFzfListDiagnostics call coc_fzf#diagnostics#fzf_run(1)
 command CocFzfListExtensions   call coc_fzf#extensions#fzf_run()

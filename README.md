@@ -18,6 +18,7 @@ Commands
 
 | Command                     | List                                                                              |
 | ---                         | ---                                                                               |
+| `:CocFzfListCommands`       | Equivalent to :CocList commands                                                   |
 | `:CocFzfListDiagnostics`    | Equivalent to :CocList diagnostics                                                |
 | `:BCocFzfListDiagnostics`   | Equivalent to :CocList diagnostics in the current buffer                          |
 | `:CocFzfListExtensions`     | Equivalent to :CocList extensions                                                 |
@@ -32,12 +33,22 @@ Vimrc Example
 
 ```vim
 nnoremap <silent> <space>a  :<C-u>CocFzfListDiagnostics<CR>
+nnoremap <silent> <space>c  :<C-u>CocFzfListCommands<CR>
 nnoremap <silent> <space>e  :<C-u>CocFzfListExtensions<CR>
 nnoremap <silent> <space>l  :<C-u>CocFzfListLocation<CR>
 nnoremap <silent> <space>o  :<C-u>CocFzfListOutline<CR>
 nnoremap <silent> <space>p  :<C-u>CocFzfListResume<CR>
 nnoremap <silent> <space>s  :<C-u>CocFzfListSymbols<CR>
 nnoremap <silent> <space>S  :<C-u>CocFzfListServices<CR>
+```
+
+FAQ
+---------
+
+**Q**: How to get the FZF floating window?
+**A**: You can look at [FZF Vim integration][fzf_vim_integration]:
+```vim
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 ```
 
 License
