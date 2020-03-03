@@ -1,3 +1,5 @@
+" description: show locations saved by g:coc_jump_locations variable
+
 let s:prompt = 'Coc Location> '
 
 function! coc_fzf#location#fzf_run() abort

@@ -1,3 +1,5 @@
+" description: symbols of current document
+
 let s:prompt = 'Coc Outline> '
 
 function! coc_fzf#outline#fzf_run() abort

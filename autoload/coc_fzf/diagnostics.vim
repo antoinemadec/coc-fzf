@@ -1,3 +1,5 @@
+" description: diagnostics of current workspace
+
 let s:prompt = 'Coc Diagnostics> '
 
 function! coc_fzf#diagnostics#fzf_run(...) abort

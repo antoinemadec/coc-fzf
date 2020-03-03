@@ -1,3 +1,5 @@
+" description: manage coc extensions
+
 let s:prompt = 'Coc Extensions> '
 
 function! coc_fzf#extensions#fzf_run(...) abort

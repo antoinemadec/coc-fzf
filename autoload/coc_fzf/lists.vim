@@ -3,9 +3,7 @@ let s:prompt = 'Coc Lists> '
 function! coc_fzf#lists#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-  let coc_nvim_plugin_dir = fnamemodify(coc#util#job_command()[-1], ':h:h')
-  let ext_command = g:coc_fzf_plugin_dir . '/script/get_lists.sh ' .
-        \ g:coc_fzf_plugin_dir . ' ' . l:coc_nvim_plugin_dir
+  let ext_command = g:coc_fzf_plugin_dir . '/script/get_lists.sh'
   echom ext_command
   let l:opts = {
         \ 'source': ext_command,

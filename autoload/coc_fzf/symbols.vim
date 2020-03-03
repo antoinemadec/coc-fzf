@@ -1,3 +1,5 @@
+" description: search workspace symbols
+
 let s:prompt = 'Coc Symbols> '
 
 function! coc_fzf#symbols#fzf_run() abort

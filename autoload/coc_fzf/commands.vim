@@ -1,3 +1,5 @@
+" description: registered commands of coc.nvim
+
 let s:prompt = 'Coc Commands> '
 
 function! coc_fzf#commands#fzf_run() abort

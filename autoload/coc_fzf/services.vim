@@ -1,3 +1,5 @@
+" description: registered services of coc.nvim
+
 let s:prompt = 'Coc Services> '
 
 function! coc_fzf#services#fzf_run(...) abort
