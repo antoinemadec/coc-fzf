@@ -16,14 +16,15 @@ The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim in
 Commands
 ---------
 
-| Command                     | List                                                                              |
-| ---                         | ---                                                                               |
+| Command                   | List                                                                              |
+| ---                       | ---                                                                               |
+| `:CocFzfList        `       | Equivalent to :CocList                                                            |
 | `:CocFzfListCommands`       | Equivalent to :CocList commands                                                   |
 | `:CocFzfListDiagnostics`    | Equivalent to :CocList diagnostics                                                |
 | `:BCocFzfListDiagnostics`   | Equivalent to :CocList diagnostics in the current buffer                          |
 | `:CocFzfListExtensions`     | Equivalent to :CocList extensions                                                 |
-| `:CocFzfListLocation`       | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]  |
-| `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]              |
+| `:CocFzfListLocation`       | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]            |
+| `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]                       |
 | `:CocFzfListResume`         | Equivalent to :CocListResume                                                      |
 | `:CocFzfListSymbols`        | Equivalent to :CocList symbols                                                    |
 | `:CocFzfListServices`       | Equivalent to :CocList services                                                   |

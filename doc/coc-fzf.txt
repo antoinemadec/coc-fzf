@@ -35,6 +35,7 @@ shortcuts, options etc.
 Commands ~
 
 | Command                 | List                                                                       | ~
+| `:CocFzfList        `     | Equivalent to :CocList                                                     |
 | `:CocFzfListCommands`     | Equivalent to :CocList commands                                            |
 | `:CocFzfListDiagnostics`  | Equivalent to :CocList diagnostics                                         |
 | `:BCocFzfListDiagnostics` | Equivalent to :CocList diagnostics in the current buffer                   |
