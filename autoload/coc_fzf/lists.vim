@@ -1,18 +1,26 @@
 let s:prompt = 'Coc Lists> '
 
-function! coc_fzf#lists#fzf_run() abort
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-  let ext_command = g:coc_fzf_plugin_dir . '/script/get_lists.sh'
-  echom ext_command
-  let l:opts = {
-        \ 'source': ext_command,
-        \ 'sink*': function('s:list_handler'),
-        \ 'options': ['--multi','--expect='.expect_keys,
-        \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
-        \ }
-  call fzf#run(fzf#wrap(l:opts))
-  call s:syntax()
+function! coc_fzf#lists#fzf_run(...) abort
+  if a:0
+    " execute one source/list
+    let l:src = a:000[0]
+    let l:src_opts = a:000[1:]
+    call call('coc_fzf#' . l:src . '#fzf_run', l:src_opts)
+  else
+    " prompt all available lists
+    call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+    let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+    let ext_command = g:coc_fzf_plugin_dir . '/script/get_lists.sh'
+    echom ext_command
+    let l:opts = {
+          \ 'source': ext_command,
+          \ 'sink*': function('s:list_handler'),
+          \ 'options': ['--multi','--expect='.expect_keys,
+          \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
+          \ }
+    call fzf#run(fzf#wrap(l:opts))
+    call s:syntax()
+  endif
 endfunction
 
 let s:default_action = {
