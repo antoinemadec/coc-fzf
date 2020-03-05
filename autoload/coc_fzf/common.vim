@@ -33,15 +33,14 @@ endfunction
 " [function_name, args_string]
 let s:last_func_call = []
 
-function! coc_fzf#common#log_function_call(sfile, args) abort
+function! coc_fzf#common#log_function_call(sfile, args_list) abort
   let l:func_name = substitute(a:sfile, '.*\(\.\.\|\s\)', '', '')
-  let l:args_string = join(a:args, ',')
-  let s:last_func_call = [l:func_name, l:args_string]
+  let s:last_func_call = [l:func_name, a:args_list]
 endfunction
 
 function! coc_fzf#common#call_last_logged_function() abort
   if !empty(s:last_func_call)
-    execute 'call ' . s:last_func_call[0] . '(' . s:last_func_call[1] . ')'
+    call call(s:last_func_call[0], s:last_func_call[1])
   endif
 endfunction
 
