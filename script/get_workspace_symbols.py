@@ -10,6 +10,8 @@ parser.add_argument('channel', help="channel id of coc's client")
 parser.add_argument('bufnr', help="Nvim buffer where query should be done")
 parser.add_argument(
     'query', help="query to pass to CocAction('getWorkspaceSymbols')")
+parser.add_argument(
+    '--kind', nargs=1, help='only search for a specific "kind" (class, function, etc)')
 args = parser.parse_args()
 
 kind_dict = {}
@@ -57,5 +59,8 @@ for item in items:
     lnum = item['location']['range']['end']['line'] + 1
     col = item['location']['range']['end']['character']
     filename = item['location']['uri'].replace('file://', '')
-    print("{0} [{1}] {2} {3},{4}".format(item['name'],
-                                         get_kind(item['kind']), filename, lnum, col))
+    kind = get_kind(item['kind'])
+    if args.kind is not None and args.kind[0].lower() != kind.lower():
+        continue
+    print("{0} [{1}] {2} {3},{4}".format(
+        item['name'], kind, filename, lnum, col))
