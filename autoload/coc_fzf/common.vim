@@ -52,26 +52,33 @@ function! s:redir_exec(command) abort
     return output
 endfunction
 
+let coc_fzf#common#sources_list = systemlist(g:coc_fzf_plugin_dir . '/script/get_lists.sh --no-description')
+
+let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', 'Method',
+      \ 'Property', 'Field', 'Constructor', 'Enum', 'Interface', 'Function',
+      \ 'Variable', 'Constant', 'String', 'Number', 'Boolean', 'Array',
+      \ 'Object', 'Key', 'Null', 'EnumMember', 'Struct', 'Event', 'Operator',
+      \ 'TypeParameter']
+
 function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
-  let l:sources_list = systemlist(g:coc_fzf_plugin_dir . '/script/get_lists.sh --no-description')
   let l:diagnostics_opts = ['--current-buf']
   let l:symbols_opts = ['--kind']
-  let l:kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', 'Method',
-        \ 'Property', 'Field', 'Constructor', 'Enum', 'Interface', 'Function',
-        \ 'Variable', 'Constant', 'String', 'Number', 'Boolean', 'Array',
-        \ 'Object', 'Key', 'Null', 'EnumMember', 'Struct', 'Event', 'Operator',
-        \ 'TypeParameter']
   let l:CmdLineList = split(a:CmdLine)
   let l:source = len(l:CmdLineList) >= 2 ? l:CmdLineList[1] : ''
   if l:source == 'diagnostics'
     return join(l:diagnostics_opts, "\n")
   elseif l:source == 'symbols'
     if index(l:CmdLineList[-2:-1], '--kind') >= 0
-      return join(l:kinds, "\n")
+      return join(g:coc_fzf#common#kinds, "\n")
     endif
     return join(l:symbols_opts, "\n")
   endif
-  if index(l:sources_list, l:source) < 0
-    return join(l:sources_list, "\n")
+  if index(g:coc_fzf#common#sources_list, l:source) < 0
+    return join(g:coc_fzf#common#sources_list, "\n")
   endif
+  return ''
+endfunction
+
+function coc_fzf#common#echom_error(msg) abort
+  exe "echohl Error | echom '[coc-fzf] " . a:msg . "' | echohl None"
 endfunction

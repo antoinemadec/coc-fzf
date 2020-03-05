@@ -5,6 +5,10 @@ function! coc_fzf#lists#fzf_run(...) abort
     " execute one source/list
     let l:src = a:000[0]
     let l:src_opts = a:000[1:]
+    if index(g:coc_fzf#common#sources_list, l:src) < 0
+      call coc_fzf#common#echom_error('List ' . l:src . ' does not exist')
+      return
+    endif
     call call('coc_fzf#' . l:src . '#fzf_run', l:src_opts)
   else
     " prompt all available lists

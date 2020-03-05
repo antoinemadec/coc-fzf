@@ -7,6 +7,13 @@ function! coc_fzf#symbols#fzf_run(...) abort
   let l:ws_symbols_opts = []
   let l:kind_idx = index(a:000, '--kind')
   if l:kind_idx >= 0
+    if len(a:000) < l:kind_idx+2
+      call coc_fzf#common#echom_error('Missing kind argument')
+      return
+    elseif index(g:coc_fzf#common#kinds, a:000[l:kind_idx+1]) < 0
+      call coc_fzf#common#echom_error('Kind ' . a:000[l:kind_idx+1] . ' does not exist')
+      return
+    endif
     let l:ws_symbols_opts += a:000[l:kind_idx : l:kind_idx+1]
   endif
   let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
