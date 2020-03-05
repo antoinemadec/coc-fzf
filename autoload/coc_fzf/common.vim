@@ -51,3 +51,14 @@ function! s:redir_exec(command) abort
     redir END
     return output
 endfunction
+
+function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
+  let l:sources_list = systemlist(g:coc_fzf_plugin_dir . '/script/get_lists.sh --no-description')
+  let l:diagnostics_ops = ['--current-buf']
+  let l:CmdLineList = split(a:CmdLine)
+  let l:source = len(l:CmdLineList) >= 2 ? l:CmdLineList[1] : ''
+  if l:source == 'diagnostics'
+    return join(l:diagnostics_ops, "\n")
+  endif
+  return join(l:sources_list, "\n")
+endfunction

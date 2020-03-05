@@ -16,31 +16,32 @@ The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim in
 Commands
 ---------
 
-| Command                   | List                                                                              |
-| ---                       | ---                                                                               |
-| `:CocFzfList        `       | Equivalent to :CocList                                                            |
-| `:CocFzfListCommands`       | Equivalent to :CocList commands                                                   |
-| `:CocFzfListDiagnostics`    | Equivalent to :CocList diagnostics                                                |
-| `:BCocFzfListDiagnostics`   | Equivalent to :CocList diagnostics in the current buffer                          |
-| `:CocFzfListExtensions`     | Equivalent to :CocList extensions                                                 |
-| `:CocFzfListLocation`       | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]            |
-| `:CocFzfListOutline`        | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]                       |
-| `:CocFzfListResume`         | Equivalent to :CocListResume                                                      |
-| `:CocFzfListSymbols`        | Equivalent to :CocList symbols                                                    |
-| `:CocFzfListServices`       | Equivalent to :CocList services                                                   |
+| Command                                 | List                                                                             |
+| ---                                     | ---                                                                              |
+| `:CocFzfList        `                     | Equivalent to :CocList                                                           |
+| `:CocFzfList commands`                    | Equivalent to :CocList commands                                                  |
+| `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics                                               |
+| `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer                         |
+| `:CocFzfList extensions`                  | Equivalent to :CocList extensions                                                |
+| `:CocFzfList location`                    | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]           |
+| `:CocFzfList outline`                     | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]                      |
+| `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                                   |
+| `:CocFzfList services`                    | Equivalent to :CocList services                                                  |
+| `:CocFzfListResume`                       | Equivalent to :CocListResume                                                     |
 
 Vimrc Example
 ---------
 
 ```vim
-nnoremap <silent> <space>a  :<C-u>CocFzfListDiagnostics<CR>
-nnoremap <silent> <space>c  :<C-u>CocFzfListCommands<CR>
-nnoremap <silent> <space>e  :<C-u>CocFzfListExtensions<CR>
-nnoremap <silent> <space>l  :<C-u>CocFzfListLocation<CR>
-nnoremap <silent> <space>o  :<C-u>CocFzfListOutline<CR>
+nnoremap <silent> <space>a  :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent> <space>b  :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> <space>c  :<C-u>CocFzfList commands<CR>
+nnoremap <silent> <space>e  :<C-u>CocFzfList extensions<CR>
+nnoremap <silent> <space>l  :<C-u>CocFzfList location<CR>
+nnoremap <silent> <space>o  :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <space>s  :<C-u>CocFzfList symbols<CR>
+nnoremap <silent> <space>S  :<C-u>CocFzfList services<CR>
 nnoremap <silent> <space>p  :<C-u>CocFzfListResume<CR>
-nnoremap <silent> <space>s  :<C-u>CocFzfListSymbols<CR>
-nnoremap <silent> <space>S  :<C-u>CocFzfListServices<CR>
 ```
 
 FAQ
