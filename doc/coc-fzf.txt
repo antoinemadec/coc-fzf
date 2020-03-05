@@ -38,11 +38,12 @@ Commands ~
 | `:CocFzfList`                             | Equivalent to :CocList                                                     |
 | `:CocFzfList commands`                    | Equivalent to :CocList commands                                            |
 | `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics                                         |
-| `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer                   |
+| `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer only              |
 | `:CocFzfList extensions`                  | Equivalent to :CocList extensions                                          |
 | `:CocFzfList location`                    | Equivalent to :CocList location. Toggle preview: '?'. Requires fzf.vim [7] |
 | `:CocFzfList outline`                     | Equivalent to :CocList outline, with colors. Requires ctags [8]            |
 | `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                             |
+| `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                                |
 | `:CocFzfList services`                    | Equivalent to :CocList services                                            |
 | `:CocFzfListResume`                       | Equivalent to :CocListResume                                               |
 
