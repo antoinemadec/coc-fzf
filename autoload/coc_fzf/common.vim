@@ -53,6 +53,7 @@ function! s:redir_exec(command) abort
 endfunction
 
 function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
+  echom a:ArgLead
   let l:sources_list = systemlist(g:coc_fzf_plugin_dir . '/script/get_lists.sh --no-description')
   let l:diagnostics_opts = ['--current-buf']
   let l:symbols_opts = ['--kind']
