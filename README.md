@@ -19,6 +19,7 @@ Commands
 | Command                                 | List                                                                             |
 | ---                                     | ---                                                                              |
 | `:CocFzfList        `                     | Equivalent to :CocList                                                           |
+| `:CocFzfList actions`                     | Equivalent to :CocList actions                                                   |
 | `:CocFzfList commands`                    | Equivalent to :CocList commands                                                  |
 | `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics                                               |
 | `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer only                    |
