@@ -20,7 +20,12 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
 endfunction
 
 function! s:format_coc_diagnostic(item) abort
-  return (has_key(a:item,'file')  ? bufname(a:item.file) : '')
+  let l:file = ''
+  if has_key(a:item, 'file')
+    let l:relPath = substitute(a:item.file, getcwd() . "/" , "", "")
+    let l:file = bufname(bufadd(l:relPath))
+  endif
+  return l:file
         \ . ':' . a:item.lnum . ':' . a:item.col . ' '
         \ . a:item.severity . ' ' . a:item.message
 endfunction
