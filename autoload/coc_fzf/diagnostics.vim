@@ -20,9 +20,13 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
 endfunction
 
 function! s:format_coc_diagnostic(item) abort
-  return (has_key(a:item,'file')  ? bufname(a:item.file) : '')
-        \ . ':' . a:item.lnum . ':' . a:item.col . ' '
-        \ . a:item.severity . ' ' . a:item.message
+  if has_key(a:item, 'file')
+    let l:file = substitute(a:item.file, getcwd() . "/" , "", "")
+    return l:file
+          \ . ':' . a:item.lnum . ':' . a:item.col . ' '
+          \ . a:item.severity . ' ' . a:item.message
+  endif
+  return ''
 endfunction
 
 function! s:get_diagnostics(diags, current_buffer_only) abort
@@ -70,7 +74,7 @@ function! s:error_handler(err) abort
   endif
   let l:parsed = s:parse_error(a:err[1:])
   if type(l:parsed) == v:t_dict
-    execute 'buffer' bufnr(l:parsed["bufnr"])
+    execute 'buffer' bufnr(l:parsed["file"], 1)
     call cursor(l:parsed["linenr"], l:parsed["colnr"])
     normal! zz
   endif
@@ -87,5 +91,5 @@ function! s:parse_error(err) abort
   let l:line_number = empty(l:match[1]) ? 1 : str2nr(l:match[1])
   let l:col_number = empty(l:match[2]) ? 1 : str2nr(l:match[2])
   let l:error_msg = l:match[3]
-  return ({'bufnr' : l:match[0],'linenr' : l:line_number, 'colnr':l:col_number, 'text': l:error_msg})
+  return ({'file' : l:match[0],'linenr' : l:line_number, 'colnr':l:col_number, 'text': l:error_msg})
 endfunction
