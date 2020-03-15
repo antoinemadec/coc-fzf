@@ -81,3 +81,7 @@ endfunction
 function coc_fzf#common#echom_error(msg) abort
   exe "echohl Error | echom '[coc-fzf] " . a:msg . "' | echohl None"
 endfunction
+
+function coc_fzf#common#echom_info(msg) abort
+  exe "echohl MoreMsg | echom '[coc-fzf] " . a:msg . "' | echohl None"
+endfunction

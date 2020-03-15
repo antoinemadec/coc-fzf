@@ -20,6 +20,8 @@ function! coc_fzf#extensions#fzf_run(...) abort
       call feedkeys('i')
       call coc_fzf#common#fzf_selector_restore()
     endif
+  else
+    call coc_fzf#common#echom_info('extensions list is empty')
   endif
 endfunction
 

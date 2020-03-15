@@ -20,6 +20,8 @@ function! coc_fzf#location#fzf_run() abort
     call s:merge_opts(merged, eopts)
     call fzf#run(fzf#wrap(merged))
     call s:syntax()
+  else
+    call coc_fzf#common#echom_info('location list is empty')
   endif
 endfunction
 

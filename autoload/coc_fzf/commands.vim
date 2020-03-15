@@ -15,6 +15,8 @@ function! coc_fzf#commands#fzf_run() abort
           \ }
     call fzf#run(fzf#wrap(l:opts))
     call s:syntax()
+  else
+    call coc_fzf#common#echom_info('commands list is empty')
   endif
 endfunction
 
