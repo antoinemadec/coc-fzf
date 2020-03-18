@@ -17,7 +17,7 @@ function! coc_fzf#location#fzf_run() abort
     let extra = fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:50%', '?')
     let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
     let merged = extend(copy(l:opts), extra)
-    call s:merge_opts(merged, eopts)
+    call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
     call fzf#run(fzf#wrap(merged))
     call s:syntax()
   else
@@ -86,34 +86,4 @@ function! s:parse_location(loc) abort
     return
   endif
   return ({'filename': l:match[0], 'lnum': l:match[1], 'col': l:match[2], 'text': l:match[3]})
-endfunction
-
-
-"--------------------------------------------------------------
-" from fzf-vim
-"--------------------------------------------------------------
-let s:TYPE = {'dict': type({}), 'funcref': type(function('call')), 'string': type(''), 'list': type([])}
-
-function! s:merge_opts(dict, eopts)
-  return s:extend_opts(a:dict, a:eopts, 0)
-endfunction
-
-function! s:extend_opts(dict, eopts, prepend)
-  if empty(a:eopts)
-    return
-  endif
-  if has_key(a:dict, 'options')
-    if type(a:dict.options) == s:TYPE.list && type(a:eopts) == s:TYPE.list
-      if a:prepend
-        let a:dict.options = extend(copy(a:eopts), a:dict.options)
-      else
-        call extend(a:dict.options, a:eopts)
-      endif
-    else
-      let all_opts = a:prepend ? [a:eopts, a:dict.options] : [a:dict.options, a:eopts]
-      let a:dict.options = join(map(all_opts, 'type(v:val) == s:TYPE.list ? join(map(copy(v:val), "fzf#shellescape(v:val)")) : v:val'))
-    endif
-  else
-    let a:dict.options = a:eopts
-  endif
 endfunction

@@ -25,7 +25,7 @@ function s:check_fzf_vim() abort
   if l:got_fzf_vim
     call health#report_ok('fzf.vim found')
   else
-    call health#report_warn("fzf.vim not found, location won't work",
+    call health#report_warn("fzf.vim not found. 'location' won't work, previews won't be available",
           \ ['Install the following vim plugin', "  Plug 'junegunn/fzf.vim'"])
   endif
 endfunction

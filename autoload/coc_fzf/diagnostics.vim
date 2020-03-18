@@ -14,7 +14,14 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
           \ }
-    call fzf#run(fzf#wrap(l:opts))
+    let extra = {}
+    if g:coc_fzf_preview_available
+      let extra = fzf#vim#with_preview('up:50%', '?')
+    endif
+    let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
+    let merged = extend(copy(l:opts), extra)
+    call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
+    call fzf#run(fzf#wrap(merged))
     call s:syntax()
   else
     call coc_fzf#common#echom_info('diagnostics list is empty')

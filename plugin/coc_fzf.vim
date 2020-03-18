@@ -14,11 +14,11 @@ if !has('nvim')
 endif
 
 " test plugin and bin availability
-let g:coc_fzf_location_available = 1
+let g:coc_fzf_preview_available = 1
 try
   call fzf#vim#with_preview()
 catch
-  let g:coc_fzf_location_available = 0
+  let g:coc_fzf_preview_available = 0
 endtry
 
 let g:coc_fzf_plugin_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
@@ -31,7 +31,7 @@ if has('nvim')
     autocmd TermLeave  * if &ft == 'fzf' | call coc_fzf#common#unmap_enter() | endif
   augroup END
 endif
-if g:coc_fzf_location_available
+if g:coc_fzf_preview_available
   augroup CocFzfLocation
     autocmd!
     let g:coc_enable_locationlist = 0

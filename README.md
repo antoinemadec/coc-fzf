@@ -21,7 +21,7 @@ Commands
 | `:CocFzfList        `                     | Equivalent to :CocList                                                           |
 | `:CocFzfList actions`                     | Equivalent to :CocList actions                                                   |
 | `:CocFzfList commands`                    | Equivalent to :CocList commands                                                  |
-| `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics                                               |
+| `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics. Toggle preview: '?'                          |
 | `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer only                    |
 | `:CocFzfList extensions`                  | Equivalent to :CocList extensions                                                |
 | `:CocFzfList location`                    | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]           |
