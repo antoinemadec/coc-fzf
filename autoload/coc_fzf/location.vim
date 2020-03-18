@@ -59,8 +59,8 @@ function! s:syntax() abort
     syntax case ignore
     " apply syntax on everything but prompt
     exec 'syntax match CocFzf_JumplocationHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax region CocFzf_JumplocationRegion start="^" end="[│┌└]" keepend contains=CocFzf_JumplocationHeader
-    syntax match CocFzf_JumplocationFile /^>\?\s*[^:│┌└]\+/ contained containedin=CocFzf_JumplocationHeader
+    syntax region CocFzf_JumplocationRegion start="^" end="[│╭╰]" keepend contains=CocFzf_JumplocationHeader
+    syntax match CocFzf_JumplocationFile /^>\?\s*[^:││╭╰]\+/ contained containedin=CocFzf_JumplocationHeader
     syntax match CocFzf_JumplocationLineNumber /:\d\+:\d\+:/ contained containedin=CocFzf_JumplocationHeader
     highlight default link CocFzf_JumplocationFile Directory
     highlight default link CocFzf_JumplocationLineNumber LineNr
