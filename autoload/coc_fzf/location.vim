@@ -14,7 +14,8 @@ function! coc_fzf#location#fzf_run() abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt]
           \ }
-    let extra = fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:50%', '?')
+    let extra = fzf#vim#with_preview({'options': '--delimiter : --nth 4..'},
+          \ 'up:50%', get(g:, 'coc_fzf_preview_toggle_key', '?'))
     let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
     let merged = extend(copy(l:opts), extra)
     call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)

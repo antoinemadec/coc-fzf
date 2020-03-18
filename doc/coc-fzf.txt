@@ -6,10 +6,11 @@ Contents ~
  1. Introduction                                         |coc-fzf-introduction|
  2. Rationale                                               |coc-fzf-rationale|
  3. Commands                                                 |coc-fzf-commands|
- 4. Vimrc Example                                       |coc-fzf-vimrc-example|
- 5. FAQ                                                           |coc-fzf-faq|
- 6. License                                                   |coc-fzf-license|
- 7. References                                             |coc-fzf-references|
+ 4. Options                                                   |coc-fzf-options|
+ 5. Vimrc Example                                       |coc-fzf-vimrc-example|
+ 6. FAQ                                                           |coc-fzf-faq|
+ 7. License                                                   |coc-fzf-license|
+ 8. References                                             |coc-fzf-references|
 
 ===============================================================================
                                                          *coc-fzf-introduction*
@@ -47,6 +48,14 @@ Commands ~
 | `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                                |
 | `:CocFzfList services`                    | Equivalent to :CocList services                                            |
 | `:CocFzfListResume`                       | Equivalent to :CocListResume                                               |
+
+===============================================================================
+                                                              *coc-fzf-options*
+Options ~
+
+| Option                       | Description                                         | ~
+| `g:coc_fzf_preview_toggle_key` | Change default key '?' to toggle the preview window |
+
 
 ===============================================================================
                                                         *coc-fzf-vimrc-example*

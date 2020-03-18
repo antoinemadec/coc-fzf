@@ -31,9 +31,15 @@ Commands
 | `:CocFzfList services`                    | Equivalent to :CocList services                                                  |
 | `:CocFzfListResume`                       | Equivalent to :CocListResume                                                     |
 
-Vimrc Example
+Options
 ---------
 
+| Option                                  | Description                                                                      |
+| ---                                     | ---                                                                              |
+| `g:coc_fzf_preview_toggle_key`            | Change default key '?' to toggle the preview window                              |
+
+Vimrc Example
+---------
 ```vim
 nnoremap <silent> <space>a  :<C-u>CocFzfList diagnostics<CR>
 nnoremap <silent> <space>b  :<C-u>CocFzfList diagnostics --current-buf<CR>

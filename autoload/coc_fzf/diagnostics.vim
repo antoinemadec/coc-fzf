@@ -16,7 +16,7 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
           \ }
     let extra = {}
     if g:coc_fzf_preview_available
-      let extra = fzf#vim#with_preview('up:50%', '?')
+      let extra = fzf#vim#with_preview('up:50%', get(g:, 'coc_fzf_preview_toggle_key', '?'))
     endif
     let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
     let merged = extend(copy(l:opts), extra)
