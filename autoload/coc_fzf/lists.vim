@@ -20,7 +20,7 @@ function! coc_fzf#lists#fzf_run(...) abort
           \ 'source': ext_command,
           \ 'sink*': function('s:list_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
-          \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(l:opts))
     call s:syntax()
