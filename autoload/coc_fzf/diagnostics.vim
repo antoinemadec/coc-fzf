@@ -12,11 +12,11 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
           \ 'source': s:get_diagnostics(l:diags, l:current_buffer_only),
           \ 'sink*': function('s:error_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
-          \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     let extra = {}
     if g:coc_fzf_preview_available
-      let extra = fzf#vim#with_preview('up:50%', get(g:, 'coc_fzf_preview_toggle_key', '?'))
+      let extra = fzf#vim#with_preview(g:coc_fzf_preview, g:coc_fzf_preview_toggle_key)
     endif
     let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
     let merged = extend(copy(l:opts), extra)

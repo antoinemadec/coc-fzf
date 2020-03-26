@@ -25,7 +25,7 @@ function! coc_fzf#symbols#fzf_run(...) abort
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys, '--bind', 'change:reload:'.reload_command,
-        \ '--phony', '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
+        \ '--phony', '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
   call fzf#run(fzf#wrap(l:opts))
   call s:syntax()
