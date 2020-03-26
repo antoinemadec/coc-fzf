@@ -7,6 +7,7 @@ coc_fzf_source_dir="$(dirname $0)/../autoload/coc_fzf"
 for f in $(ls "$coc_fzf_source_dir"); do
   src="${f/%.vim/}"
   [ "$src" = "common" ] && continue
+  [ "$src" = "common_fzf_vim" ] && continue
   [ "$src" = "lists" ] && continue
   printf "$src"
   if [ "$description" = 1 ]; then
