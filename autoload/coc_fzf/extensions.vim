@@ -12,7 +12,7 @@ function! coc_fzf#extensions#fzf_run(...) abort
           \ 'source': s:get_extensions(l:exts),
           \ 'sink*': function('s:extension_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
-          \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(l:opts))
     call s:syntax()

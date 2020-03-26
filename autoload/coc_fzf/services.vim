@@ -12,7 +12,7 @@ function! coc_fzf#services#fzf_run(...) abort
           \ 'source': s:get_services(l:serv),
           \ 'sink*': function('s:service_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
-          \ '--layout=reverse-list', '--ansi', '--prompt=' . s:prompt],
+          \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(l:opts))
     call s:syntax()

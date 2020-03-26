@@ -16,16 +16,16 @@ The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim in
 Commands
 ---------
 
-| Command                                 | List                                                                             |
-| ---                                     | ---                                                                              |
+| Command                                   | List                                                                             |
+| ---                                       | ---                                                                              |
 | `:CocFzfList        `                     | Equivalent to :CocList                                                           |
 | `:CocFzfList actions`                     | Equivalent to :CocList actions                                                   |
 | `:CocFzfList commands`                    | Equivalent to :CocList commands                                                  |
 | `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics. Toggle preview: '?'                          |
 | `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer only                    |
 | `:CocFzfList extensions`                  | Equivalent to :CocList extensions                                                |
-| `:CocFzfList location`                    | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim]           |
-| `:CocFzfList outline`                     | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]                      |
+| `:CocFzfList location`                    | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim] |
+| `:CocFzfList outline`                     | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]             |
 | `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                                   |
 | `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                                      |
 | `:CocFzfList services`                    | Equivalent to :CocList services                                                  |
@@ -34,9 +34,11 @@ Commands
 Options
 ---------
 
-| Option                                  | Description                                                                      |
-| ---                                     | ---                                                                              |
-| `g:coc_fzf_preview_toggle_key`            | Change default key '?' to toggle the preview window                              |
+| Option                         | Type   | Description                                                    | Default value               |
+| ---                            | ---    | ---                                                            | ---                         |
+| `g:coc_fzf_preview_toggle_key` | string | Change the key to toggle the preview window                    | `'?'`                       |
+| `g:coc_fzf_preview`            | string | Change the preview window position                             | `'up:50%'`                  |
+| `g:coc_fzf_opts`               | array  | Pass additional parameters to fzf, e.g. `['--layout=reverse']` | `['--layout=reverse-list']` |
 
 Vimrc Example
 ---------

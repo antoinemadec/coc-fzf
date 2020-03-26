@@ -13,6 +13,16 @@ if !has('nvim')
   finish
 endif
 
+if !exists("g:coc_fzf_preview_toggle_key")
+    let g:coc_fzf_preview_toggle_key = '?'
+endif
+if !exists("g:coc_fzf_preview")
+    let g:coc_fzf_preview = 'up:50%'
+endif
+if !exists("g:coc_fzf_opts")
+    let g:coc_fzf_opts = ['--layout=reverse-list']
+endif
+
 " test plugin and bin availability
 let g:coc_fzf_preview_available = 1
 try
