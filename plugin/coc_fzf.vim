@@ -23,14 +23,6 @@ if !exists("g:coc_fzf_opts")
     let g:coc_fzf_opts = ['--layout=reverse-list']
 endif
 
-" test plugin and bin availability
-let g:coc_fzf_preview_available = 1
-try
-  call fzf#vim#with_preview()
-catch
-  let g:coc_fzf_preview_available = 0
-endtry
-
 let g:coc_fzf_plugin_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let g:coc_fzf_plugin_dir = fnamemodify(g:coc_fzf_plugin_dir, ':h')
 
@@ -39,13 +31,6 @@ if has('nvim')
     autocmd!
     autocmd TermEnter  * if &ft == 'fzf' | call coc_fzf#common#remap_enter() | endif
     autocmd TermLeave  * if &ft == 'fzf' | call coc_fzf#common#unmap_enter() | endif
-  augroup END
-endif
-if g:coc_fzf_preview_available
-  augroup CocFzfLocation
-    autocmd!
-    let g:coc_enable_locationlist = 0
-    autocmd User CocLocationsChange call coc_fzf#location#fzf_run()
   augroup END
 endif
 
