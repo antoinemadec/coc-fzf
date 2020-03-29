@@ -56,8 +56,8 @@ if items is None or items is 0:
     exit(0)
 
 for item in items:
-    lnum = item['location']['range']['end']['line'] + 1
-    col = item['location']['range']['end']['character']
+    lnum = item['location']['range']['start']['line'] + 1
+    col = item['location']['range']['start']['character']
     filename = item['location']['uri'].replace('file://', '')
     kind = get_kind(item['kind'])
     if args.kind is not None and args.kind[0].lower() != kind.lower():
