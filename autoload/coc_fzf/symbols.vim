@@ -4,6 +4,10 @@ let s:prompt = 'Coc Symbols> '
 
 function! coc_fzf#symbols#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+  if !CocHasProvider('workspaceSymbols')
+    call coc_fzf#common#echom_info('Workspace symbols provider not found for current document')
+    return
+  endif
   let l:ws_symbols_opts = []
   let l:kind_idx = index(a:000, '--kind')
   if l:kind_idx >= 0
