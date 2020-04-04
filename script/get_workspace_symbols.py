@@ -51,7 +51,7 @@ nvim = attach('socket', path=args.socket)
 items = nvim.call('rpcrequest', int(args.channel), 'CocAction',
                   'getWorkspaceSymbols', args.query, int(args.bufnr))
 
-if items is None or items is 0:
+if items is None or len(items) == 0:
     print("")
     exit(0)
 
