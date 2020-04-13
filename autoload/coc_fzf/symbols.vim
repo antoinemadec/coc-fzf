@@ -4,6 +4,13 @@ let s:prompt = 'Coc Symbols> '
 
 function! coc_fzf#symbols#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+  let python3 = get(g:, 'python3_host_prog', 'python3')
+  if !executable(python3)
+    call coc_fzf#common#echom_error(string(python3) . ' is not executable.')
+    call coc_fzf#common#echom_error('You need to set g:python3_host_prog.')
+    return
+  endif
+
   if !CocHasProvider('workspaceSymbols')
     call coc_fzf#common#echom_info('Workspace symbols provider not found for current document')
     return
@@ -21,7 +28,7 @@ function! coc_fzf#symbols#fzf_run(...) abort
     let l:ws_symbols_opts += a:000[l:kind_idx : l:kind_idx+1]
   endif
   let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-  let command_fmt = g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s %s %s'
+  let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s %s %s'
   let channel = coc#client#get_channel(coc#client#get_client('coc'))
   let initial_command = printf(command_fmt, join(l:ws_symbols_opts), v:servername, channel, bufnr(), "''")
   let reload_command = printf(command_fmt, join(l:ws_symbols_opts), v:servername, channel, bufnr(), '{q}')
