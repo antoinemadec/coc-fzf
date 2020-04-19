@@ -31,9 +31,10 @@ endfunction
 function! s:format_coc_diagnostic(item) abort
   if has_key(a:item, 'file')
     let l:file = substitute(a:item.file, getcwd() . "/" , "", "")
+    let l:msg = substitute(a:item.message, "\n", " ", "g")
     return l:file
           \ . ':' . a:item.lnum . ':' . a:item.col . ' '
-          \ . a:item.severity . ' ' . a:item.message
+          \ . a:item.severity . ' ' . l:msg
   endif
   return ''
 endfunction
