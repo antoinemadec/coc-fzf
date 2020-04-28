@@ -5,12 +5,13 @@ Contents ~
 
  1. Introduction                                         |coc-fzf-introduction|
  2. Rationale                                               |coc-fzf-rationale|
- 3. Commands                                                 |coc-fzf-commands|
- 4. Options                                                   |coc-fzf-options|
- 5. Vimrc Example                                       |coc-fzf-vimrc-example|
- 6. FAQ                                                           |coc-fzf-faq|
- 7. License                                                   |coc-fzf-license|
- 8. References                                             |coc-fzf-references|
+ 3. Installation                                         |coc-fzf-installation|
+ 4. Commands                                                 |coc-fzf-commands|
+ 5. Options                                                   |coc-fzf-options|
+ 6. Vimrc Example                                       |coc-fzf-vimrc-example|
+ 7. FAQ                                                           |coc-fzf-faq|
+ 8. License                                                   |coc-fzf-license|
+ 9. References                                             |coc-fzf-references|
 
 ===============================================================================
                                                          *coc-fzf-introduction*
@@ -30,6 +31,16 @@ Inspired by Robert Buhren's functions [4] and coc-denite [5] this plugin aims
 to use fzf [1] for CocList sources when possible. The goal is to keep the
 coc.nvim [2] style and leverage your FZF Vim integration [6], such as layout,
 shortcuts, options etc.
+
+===============================================================================
+                                                         *coc-fzf-installation*
+Installation ~
+Make sure to have the following plugins in your **vimrc**:
+>
+  Plug 'coc.nvim',
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
+  Plug 'antoinemadec/coc-fzf'
 
 ===============================================================================
                                                              *coc-fzf-commands*

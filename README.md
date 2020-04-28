@@ -13,6 +13,17 @@ Rationale
 Inspired by [Robert Buhren's functions][RobertBuhren] and [coc-denite][coc_denite] this plugin aims to use [fzf][fzf] for CocList sources when possible.
 The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim integration][fzf_vim_integration], such as layout, shortcuts, options etc.
 
+Installation
+---------
+
+Make sure to have the following plugins in your **vimrc**:
+```vim
+Plug 'coc.nvim',
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'antoinemadec/coc-fzf'
+```
+
 Commands
 ---------
 
