@@ -15,6 +15,7 @@ function! coc_fzf#extensions#fzf_run(...) abort
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(l:opts))
+    call coc_fzf#common#remap_enter_to_save_fzf_selector()
     call s:syntax()
     if (!l:first_call)
       call feedkeys('i')

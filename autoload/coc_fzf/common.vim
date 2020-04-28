@@ -1,17 +1,5 @@
-function! coc_fzf#common#remap_enter() abort
-  let l:enter_map = maparg('<CR>', 't')
-  if l:enter_map != ""
-    let s:enter_map = l:enter_map
-    tunmap <CR>
-  endif
-  tnoremap <silent> <CR> <C-\><C-n>:call coc_fzf#common#fzf_selector_save()<CR>i<CR>
-endfunction
-
-function! coc_fzf#common#unmap_enter() abort
-  tunmap <CR>
-  if exists('s:enter_map')
-    exe 'tnoremap <silent><expr> <CR> ' . s:enter_map
-  endif
+function! coc_fzf#common#remap_enter_to_save_fzf_selector() abort
+  tnoremap <silent> <buffer> <CR> <C-\><C-n>:call coc_fzf#common#fzf_selector_save()<CR>i<CR>
 endfunction
 
 function! coc_fzf#common#fzf_selector_save() abort

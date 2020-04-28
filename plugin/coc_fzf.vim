@@ -26,13 +26,5 @@ endif
 let g:coc_fzf_plugin_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let g:coc_fzf_plugin_dir = fnamemodify(g:coc_fzf_plugin_dir, ':h')
 
-if has('nvim')
-  augroup CocFzfSelector
-    autocmd!
-    autocmd TermEnter  * if &ft == 'fzf' | call coc_fzf#common#remap_enter() | endif
-    autocmd TermLeave  * if &ft == 'fzf' | call coc_fzf#common#unmap_enter() | endif
-  augroup END
-endif
-
 command! -nargs=* -complete=custom,coc_fzf#common#list_options CocFzfList call coc_fzf#lists#fzf_run(<f-args>)
 command CocFzfListResume call coc_fzf#common#call_last_logged_function()
