@@ -85,6 +85,7 @@ function! s:error_handler(err) abort
   let l:parsed = s:parse_error(a:err[1:])
   if type(l:parsed) == v:t_dict
     execute 'buffer' bufnr(l:parsed["file"], 1)
+    mark '
     call cursor(l:parsed["linenr"], l:parsed["colnr"])
     normal! zz
   endif

@@ -96,6 +96,7 @@ function! s:symbol_handler(sym) abort
   endif
   let l:parsed = s:parse_symbol(a:sym[1:])
   if type(l:parsed) == v:t_dict
+    mark '
     call cursor(l:parsed["lnum"], l:parsed["col"])
     normal! zz
   endif

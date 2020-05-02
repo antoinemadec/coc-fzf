@@ -81,6 +81,7 @@ function! s:symbol_handler(sym) abort
   let l:parsed = s:parse_symbol(a:sym[1:])
   if type(l:parsed) == v:t_dict
     execute 'buffer' bufnr(l:parsed["filename"], 1)
+    mark '
     call cursor(l:parsed["lnum"], l:parsed["col"])
     normal! zz
   endif

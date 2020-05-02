@@ -76,6 +76,7 @@ function! s:location_handler(loc) abort
   let l:parsed = s:parse_location(a:loc[1:])
   if type(l:parsed) == v:t_dict
     execute 'buffer' bufnr(l:parsed["filename"], 1)
+    mark '
     call cursor(l:parsed["lnum"], l:parsed["col"])
     normal! zz
   endif
