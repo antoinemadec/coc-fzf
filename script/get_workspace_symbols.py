@@ -48,7 +48,7 @@ def get_kind(val):
 
 
 nvim = attach('socket', path=args.socket)
-items = nvim.call('rpcrequest', int(args.channel), 'CocAction',
+items = nvim.call('rpcrequest', int(args.channel), 'cocAction',
                   'getWorkspaceSymbols', args.query, int(args.bufnr))
 
 if items is None or len(items) == 0:
