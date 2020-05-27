@@ -6,7 +6,6 @@ from pynvim import attach
 parser = argparse.ArgumentParser(
     description='connect to running Nvim to get CocAction("getWorkspaceSymbols", query)')
 parser.add_argument('socket', help="returned by Nvim's v:servername")
-parser.add_argument('channel', help="channel id of coc's client")
 parser.add_argument('bufnr', help="Nvim buffer where query should be done")
 parser.add_argument(
     'query', help="query to pass to CocAction('getWorkspaceSymbols')")
@@ -48,8 +47,8 @@ def get_kind(val):
 
 
 nvim = attach('socket', path=args.socket)
-items = nvim.call('rpcrequest', int(args.channel), 'cocAction',
-                  'getWorkspaceSymbols', args.query, int(args.bufnr))
+items = nvim.call('CocAction', 'getWorkspaceSymbols', args.query,
+                  int(args.bufnr))
 
 if items is None or len(items) == 0:
     print("")

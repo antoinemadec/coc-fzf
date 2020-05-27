@@ -28,10 +28,9 @@ function! coc_fzf#symbols#fzf_run(...) abort
     let l:ws_symbols_opts += a:000[l:kind_idx : l:kind_idx+1]
   endif
   let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-  let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s %s %s'
-  let channel = coc#client#get_channel(coc#client#get_client('coc'))
-  let initial_command = printf(command_fmt, join(l:ws_symbols_opts), v:servername, channel, bufnr(), "''")
-  let reload_command = printf(command_fmt, join(l:ws_symbols_opts), v:servername, channel, bufnr(), '{q}')
+  let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s %s'
+  let initial_command = printf(command_fmt, join(l:ws_symbols_opts), v:servername, bufnr(), "''")
+  let reload_command = printf(command_fmt, join(l:ws_symbols_opts), v:servername, bufnr(), '{q}')
   let l:opts = {
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
