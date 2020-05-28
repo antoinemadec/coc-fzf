@@ -14,12 +14,7 @@ function! coc_fzf#location#fzf_run() abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    let extra = fzf#vim#with_preview({'options': '--delimiter : --nth 4..'},
-          \ g:coc_fzf_preview, g:coc_fzf_preview_toggle_key)
-    let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
-    let merged = extend(copy(l:opts), extra)
-    call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
-    call fzf#run(fzf#wrap(merged))
+    call coc_fzf#common#fzf_run_with_preview(l:opts)
     call s:syntax()
   else
     call coc_fzf#common#echom_info('location list is empty')

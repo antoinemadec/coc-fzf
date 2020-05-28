@@ -73,3 +73,14 @@ endfunction
 function coc_fzf#common#echom_info(msg) abort
   exe "echohl MoreMsg | echom '[coc-fzf] " . a:msg . "' | echohl None"
 endfunction
+
+function coc_fzf#common#fzf_run_with_preview(opts) abort
+  let extra = {}
+  if g:coc_fzf_preview_available
+    let extra = fzf#vim#with_preview(g:coc_fzf_preview, g:coc_fzf_preview_toggle_key)
+  endif
+  let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
+  let merged = extend(copy(a:opts), extra)
+  call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
+  call fzf#run(fzf#wrap(merged))
+endfunction
