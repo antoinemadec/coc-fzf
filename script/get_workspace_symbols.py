@@ -61,5 +61,5 @@ for item in items:
     kind = get_kind(item['kind'])
     if args.kind is not None and args.kind[0].lower() != kind.lower():
         continue
-    print("{0} [{1}] {2} {3},{4}".format(
+    print("{0} [{1}] {2}:{3}:{4}".format(
         item['name'], kind, filename, lnum, col))
