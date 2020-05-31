@@ -1,11 +1,12 @@
 " description: list of yanks provided by coc-yank
 
 let s:prompt = 'Coc Yanks> '
-let s:yank_file_path = $HOME . '/.config/coc/extensions/coc-yank-data/yank'
+let s:yank_relative_file_path = '/coc-yank-data/yank'
 
 function! coc_fzf#yanks#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let l:raw_yanks = readfile(s:yank_file_path)
+  let l:yank_file_path = coc#util#extension_root() . s:yank_relative_file_path
+  let l:raw_yanks = readfile(l:yank_file_path)
   let l:opts = {
         \ 'source': s:get_yanks(l:raw_yanks),
         \ 'sink*': function('s:yank_handler'),
