@@ -58,6 +58,7 @@ Commands ~
 | `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                             |
 | `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                                |
 | `:CocFzfList services`                    | Equivalent to :CocList services                                            |
+| `:CocFzfList yanks`                       | Equivalent to :CocList yank. Requires coc-yank [9]                         |
 | `:CocFzfListResume`                       | Equivalent to :CocListResume                                               |
 
 ===============================================================================
@@ -111,5 +112,6 @@ References ~
 [6] https://github.com/junegunn/fzf/blob/master/README-VIM.md
 [7] https://github.com/junegunn/fzf.vim
 [8] https://github.com/universal-ctags/ctags
+[9] https://github.com/neoclide/coc-yank
 
 vim: ft=help

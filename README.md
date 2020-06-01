@@ -40,7 +40,7 @@ Commands
 | `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                                   |
 | `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                                      |
 | `:CocFzfList services`                    | Equivalent to :CocList services                                                  |
-| `:CocFzfList yanks`                       | Equivalent to :CocList yanks. Requires [coc-yank][coc-yank]                      |
+| `:CocFzfList yanks`                       | Equivalent to :CocList yank. Requires [coc-yank][coc-yank]                       |
 | `:CocFzfListResume`                       | Equivalent to :CocListResume                                                     |
 
 Options
