@@ -29,6 +29,12 @@ function! s:get_yanks(raw_yanks) abort
     endif
   endfor
 
+  " make sure our list empty; if not, add it to the list
+  if len(yank_parts) != 0
+    let l:yank = join(yank_parts, "\n")
+    call add(l:yanks, l:yank)
+  endif
+
   return reverse(l:yanks)
 endfunction
 
