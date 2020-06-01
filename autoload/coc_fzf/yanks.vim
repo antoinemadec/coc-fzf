@@ -40,6 +40,12 @@ endfunction
 
 function! s:yank_handler(cmd) abort
   let l:content = a:cmd[0]
-  let @" = l:content
-  execute 'put "'
+  if &cb == "unnamedplus"
+    let @+ = l:content
+  elseif &cb == "unnamed"
+    let @* = l:content
+  else
+    let @" = l:content
+  endif
+  put
 endfunction
