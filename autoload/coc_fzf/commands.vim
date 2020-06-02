@@ -62,8 +62,8 @@ function! s:command_handler(cmd) abort
 endfunction
 
 function! s:parse_command(cmd) abort
-  let l:match = matchlist(a:cmd, '^\(\S\+\)\s\(.*\)$')[1:2]
-  if empty(l:match) || empty(l:match[1])
+  let l:match = matchlist(a:cmd, '^\(\S\+\)\s\?\(.*\)$')[1:2]
+  if empty(l:match)
     return
   endif
   return ({'id' : l:match[0], 'title' : l:match[1]})
