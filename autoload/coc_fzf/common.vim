@@ -89,3 +89,28 @@ function coc_fzf#common#fzf_run_with_preview(opts, ...) abort
   call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
   call fzf#run(fzf#wrap(merged))
 endfunction
+
+let s:default_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit'}
+
+function coc_fzf#common#get_default_file_expect_keys() abort
+  return join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+endfunction
+
+function coc_fzf#common#process_file_action(key, selected_item) abort
+  let l:cmd = get(get(g:, 'fzf_action', s:default_action), a:key)
+
+  if !empty(cmd) && stridx('edit', cmd) < 0
+    execute 'silent' cmd a:selected_item["filename"]
+  else
+    execute 'buffer' bufnr(a:selected_item["filename"], 1)
+  endif
+
+  if type(a:selected_item) == v:t_dict
+    mark '
+    call cursor(a:selected_item["lnum"], a:selected_item["col"])
+    normal! zz
+  endif
+endfunction
