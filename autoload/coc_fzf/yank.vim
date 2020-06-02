@@ -5,8 +5,17 @@ let s:yank_relative_file_path = '/coc-yank-data/yank'
 
 function! coc_fzf#yank#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+  if !coc_fzf#common#coc_has_extension('coc-yank')
+    call coc_fzf#common#echom_error("coc-yank is not installed")
+    return
+  endif
   let l:yank_file_path = coc#util#extension_root() . s:yank_relative_file_path
-  let l:raw_yanks = readfile(l:yank_file_path)
+  try
+    let l:raw_yanks = readfile(l:yank_file_path)
+  catch
+    call coc_fzf#common#echom_info("yank file cannot be found")
+    return
+  endtry
   let l:opts = {
         \ 'source': s:get_yanks(l:raw_yanks),
         \ 'sink*': function('s:yank_handler'),

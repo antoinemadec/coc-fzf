@@ -1,3 +1,7 @@
+function coc_fzf#common#coc_has_extension(ext) abort
+  return len(filter(CocAction('extensionStats'), {key, val -> val.id == a:ext}))
+endfunction
+
 function! coc_fzf#common#remap_enter_to_save_fzf_selector() abort
   tnoremap <silent> <buffer> <CR> <C-\><C-n>:call coc_fzf#common#fzf_selector_save()<CR>i<CR>
 endfunction
