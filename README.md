@@ -40,6 +40,7 @@ Commands
 | `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                                   |
 | `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                                      |
 | `:CocFzfList services`                    | Equivalent to :CocList services                                                  |
+| `:CocFzfList yank`                        | Equivalent to :CocList yank. Requires [coc-yank][coc-yank]                       |
 | `:CocFzfListResume`                       | Equivalent to :CocListResume                                                     |
 
 Options
@@ -86,3 +87,4 @@ MIT
 [coc_denite]:          https://github.com/neoclide/coc-denite
 [ctags]:               https://github.com/universal-ctags/ctags
 [fzfvim]:              https://github.com/junegunn/fzf.vim
+[coc-yank]:            https://github.com/neoclide/coc-yank
