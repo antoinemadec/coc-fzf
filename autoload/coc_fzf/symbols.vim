@@ -37,7 +37,7 @@ function! coc_fzf#symbols#fzf_run(...) abort
         \ 'options': ['--multi','--expect='.expect_keys, '--bind', 'change:reload:'.reload_command,
         \ '--phony', '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
-  call coc_fzf#common#fzf_run_with_preview(l:opts, {'placeholder': '{3}'})
+  call coc_fzf#common#fzf_run_with_preview(l:opts, {'placeholder': '{-1}'})
   call s:syntax()
 endfunction
 
