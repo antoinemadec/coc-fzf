@@ -7,7 +7,7 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
   let l:current_buffer_only = index(a:000, '--current-buf') >= 0
   let l:diags = CocAction('diagnosticList')
   if !empty(l:diags)
-    let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let l:opts = {
           \ 'source': s:get_diagnostics(l:diags, l:current_buffer_only),
           \ 'sink*': function('s:error_handler'),
@@ -41,17 +41,6 @@ function! s:get_diagnostics(diags, current_buffer_only) abort
   return map(l:diags, 's:format_coc_diagnostic(v:val)')
 endfunction
 
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
-endfunction
-
 function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
@@ -71,17 +60,8 @@ function! s:syntax() abort
 endfunction
 
 function! s:error_handler(err) abort
-  let cmd = s:action_for(a:err[0])
-  if !empty(cmd) && stridx('edit', cmd) < 0
-    execute 'silent' cmd
-  endif
   let l:parsed = s:parse_error(a:err[1:])
-  if type(l:parsed) == v:t_dict
-    execute 'buffer' bufnr(l:parsed["file"], 1)
-    mark '
-    call cursor(l:parsed["linenr"], l:parsed["colnr"])
-    normal! zz
-  endif
+  call coc_fzf#common#process_file_action(a:err[0], l:parsed)
 endfunction
 
 function! s:parse_error(err) abort
@@ -95,5 +75,5 @@ function! s:parse_error(err) abort
   let l:line_number = empty(l:match[1]) ? 1 : str2nr(l:match[1])
   let l:col_number = empty(l:match[2]) ? 1 : str2nr(l:match[2])
   let l:error_msg = l:match[3]
-  return ({'file' : l:match[0],'linenr' : l:line_number, 'colnr':l:col_number, 'text': l:error_msg})
+  return ({'filename' : l:match[0],'lnum' : l:line_number, 'col':l:col_number, 'text': l:error_msg})
 endfunction

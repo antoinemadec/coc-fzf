@@ -27,7 +27,7 @@ function! coc_fzf#symbols#fzf_run(...) abort
     endif
     let l:ws_symbols_opts += a:000[l:kind_idx : l:kind_idx+1]
   endif
-  let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+  let expect_keys = coc_fzf#common#get_default_file_expect_keys()
   let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s %s'
   let initial_command = printf(command_fmt, join(l:ws_symbols_opts), v:servername, bufnr(), "''")
   let reload_command = printf(command_fmt, join(l:ws_symbols_opts), v:servername, bufnr(), '{q}')
@@ -39,17 +39,6 @@ function! coc_fzf#symbols#fzf_run(...) abort
         \ }
   call coc_fzf#common#fzf_run_with_preview(l:opts, {'placeholder': '{-1}'})
   call s:syntax()
-endfunction
-
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit'}
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
 endfunction
 
 function! s:syntax() abort
@@ -71,19 +60,8 @@ function! s:syntax() abort
 endfunction
 
 function! s:symbol_handler(sym) abort
-  let cmd = s:action_for(a:sym[0])
-  if !empty(cmd) && stridx('edit', cmd) < 0
-    if stridx('edit', cmd) < 0
-      execute 'silent' cmd
-    endif
-  endif
   let l:parsed = s:parse_symbol(a:sym[1:])
-  if type(l:parsed) == v:t_dict
-    execute 'buffer' bufnr(l:parsed["filename"], 1)
-    mark '
-    call cursor(l:parsed["lnum"], l:parsed["col"])
-    normal! zz
-  endif
+  call coc_fzf#common#process_file_action(a:sym[0], l:parsed)
 endfunction
 
 function! s:parse_symbol(sym) abort

@@ -7,7 +7,7 @@ function! coc_fzf#location#fzf_run() abort
   " deepcopy() avoids g:coc_jump_locations corruption
   let l:locs = deepcopy(get(g:, 'coc_jump_locations', ''))
   if !empty(l:locs)
-    let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let l:opts = {
           \ 'source': s:get_location(l:locs),
           \ 'sink*': function('s:location_handler'),
@@ -39,17 +39,6 @@ function! s:get_location(locs) abort
   return map(l:locs, 's:format_coc_location(v:val)')
 endfunction
 
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
-endfunction
-
 function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
@@ -64,17 +53,8 @@ function! s:syntax() abort
 endfunction
 
 function! s:location_handler(loc) abort
-  let cmd = s:action_for(a:loc[0])
-  if !empty(cmd) && stridx('edit', cmd) < 0
-    execute 'silent' cmd
-  endif
   let l:parsed = s:parse_location(a:loc[1:])
-  if type(l:parsed) == v:t_dict
-    execute 'buffer' bufnr(l:parsed["filename"], 1)
-    mark '
-    call cursor(l:parsed["lnum"], l:parsed["col"])
-    normal! zz
-  endif
+  call coc_fzf#common#process_file_action(a:loc[0], l:parsed)
 endfunction
 
 function! s:parse_location(loc) abort

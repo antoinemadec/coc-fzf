@@ -4,7 +4,7 @@ let s:prompt = 'Coc Outline> '
 
 function! coc_fzf#outline#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+  let expect_keys = coc_fzf#common#get_default_file_expect_keys()
   let l:opts = {
         \ 'source': s:get_outline(),
         \ 'sink*': function('s:symbol_handler'),
@@ -62,17 +62,6 @@ function! s:get_outline() abort
   endif
 endfunction
 
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
-endfunction
-
 function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
@@ -90,16 +79,8 @@ function! s:syntax() abort
 endfunction
 
 function! s:symbol_handler(sym) abort
-  let cmd = s:action_for(a:sym[0])
-  if !empty(cmd) && stridx('edit', cmd) < 0
-    execute 'silent' cmd
-  endif
   let l:parsed = s:parse_symbol(a:sym[1:])
-  if type(l:parsed) == v:t_dict
-    mark '
-    call cursor(l:parsed["lnum"], l:parsed["col"])
-    normal! zz
-  endif
+  call coc_fzf#common#process_file_action(a:sym[0], l:parsed)
 endfunction
 
 function! s:parse_symbol(sym) abort
@@ -107,5 +88,5 @@ function! s:parse_symbol(sym) abort
   if empty(l:match) || empty(l:match[0])
     return
   endif
-  return ({'text': l:match[0], 'kind': l:match[1], 'lnum': l:match[2], 'col': l:match[3]})
+  return ({'text': l:match[0], 'kind': l:match[1], 'lnum': l:match[2], 'col': l:match[3], 'filename': expand('%:p')})
 endfunction
