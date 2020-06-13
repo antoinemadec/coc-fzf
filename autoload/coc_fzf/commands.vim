@@ -4,16 +4,16 @@ let s:prompt = 'Coc Commands> '
 
 function! coc_fzf#commands#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let l:cmds = CocAction('commands')
-  if !empty(l:cmds)
+  let cmds = CocAction('commands')
+  if !empty(cmds)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-    let l:opts = {
-          \ 'source': s:get_commands(l:cmds),
+    let opts = {
+          \ 'source': s:get_commands(cmds),
           \ 'sink*': function('s:command_handler'),
           \ 'options': ['--multi', '--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call fzf#run(fzf#wrap(l:opts))
+    call fzf#run(fzf#wrap(opts))
     call s:syntax()
   else
     call coc_fzf#common#echom_info('commands list is empty')
@@ -35,8 +35,8 @@ let s:default_action = {
 
 function! s:action_for(key, ...)
   let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
+  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
+  return Cmd
 endfunction
 
 function! s:syntax() abort
@@ -55,16 +55,16 @@ function! s:command_handler(cmd) abort
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
   endif
-  let l:parsed = s:parse_command(a:cmd[1:])
-  if type(l:parsed) == v:t_dict
-    call CocActionAsync('runCommand', l:parsed.id)
+  let parsed = s:parse_command(a:cmd[1:])
+  if type(parsed) == v:t_dict
+    call CocActionAsync('runCommand', parsed.id)
   endif
 endfunction
 
 function! s:parse_command(cmd) abort
-  let l:match = matchlist(a:cmd, '^\(\S\+\)\s\?\(.*\)$')[1:2]
-  if empty(l:match)
+  let match = matchlist(a:cmd, '^\(\S\+\)\s\?\(.*\)$')[1:2]
+  if empty(match)
     return
   endif
-  return ({'id' : l:match[0], 'title' : l:match[1]})
+  return ({'id' : match[0], 'title' : l:match[1]})
 endfunction

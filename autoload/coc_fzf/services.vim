@@ -4,20 +4,20 @@ let s:prompt = 'Coc Services> '
 
 function! coc_fzf#services#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let l:first_call = a:0 ? a:1 : 1
-  let l:serv = CocAction('services')
-  if !empty(l:serv)
+  let first_call = a:0 ? a:1 : 1
+  let serv = CocAction('services')
+  if !empty(serv)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-    let l:opts = {
-          \ 'source': s:get_services(l:serv),
+    let opts = {
+          \ 'source': s:get_services(serv),
           \ 'sink*': function('s:service_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call fzf#run(fzf#wrap(l:opts))
+    call fzf#run(fzf#wrap(opts))
     call coc_fzf#common#remap_enter_to_save_fzf_selector()
     call s:syntax()
-    if (!l:first_call)
+    if (!first_call)
       call feedkeys('i')
       call coc_fzf#common#fzf_selector_restore()
     endif
@@ -28,12 +28,12 @@ endfunction
 
 function! s:format_coc_service(item) abort
   " state id [state] languages
-  let l:state = ' '
+  let state = ' '
   if a:item.state == 'running'
-    let l:state = '*'
+    let state = '*'
   endif
-  let l:languages = join(a:item.languageIds, ', ')
-  return l:state . ' ' . a:item.id . ' [' . a:item.state . '] '. l:languages
+  let languages = join(a:item.languageIds, ', ')
+  return state . ' ' . a:item.id . ' [' . a:item.state . '] '. l:languages
 endfunction
 
 function! s:get_services(serv) abort
@@ -47,8 +47,8 @@ let s:default_action = {
 
 function! s:action_for(key, ...)
   let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
+  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
+  return Cmd
 endfunction
 
 function! s:syntax() abort
@@ -68,17 +68,17 @@ function! s:syntax() abort
 endfunction
 
 function! s:service_handler(ext) abort
-  let l:parsed = s:parse_service(a:ext[1:])
-  if type(l:parsed) == v:t_dict
-    silent call CocAction('toggleService', l:parsed.id)
+  let parsed = s:parse_service(a:ext[1:])
+  if type(parsed) == v:t_dict
+    silent call CocAction('toggleService', parsed.id)
     call coc_fzf#services#fzf_run(0)
   endif
 endfunction
 
 function! s:parse_service(ext) abort
-  let l:match = matchlist(a:ext, '^\(\*\?\)\s*\(\S*\)\s\[\(\S*\)\]\s\(\S*\)')[1:4]
-  if empty(l:match) || empty(l:match[1])
+  let match = matchlist(a:ext, '^\(\*\?\)\s*\(\S*\)\s\[\(\S*\)\]\s\(\S*\)')[1:4]
+  if empty(match) || empty(l:match[1])
     return
   endif
-  return ({'state' : l:match[2], 'id' : l:match[1], 'languages' : l:match[3]})
+  return ({'state' : match[2], 'id' : l:match[1], 'languages' : l:match[3]})
 endfunction

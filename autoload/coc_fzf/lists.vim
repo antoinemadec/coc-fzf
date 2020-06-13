@@ -3,26 +3,26 @@ let s:prompt = 'Coc Lists> '
 function! coc_fzf#lists#fzf_run(...) abort
   if a:0
     " execute one source/list
-    let l:src = a:000[0]
-    let l:src_opts = a:000[1:]
-    if index(g:coc_fzf#common#sources_list, l:src) < 0
-      call coc_fzf#common#echom_error('List ' . l:src . ' does not exist')
+    let src = a:000[0]
+    let src_opts = a:000[1:]
+    if index(g:coc_fzf#common#sources_list, src) < 0
+      call coc_fzf#common#echom_error('List ' . src . ' does not exist')
       return
     endif
-    call call('coc_fzf#' . l:src . '#fzf_run', l:src_opts)
+    call call('coc_fzf#' . src . '#fzf_run', l:src_opts)
   else
     " prompt all available lists
     call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
     let ext_command = g:coc_fzf_plugin_dir . '/script/get_lists.sh'
     echom ext_command
-    let l:opts = {
+    let opts = {
           \ 'source': ext_command,
           \ 'sink*': function('s:list_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call fzf#run(fzf#wrap(l:opts))
+    call fzf#run(fzf#wrap(opts))
     call s:syntax()
   endif
 endfunction
@@ -34,8 +34,8 @@ let s:default_action = {
 
 function! s:action_for(key, ...)
   let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
+  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
+  return Cmd
 endfunction
 
 function! s:syntax() abort
@@ -57,9 +57,9 @@ function! s:list_handler(list) abort
       execute 'silent' cmd
     endif
   endif
-  let l:src = split(a:list[1])[0]
-  if !empty(l:src)
-    execute 'call coc_fzf#' . l:src . '#fzf_run()'
+  let src = split(a:list[1])[0]
+  if !empty(src)
+    execute 'call coc_fzf#' . src . '#fzf_run()'
     if &ft == 'fzf'
       call feedkeys('i')
     endif

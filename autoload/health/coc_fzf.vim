@@ -16,13 +16,13 @@ endfunction
 
 function s:check_fzf_vim() abort
   call health#report_start('fzf.vim (optional)')
-  let l:got_fzf_vim = 1
+  let got_fzf_vim = 1
   try
     call fzf#vim#with_preview()
   catch
-    let l:got_fzf_vim = 0
+    let got_fzf_vim = 0
   endtry
-  if l:got_fzf_vim
+  if got_fzf_vim
     call health#report_ok('fzf.vim found')
   else
     call health#report_warn("fzf.vim not found. 'location' won't work, previews won't be available",

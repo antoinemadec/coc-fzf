@@ -4,20 +4,20 @@ let s:prompt = 'Coc Extensions> '
 
 function! coc_fzf#extensions#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let l:first_call = a:0 ? a:1 : 1
-  let l:exts = CocAction('extensionStats')
-  if !empty(l:exts)
+  let first_call = a:0 ? a:1 : 1
+  let exts = CocAction('extensionStats')
+  if !empty(exts)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-    let l:opts = {
-          \ 'source': s:get_extensions(l:exts),
+    let opts = {
+          \ 'source': s:get_extensions(exts),
           \ 'sink*': function('s:extension_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call fzf#run(fzf#wrap(l:opts))
+    call fzf#run(fzf#wrap(opts))
     call coc_fzf#common#remap_enter_to_save_fzf_selector()
     call s:syntax()
-    if (!l:first_call)
+    if (!first_call)
       call feedkeys('i')
       call coc_fzf#common#fzf_selector_restore()
     endif
@@ -28,22 +28,22 @@ endfunction
 
 function! s:format_coc_extension(item) abort
   " state id version root
-  let l:state = '+'
+  let state = '+'
   if a:item.state == 'activated'
-    let l:state = '*'
+    let state = '*'
   elseif a:item.state == 'disabled'
-    let l:state = '-'
+    let state = '-'
   endif
-  return l:state . ' ' . a:item.id . ' ' . a:item.root
+  return state . ' ' . a:item.id . ' ' . a:item.root
 endfunction
 
 function! s:get_extensions(exts) abort
-  let l:exts_activated = filter(copy(a:exts), {key, val -> val.state == 'activated'})
-  let l:exts_loaded = filter(copy(a:exts), {key, val -> val.state == 'loaded'})
-  let l:exts_disabled = filter(copy(a:exts), {key, val -> val.state == 'disabled'})
-  let l:exts = extend(l:exts_activated, l:exts_loaded)
-  let l:exts = extend(l:exts, l:exts_disabled)
-  return map(l:exts, 's:format_coc_extension(v:val)')
+  let exts_activated = filter(copy(a:exts), {key, val -> val.state == 'activated'})
+  let exts_loaded = filter(copy(a:exts), {key, val -> val.state == 'loaded'})
+  let exts_disabled = filter(copy(a:exts), {key, val -> val.state == 'disabled'})
+  let exts = extend(l:exts_activated, l:exts_loaded)
+  let exts = extend(l:exts, l:exts_disabled)
+  return map(exts, 's:format_coc_extension(v:val)')
 endfunction
 
 let s:default_action = {
@@ -53,8 +53,8 @@ let s:default_action = {
 
 function! s:action_for(key, ...)
   let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
+  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
+  return Cmd
 endfunction
 
 function! s:syntax() abort
@@ -76,21 +76,21 @@ function! s:syntax() abort
 endfunction
 
 function! s:extension_handler(ext) abort
-  let l:parsed = s:parse_extension(a:ext[1:])
-  if type(l:parsed) == v:t_dict
-    if l:parsed.state == '*'
-      silent call CocAction('deactivateExtension', l:parsed.id)
-    elseif l:parsed.state == '+'
-      silent call CocAction('activeExtension', l:parsed.id)
+  let parsed = s:parse_extension(a:ext[1:])
+  if type(parsed) == v:t_dict
+    if parsed.state == '*'
+      silent call CocAction('deactivateExtension', parsed.id)
+    elseif parsed.state == '+'
+      silent call CocAction('activeExtension', parsed.id)
     endif
     call coc_fzf#extensions#fzf_run(0)
   endif
 endfunction
 
 function! s:parse_extension(ext) abort
-  let l:match = matchlist(a:ext, '\v^(.)\s(\S*)\s(.*)')[1:4]
-  if empty(l:match) || empty(l:match[0])
+  let match = matchlist(a:ext, '\v^(.)\s(\S*)\s(.*)')[1:4]
+  if empty(match) || empty(l:match[0])
     return
   endif
-  return ({'state' : l:match[0], 'id' : l:match[1], 'root' : l:match[2]})
+  return ({'state' : match[0], 'id' : l:match[1], 'root' : l:match[2]})
 endfunction

@@ -9,52 +9,52 @@ function! coc_fzf#yank#fzf_run() abort
     call coc_fzf#common#echom_error("coc-yank is not installed")
     return
   endif
-  let l:yank_file_path = coc#util#extension_root() . s:yank_relative_file_path
+  let yank_file_path = coc#util#extension_root() . s:yank_relative_file_path
   try
-    let l:raw_yanks = readfile(l:yank_file_path)
+    let raw_yanks = readfile(l:yank_file_path)
   catch
     call coc_fzf#common#echom_info("yank file cannot be found")
     return
   endtry
-  let l:opts = {
-        \ 'source': s:get_yanks(l:raw_yanks),
+  let opts = {
+        \ 'source': s:get_yanks(raw_yanks),
         \ 'sink*': function('s:yank_handler'),
         \ 'options': ['--multi', '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts
         \ }
-  call fzf#run(fzf#wrap(l:opts))
+  call fzf#run(fzf#wrap(opts))
 endfunction
 
 function! s:get_yanks(raw_yanks) abort
-  let l:yanks = []
-  let l:yank_parts = []
+  let yanks = []
+  let yank_parts = []
 
-  for l:line in a:raw_yanks
-    if l:line =~ '^\t'
-      call add(l:yank_parts, l:line[1:])
+  for line in a:raw_yanks
+    if line =~ '^\t'
+      call add(yank_parts, l:line[1:])
     elseif len(yank_parts) != 0
-      let l:yank = join(yank_parts, "\n")
-      call add(l:yanks, l:yank)
-      let l:yank_parts = []
+      let yank = join(yank_parts, "\n")
+      call add(yanks, l:yank)
+      let yank_parts = []
     endif
   endfor
 
   " make sure our list empty; if not, add it to the list
   if len(yank_parts) != 0
-    let l:yank = join(yank_parts, "\n")
-    call add(l:yanks, l:yank)
+    let yank = join(yank_parts, "\n")
+    call add(yanks, l:yank)
   endif
 
-  return reverse(l:yanks)
+  return reverse(yanks)
 endfunction
 
 function! s:yank_handler(cmd) abort
-  let l:content = a:cmd[0]
+  let content = a:cmd[0]
   if &cb == "unnamedplus"
-    let @+ = l:content
+    let @+ = content
   elseif &cb == "unnamed"
-    let @* = l:content
+    let @* = content
   else
-    let @" = l:content
+    let @" = content
   endif
   put
 endfunction

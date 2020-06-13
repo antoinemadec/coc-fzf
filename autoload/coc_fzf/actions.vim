@@ -7,13 +7,13 @@ function! coc_fzf#actions#fzf_run() abort
   let g:coc_fzf_actions = CocAction('codeActions')
   if !empty(g:coc_fzf_actions)
     let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
-    let l:opts = {
+    let opts = {
           \ 'source': s:get_actions(),
           \ 'sink*': function('s:action_handler'),
           \ 'options': ['--multi', '--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call fzf#run(fzf#wrap(l:opts))
+    call fzf#run(fzf#wrap(opts))
     call s:syntax()
   else
     call coc_fzf#common#echom_info('actions list is empty')
@@ -22,21 +22,21 @@ endfunction
 
 function! s:format_coc_action(item) abort
   " title [clientId] (kind)
-  let l:str = a:item.title . ' [' . a:item.clientId . ']'
+  let str = a:item.title . ' [' . a:item.clientId . ']'
   if exists('a:item.kind')
-    let l:str .=  ' (' . a:item.kind . ')'
+    let str .=  ' (' . a:item.kind . ')'
   endif
-  return l:str
+  return str
 endfunction
 
 function! s:get_actions() abort
-  let l:entries = map(copy(g:coc_fzf_actions), 's:format_coc_action(v:val)')
+  let entries = map(copy(g:coc_fzf_actions), 's:format_coc_action(v:val)')
   let index = 0
-  while index < len(l:entries)
-     let l:entries[index] .= ' ' . index
+  while index < len(entries)
+     let entries[index] .= ' ' . index
      let index = index + 1
   endwhile
-  return l:entries
+  return entries
 endfunction
 
 let s:default_action = {
@@ -46,8 +46,8 @@ let s:default_action = {
 
 function! s:action_for(key, ...)
   let default = a:0 ? a:1 : ''
-  let l:Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return l:Cmd
+  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
+  return Cmd
 endfunction
 
 function! s:syntax() abort
@@ -71,16 +71,16 @@ function! s:action_handler(act) abort
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
   endif
-  let l:index = s:parse_action(a:act[1:])
-  if type(l:index) == v:t_number
-    call CocAction('doCodeAction', g:coc_fzf_actions[l:index])
+  let index = s:parse_action(a:act[1:])
+  if type(index) == v:t_number
+    call CocAction('doCodeAction', g:coc_fzf_actions[index])
   endif
 endfunction
 
 function! s:parse_action(act) abort
-  let l:match = matchlist(a:act, '^.* \(\d\+\)$')[1]
-  if empty(l:match)
+  let match = matchlist(a:act, '^.* \(\d\+\)$')[1]
+  if empty(match)
     return
   endif
-  return str2nr(l:match)
+  return str2nr(match)
 endfunction

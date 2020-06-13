@@ -7,17 +7,17 @@ function! coc_fzf#common#remap_enter_to_save_fzf_selector() abort
 endfunction
 
 function! coc_fzf#common#fzf_selector_save() abort
-  let l:cmd = 'g/^>/#'
-  let t:fzf_selector_line_nb = split(s:redir_exec(l:cmd))[0]
+  let cmd = 'g/^>/#'
+  let t:fzf_selector_line_nb = split(s:redir_exec(cmd))[0]
 endfunction
 
 function! coc_fzf#common#fzf_selector_restore() abort
   " TODO: normal gg
   if exists('t:fzf_selector_line_nb')
-    let l:c = 1
+    let c = 1
     while c < t:fzf_selector_line_nb
       call feedkeys("\<Down>")
-      let l:c += 1
+      let c += 1
     endwhile
   endif
 endfunction
@@ -26,8 +26,8 @@ endfunction
 let s:last_func_call = []
 
 function! coc_fzf#common#log_function_call(sfile, args_list) abort
-  let l:func_name = substitute(a:sfile, '.*\(\.\.\|\s\)', '', '')
-  let s:last_func_call = [l:func_name, a:args_list]
+  let func_name = substitute(a:sfile, '.*\(\.\.\|\s\)', '', '')
+  let s:last_func_call = [func_name, a:args_list]
 endfunction
 
 function! coc_fzf#common#call_last_logged_function() abort
@@ -52,19 +52,19 @@ let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', '
       \ 'TypeParameter']
 
 function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
-  let l:diagnostics_opts = ['--current-buf']
-  let l:symbols_opts = ['--kind']
-  let l:CmdLineList = split(a:CmdLine)
-  let l:source = len(l:CmdLineList) >= 2 ? l:CmdLineList[1] : ''
-  if l:source == 'diagnostics'
-    return join(l:diagnostics_opts, "\n")
-  elseif l:source == 'symbols'
-    if index(l:CmdLineList[-2:-1], '--kind') >= 0
+  let diagnostics_opts = ['--current-buf']
+  let symbols_opts = ['--kind']
+  let CmdLineList = split(a:CmdLine)
+  let source = len(l:CmdLineList) >= 2 ? l:CmdLineList[1] : ''
+  if source == 'diagnostics'
+    return join(diagnostics_opts, "\n")
+  elseif source == 'symbols'
+    if index(CmdLineList[-2:-1], '--kind') >= 0
       return join(g:coc_fzf#common#kinds, "\n")
     endif
-    return join(l:symbols_opts, "\n")
+    return join(symbols_opts, "\n")
   endif
-  if index(g:coc_fzf#common#sources_list, l:source) < 0
+  if index(g:coc_fzf#common#sources_list, source) < 0
     return join(g:coc_fzf#common#sources_list, "\n")
   endif
   return ''
@@ -79,10 +79,10 @@ function coc_fzf#common#echom_info(msg) abort
 endfunction
 
 function coc_fzf#common#fzf_run_with_preview(opts, ...) abort
-  let l:preview_opts = a:0 ? a:1 : {}
+  let preview_opts = a:0 ? a:1 : {}
   let extra = {}
   if g:coc_fzf_preview_available
-    let extra = fzf#vim#with_preview(l:preview_opts, g:coc_fzf_preview, g:coc_fzf_preview_toggle_key)
+    let extra = fzf#vim#with_preview(preview_opts, g:coc_fzf_preview, g:coc_fzf_preview_toggle_key)
   endif
   let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
   let merged = extend(copy(a:opts), extra)
@@ -104,7 +104,7 @@ function coc_fzf#common#process_file_action(key, parsed_dict_list) abort
     return
   endif
 
-  let l:cmd = get(get(g:, 'fzf_action', s:default_action), a:key)
+  let cmd = get(get(g:, 'fzf_action', s:default_action), a:key)
   let first = a:parsed_dict_list[0]
 
   if !empty(cmd) && stridx('edit', cmd) < 0
