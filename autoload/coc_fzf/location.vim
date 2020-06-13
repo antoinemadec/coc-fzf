@@ -53,14 +53,23 @@ function! s:syntax() abort
 endfunction
 
 function! s:location_handler(loc) abort
-  let l:parsed = s:parse_location(a:loc[1:])
-  call coc_fzf#common#process_file_action(a:loc[0], l:parsed)
+  let l:parsed_dict_list = s:parse_location(a:loc[1:])
+  call coc_fzf#common#process_file_action(a:loc[0], l:parsed_dict_list)
 endfunction
 
 function! s:parse_location(loc) abort
-  let l:match = matchlist(a:loc, '^\(\S\+\):\(\d\+\):\(\d\+\):\(.*\)')[1:4]
-  if empty(l:match) || empty(l:match[0])
-    return
-  endif
-  return ({'filename': l:match[0], 'lnum': l:match[1], 'col': l:match[2], 'text': l:match[3]})
+  let parsed_dict_list = []
+  for str in a:loc
+    let parsed_dict = {}
+    let l:match = matchlist(str, '^\(\S\+\):\(\d\+\):\(\d\+\):\(.*\)')[1:4]
+    if empty(l:match) || empty(l:match[0])
+      return
+    endif
+    let parsed_dict['filename'] = l:match[0]
+    let parsed_dict['lnum'] = l:match[1]
+    let parsed_dict['col'] = l:match[2]
+    let parsed_dict['text'] = l:match[3]
+    let parsed_dict_list += [parsed_dict]
+  endfor
+  return parsed_dict_list
 endfunction

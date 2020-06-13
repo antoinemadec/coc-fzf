@@ -60,20 +60,26 @@ function! s:syntax() abort
 endfunction
 
 function! s:error_handler(err) abort
-  let l:parsed = s:parse_error(a:err[1:])
-  call coc_fzf#common#process_file_action(a:err[0], l:parsed)
+  let l:parsed_dict_list = s:parse_error(a:err[1:])
+  call coc_fzf#common#process_file_action(a:err[0], l:parsed_dict_list)
 endfunction
 
 function! s:parse_error(err) abort
-  let l:match = matchlist(a:err, '\v^([^:]*):(\d+):(\d+)(.*)')[1:4]
-  if empty(l:match) || empty(l:match[0])
-    return
-  endif
-  if empty(l:match[1]) && (bufnr(l:match[0]) == bufnr('%'))
-    return
-  endif
-  let l:line_number = empty(l:match[1]) ? 1 : str2nr(l:match[1])
-  let l:col_number = empty(l:match[2]) ? 1 : str2nr(l:match[2])
-  let l:error_msg = l:match[3]
-  return ({'filename' : l:match[0],'lnum' : l:line_number, 'col':l:col_number, 'text': l:error_msg})
+  let parsed_dict_list = []
+  for str in a:err
+    let parsed_dict = {}
+    let l:match = matchlist(str, '\v^([^:]*):(\d+):(\d+)(.*)')[1:4]
+    if empty(l:match) || empty(l:match[0])
+      return
+    endif
+    if empty(l:match[1]) && (bufnr(l:match[0]) == bufnr('%'))
+      return
+    endif
+    let parsed_dict['filename'] = l:match[0]
+    let parsed_dict['lnum'] = empty(l:match[1]) ? 1 : str2nr(l:match[1])
+    let parsed_dict['col'] = empty(l:match[2]) ? 1 : str2nr(l:match[2])
+    let parsed_dict['text'] = l:match[3]
+    let parsed_dict_list += [parsed_dict]
+  endfor
+  return parsed_dict_list
 endfunction

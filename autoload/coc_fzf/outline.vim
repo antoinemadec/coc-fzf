@@ -79,14 +79,23 @@ function! s:syntax() abort
 endfunction
 
 function! s:symbol_handler(sym) abort
-  let l:parsed = s:parse_symbol(a:sym[1:])
-  call coc_fzf#common#process_file_action(a:sym[0], l:parsed)
+  let l:parsed_dict_list = s:parse_symbol(a:sym[1:])
+  call coc_fzf#common#process_file_action(a:sym[0], l:parsed_dict_list)
 endfunction
 
 function! s:parse_symbol(sym) abort
-  let l:match = matchlist(a:sym, '^\s*\(.*\) \[\([^[]*\)\] \(\d\+\),\(\d\+\)')[1:4]
-  if empty(l:match) || empty(l:match[0])
-    return
-  endif
-  return ({'text': l:match[0], 'kind': l:match[1], 'lnum': l:match[2], 'col': l:match[3], 'filename': expand('%:p')})
+  let parsed_dict_list = []
+  for str in a:sym
+    let parsed_dict = {}
+    let l:match = matchlist(str, '^\s*\(.* \[[^[]*\]\) \(\d\+\),\(\d\+\)')[1:3]
+    if empty(l:match) || empty(l:match[0])
+      return
+    endif
+    let parsed_dict['filename'] = expand('%:p')
+    let parsed_dict['text'] = l:match[0]
+    let parsed_dict['lnum'] = l:match[1]
+    let parsed_dict['col'] = l:match[2]
+    let parsed_dict_list += [parsed_dict]
+  endfor
+  return parsed_dict_list
 endfunction
