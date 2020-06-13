@@ -27,15 +27,17 @@ Plug 'antoinemadec/coc-fzf'
 Commands
 ---------
 
+Preview and multi-select support: diagnostics, location, outline, symbols
+
 | Command                                   | List                                                                             |
 | ---                                       | ---                                                                              |
 | `:CocFzfList        `                     | Equivalent to :CocList                                                           |
 | `:CocFzfList actions`                     | Equivalent to :CocList actions                                                   |
 | `:CocFzfList commands`                    | Equivalent to :CocList commands                                                  |
-| `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics. Toggle preview: '?'                          |
+| `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics                                               |
 | `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer only                    |
 | `:CocFzfList extensions`                  | Equivalent to :CocList extensions                                                |
-| `:CocFzfList location`                    | Equivalent to :CocList location. Toggle preview: '?'. Requires [fzf.vim][fzfvim] |
+| `:CocFzfList location`                    | Equivalent to :CocList location. Requires [fzf.vim][fzfvim]                      |
 | `:CocFzfList outline`                     | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]             |
 | `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                                   |
 | `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                                      |
@@ -74,6 +76,8 @@ FAQ
 ```vim
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 ```
+**Q**: How to populate the quickfix window?
+**A**: Use the multi-select (Tab) on the supported lists.
 
 License
 -------
