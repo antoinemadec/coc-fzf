@@ -22,36 +22,78 @@ function! coc_fzf#yank#fzf_run() abort
         \ 'options': ['--multi', '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts
         \ }
   call fzf#run(fzf#wrap(opts))
+  call s:syntax()
+endfunction
+
+let s:yank_type_names = {
+  \ 'V': 'line',
+  \ 'v': 'char',
+  \ '^v': 'block'}
+
+function! s:add_formatted_yank(yanks, yank_parts, yank_type) abort
+  let l:yank = join(a:yank_parts, "\n")
+  let l:yank = a:yank_type . '  ' . l:yank
+  call add(a:yanks, l:yank)
 endfunction
 
 function! s:get_yanks(raw_yanks) abort
-  let yanks = []
-  let yank_parts = []
+  let l:yanks = []
+  let l:yank_parts = []
+  let l:index = 0
 
-  for line in a:raw_yanks
-    if line =~ '^\t'
-      call add(yank_parts, l:line[1:])
-    elseif len(yank_parts) != 0
-      let yank = join(yank_parts, "\n")
-      call add(yanks, l:yank)
-      let yank_parts = []
+  for l:line in a:raw_yanks
+    if l:line =~ '^\t'
+      call add(l:yank_parts, l:line[1:])
+    else
+      if len(l:yank_parts) != 0
+        " we are at the end of a yank, push it into the list
+        call s:add_formatted_yank(l:yanks, l:yank_parts, l:yank_type)
+        let l:yank_parts = []
+      endif
+
+      " we are starting the next yank, get metadata
+      let l:metadata = split(l:line, '|')
+      let l:yank_type = s:yank_type_names[metadata[4]]
     endif
   endfor
 
   " make sure our list empty; if not, add it to the list
-  if len(yank_parts) != 0
-    let yank = join(yank_parts, "\n")
-    call add(yanks, l:yank)
+  if len(l:yank_parts) != 0
+    call s:add_formatted_yank(l:yanks, l:yank_parts, l:yank_type)
   endif
 
   return reverse(yanks)
 endfunction
 
+function! s:syntax() abort
+  if has('syntax') && exists('g:syntax_on')
+    syntax case ignore
+    " apply syntax on everything but prompt
+    exec 'syntax match CocFzf_YankHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
+    syntax match CocFzf_YankType /\v^\s*(line|char|block)/ contained containedin=CocFzf_YankHeader
+    highlight default link CocFzf_YankType Typedef
+  endif
+endfunction
+
+function! s:parse_yanks(yanks) abort
+  let l:parsed_list = []
+
+  for str in a:yanks
+    let match = matchlist(str, '^\s*\(char\|line\|block\)  \(.*\)$')
+    echom match
+    let l:parsed_list += [match[2]]
+  endfor
+
+  return l:parsed_list
+endfunction
+
 function! s:yank_handler(cmd) abort
-  let content = a:cmd[0]
-  if &cb == "unnamedplus"
+  let l:parsed_yanks = s:parse_yanks(a:cmd)
+  let content = join(l:parsed_yanks, "\n")
+
+  if &cb == 'unnamedplus'
     let @+ = content
-  elseif &cb == "unnamed"
+  elseif &cb == 'unnamed'
     let @* = content
   else
     let @" = content
