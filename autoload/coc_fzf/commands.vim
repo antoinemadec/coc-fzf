@@ -28,17 +28,6 @@ function! s:get_commands(cmds) abort
   return map(a:cmds, 's:format_coc_command(v:val)')
 endfunction
 
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return Cmd
-endfunction
-
 function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore

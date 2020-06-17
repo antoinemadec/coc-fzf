@@ -13,7 +13,7 @@ function! coc_fzf#lists#fzf_run(...) abort
   else
     " prompt all available lists
     call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-    let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let ext_command = g:coc_fzf_plugin_dir . '/script/get_lists.sh'
     echom ext_command
     let opts = {
@@ -25,17 +25,6 @@ function! coc_fzf#lists#fzf_run(...) abort
     call fzf#run(fzf#wrap(opts))
     call s:syntax()
   endif
-endfunction
-
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit'}
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return Cmd
 endfunction
 
 function! s:syntax() abort
@@ -51,7 +40,7 @@ function! s:syntax() abort
 endfunction
 
 function! s:list_handler(list) abort
-  let cmd = s:action_for(a:list[0])
+  let cmd = coc_fzf#common#get_action_from_key(a:list[0])
   if !empty(cmd) && stridx('edit', cmd) < 0
     if stridx('edit', cmd) < 0
       execute 'silent' cmd
