@@ -34,7 +34,8 @@ function! s:format_coc_extension(item) abort
   elseif a:item.state == 'disabled'
     let state = '-'
   endif
-  return state . ' ' . a:item.id . ' ' . a:item.root
+  let local = a:.item.isLocal ? ' [RTP] ' : ' '
+  return state . ' ' . a:item.id . local .  a:item.version . ' ' . a:item.root
 endfunction
 
 function! s:get_extensions(exts) abort
@@ -56,11 +57,13 @@ function! s:syntax() abort
     syntax match CocFzf_ExtensionLoaded /\v^\>?\s+\+\s/ contained containedin=CocFzf_ExtensionHeader
     syntax match CocFzf_ExtensionDisabled /\v^\>?\s+-\s/ contained containedin=CocFzf_ExtensionHeader
     syntax match CocFzf_ExtensionName /\v%5c\S+/ contained containedin=CocFzf_ExtensionHeader
+    syntax match CocFzf_ExtensionsLocal /\v\[RTP\]/ contained containedin=CocFzf_ExtensionHeader
     highlight default link CocFzf_ExtensionRoot Comment
     highlight default link CocFzf_ExtensionDisabled Comment
     highlight default link CocFzf_ExtensionActivited MoreMsg
     highlight default link CocFzf_ExtensionLoaded Normal
     highlight default link CocFzf_ExtensionName String
+    highlight default link CocFzf_ExtensionsLocal MoreMsg
   endif
 endfunction
 
