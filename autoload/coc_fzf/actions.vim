@@ -6,7 +6,7 @@ function! coc_fzf#actions#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let g:coc_fzf_actions = CocAction('codeActions')
   if !empty(g:coc_fzf_actions)
-    let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_actions(),
           \ 'sink*': function('s:action_handler'),
@@ -39,17 +39,6 @@ function! s:get_actions() abort
   return entries
 endfunction
 
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return Cmd
-endfunction
-
 function! s:syntax() abort
   if has('syntax') && exists('g:syntax_on')
     syntax case ignore
@@ -67,7 +56,7 @@ function! s:syntax() abort
 endfunction
 
 function! s:action_handler(act) abort
-  let cmd = s:action_for(a:act[0])
+  let cmd = coc_fzf#common#get_action_from_key(a:act[0])
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
   endif

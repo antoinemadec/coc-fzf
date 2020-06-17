@@ -7,7 +7,7 @@ function! coc_fzf#services#fzf_run(...) abort
   let first_call = a:0 ? a:1 : 1
   let serv = CocAction('services')
   if !empty(serv)
-    let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_services(serv),
           \ 'sink*': function('s:service_handler'),
@@ -38,17 +38,6 @@ endfunction
 
 function! s:get_services(serv) abort
   return map(a:serv, 's:format_coc_service(v:val)')
-endfunction
-
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return Cmd
 endfunction
 
 function! s:syntax() abort

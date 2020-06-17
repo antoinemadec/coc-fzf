@@ -6,7 +6,7 @@ function! coc_fzf#commands#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let cmds = CocAction('commands')
   if !empty(cmds)
-    let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_commands(cmds),
           \ 'sink*': function('s:command_handler'),
@@ -51,7 +51,7 @@ function! s:syntax() abort
 endfunction
 
 function! s:command_handler(cmd) abort
-  let cmd = s:action_for(a:cmd[0])
+  let cmd = coc_fzf#common#get_action_from_key(a:cmd[0])
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd
   endif

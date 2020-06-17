@@ -99,12 +99,16 @@ function coc_fzf#common#get_default_file_expect_keys() abort
   return join(keys(get(g:, 'fzf_action', s:default_action)), ',')
 endfunction
 
+function coc_fzf#common#get_action_from_key(key) abort
+  return get(get(g:, 'fzf_action', s:default_action), a:key)
+endfunction
+
 function coc_fzf#common#process_file_action(key, parsed_dict_list) abort
   if empty(a:parsed_dict_list)
     return
   endif
 
-  let cmd = get(get(g:, 'fzf_action', s:default_action), a:key)
+  let cmd = coc_fzf#common#get_action_from_key(a:key)
   let first = a:parsed_dict_list[0]
 
   if !empty(cmd) && stridx('edit', cmd) < 0

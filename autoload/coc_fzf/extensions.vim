@@ -7,7 +7,7 @@ function! coc_fzf#extensions#fzf_run(...) abort
   let first_call = a:0 ? a:1 : 1
   let exts = CocAction('extensionStats')
   if !empty(exts)
-    let expect_keys = join(keys(get(g:, 'fzf_action', s:default_action)), ',')
+    let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_extensions(exts),
           \ 'sink*': function('s:extension_handler'),
@@ -44,17 +44,6 @@ function! s:get_extensions(exts) abort
   let exts = extend(l:exts_activated, l:exts_loaded)
   let exts = extend(l:exts, l:exts_disabled)
   return map(exts, 's:format_coc_extension(v:val)')
-endfunction
-
-let s:default_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-function! s:action_for(key, ...)
-  let default = a:0 ? a:1 : ''
-  let Cmd = get(get(g:, 'fzf_action', s:default_action), a:key, default)
-  return Cmd
 endfunction
 
 function! s:syntax() abort
