@@ -21,6 +21,10 @@ function! coc_fzf#yank#fzf_run() abort
         \ 'sink*': function('s:yank_handler'),
         \ 'options': ['--multi', '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts
         \ }
+  let opts = coc_fzf#common#with_preview(
+    \   opts,
+    \   'echo {} | sed "s/^\s*\(line\|char\|block\)\s\s//g"'
+    \ )
   call fzf#run(fzf#wrap(opts))
   call s:syntax()
 endfunction
@@ -30,9 +34,11 @@ let s:yank_type_names = {
   \ 'v': 'char',
   \ '^v': 'block'}
 
-function! s:add_formatted_yank(yanks, yank_parts, yank_type) abort
-  let l:yank = join(a:yank_parts, "\n")
-  let l:yank = a:yank_type . '  ' . l:yank
+function! s:add_formatted_yank(yanks, yank_parts, metadata) abort
+  let l:yank_type = s:yank_type_names[a:metadata[4]]
+
+  let l:yank = join(a:yank_parts, "\\n")
+  let l:yank = l:yank_type . '  ' . l:yank
   call add(a:yanks, l:yank)
 endfunction
 
@@ -47,19 +53,18 @@ function! s:get_yanks(raw_yanks) abort
     else
       if len(l:yank_parts) != 0
         " we are at the end of a yank, push it into the list
-        call s:add_formatted_yank(l:yanks, l:yank_parts, l:yank_type)
+        call s:add_formatted_yank(l:yanks, l:yank_parts, l:metadata)
         let l:yank_parts = []
       endif
 
       " we are starting the next yank, get metadata
       let l:metadata = split(l:line, '|')
-      let l:yank_type = s:yank_type_names[metadata[4]]
     endif
   endfor
 
   " make sure our list empty; if not, add it to the list
   if len(l:yank_parts) != 0
-    call s:add_formatted_yank(l:yanks, l:yank_parts, l:yank_type)
+    call s:add_formatted_yank(l:yanks, l:yank_parts, l:metadata)
   endif
 
   return reverse(yanks)
@@ -80,8 +85,8 @@ function! s:parse_yanks(yanks) abort
 
   for str in a:yanks
     let match = matchlist(str, '^\s*\(char\|line\|block\)  \(.*\)$')
-    echom match
-    let l:parsed_list += [match[2]]
+    let yank = substitute(match[2], '\\n', '\n', 'g')
+    let l:parsed_list += [yank]
   endfor
 
   return l:parsed_list
