@@ -78,12 +78,25 @@ function coc_fzf#common#echom_info(msg) abort
   exe "echohl MoreMsg | echom '[coc-fzf] " . a:msg . "' | echohl None"
 endfunction
 
+function coc_fzf#common#with_preview(opts, ...) abort
+  let custom_preview_command = a:0 ? a:1 : ''
+  let wrapped_opts = {}
+
+  if g:coc_fzf_preview_available
+    let wrapped_opts = fzf#vim#with_preview(a:opts, g:coc_fzf_preview, g:coc_fzf_preview_toggle_key)
+
+    if strlen(custom_preview_command)
+      let preview_command_index = index(wrapped_opts.options, '--preview') + 1
+      let wrapped_opts.options[preview_command_index] = custom_preview_command
+    endif
+  endif
+
+  return wrapped_opts
+endfunction
+
 function coc_fzf#common#fzf_run_with_preview(opts, ...) abort
   let preview_opts = a:0 ? a:1 : {}
-  let extra = {}
-  if g:coc_fzf_preview_available
-    let extra = fzf#vim#with_preview(preview_opts, g:coc_fzf_preview, g:coc_fzf_preview_toggle_key)
-  endif
+  let extra = coc_fzf#common#with_preview(preview_opts)
   let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
   let merged = extend(copy(a:opts), extra)
   call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
