@@ -43,7 +43,10 @@ function! s:redir_exec(command) abort
     return output
 endfunction
 
-let coc_fzf#common#sources_list = systemlist(g:coc_fzf_plugin_dir . '/script/get_lists.sh --no-description')
+function coc_fzf#common#get_list_names(...) abort
+  let opt = a:0 ? ' ' . a:1 . ' ' : ' '
+  return systemlist(g:coc_fzf_plugin_dir . '/script/get_lists.sh' . opt . join(coc#rpc#request('listNames', [])))
+endfunction
 
 let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', 'Method',
       \ 'Property', 'Field', 'Constructor', 'Enum', 'Interface', 'Function',
@@ -64,8 +67,9 @@ function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
     endif
     return join(symbols_opts, "\n")
   endif
-  if index(g:coc_fzf#common#sources_list, source) < 0
-    return join(g:coc_fzf#common#sources_list, "\n")
+  let sources_list = coc_fzf#common#get_list_names('--no-description')
+  if index(sources_list, source) < 0
+    return join(sources_list, "\n")
   endif
   return ''
 endfunction

@@ -5,7 +5,8 @@ function! coc_fzf#lists#fzf_run(...) abort
     " execute one source/list
     let src = a:000[0]
     let src_opts = a:000[1:]
-    if index(g:coc_fzf#common#sources_list, src) < 0
+    let sources_list = coc_fzf#common#get_list_names('--no-description')
+    if index(sources_list, src) < 0
       call coc_fzf#common#echom_error('List ' . src . ' does not exist')
       return
     endif
@@ -14,10 +15,8 @@ function! coc_fzf#lists#fzf_run(...) abort
     " prompt all available lists
     call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
-    let ext_command = g:coc_fzf_plugin_dir . '/script/get_lists.sh'
-    echom ext_command
     let opts = {
-          \ 'source': ext_command,
+          \ 'source': coc_fzf#common#get_list_names(),
           \ 'sink*': function('s:list_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
