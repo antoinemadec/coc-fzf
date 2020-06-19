@@ -23,7 +23,7 @@ function! coc_fzf#yank#fzf_run() abort
         \ }
   let opts = coc_fzf#common#with_preview(
     \   opts,
-    \   'echo {} | sed "s/^\s*\(line\|char\|block\)\s\s//g"'
+    \   g:coc_fzf_plugin_dir . '/script/yank_preview.sh {}',
     \ )
   call fzf#run(fzf#wrap(opts))
   call s:syntax()
@@ -36,10 +36,11 @@ let s:yank_type_names = {
 
 function! s:add_formatted_yank(yanks, yank_parts, metadata) abort
   let l:yank_type = s:yank_type_names[a:metadata[4]]
+  let filetype = exists("a:metadata[5]") ? a:metadata[5] : "no_ft"
 
   let l:yank = join(a:yank_parts, "\\n")
   let l:yank = l:yank_type . '  ' . l:yank
-  call add(a:yanks, l:yank)
+  call add(a:yanks, l:yank . " " . filetype)
 endfunction
 
 function! s:get_yanks(raw_yanks) abort
@@ -75,8 +76,10 @@ function! s:syntax() abort
     syntax case ignore
     " apply syntax on everything but prompt
     exec 'syntax match CocFzf_YankHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_YankType /\v^\s*(line|char|block)/ contained containedin=CocFzf_YankHeader
+    syntax match CocFzf_YankType /^>\?\s*\(line\|char\|block\)/ contained containedin=CocFzf_YankHeader
+    syntax match CocFzf_YankFileType /\w*$/ contained containedin=CocFzf_YankHeader
     highlight default link CocFzf_YankType Typedef
+    highlight default link CocFzf_YankFileType Ignore
   endif
 endfunction
 
@@ -84,7 +87,7 @@ function! s:parse_yanks(yanks) abort
   let l:parsed_list = []
 
   for str in a:yanks
-    let match = matchlist(str, '^\s*\(char\|line\|block\)  \(.*\)$')
+    let match = matchlist(str, '^\s*\(char\|line\|block\)  \(.*\) .*$')
     let yank = substitute(match[2], '\\n', '\n', 'g')
     let l:parsed_list += [yank]
   endfor

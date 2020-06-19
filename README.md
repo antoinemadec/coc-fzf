@@ -27,7 +27,7 @@ Plug 'antoinemadec/coc-fzf'
 Commands
 ---------
 
-Preview and multi-select support: diagnostics, location, outline, symbols
+Preview and multi-select support: diagnostics, location, outline, symbols, yank
 
 | Command                                   | List                                                                             |
 | ---                                       | ---                                                                              |

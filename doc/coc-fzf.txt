@@ -46,7 +46,7 @@ Make sure to have the following plugins in your **vimrc**:
                                                              *coc-fzf-commands*
 Commands ~
 
-Preview and multi-select support: diagnostics, location, outline, symbols
+Preview and multi-select support: diagnostics, location, outline, symbols, yank
 
 | Command                                 | List                                                            | ~
 | `:CocFzfList`                             | Equivalent to :CocList                                          |
