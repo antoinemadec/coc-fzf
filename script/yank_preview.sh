@@ -2,7 +2,8 @@
 
 str="$(echo -e "$1" | sed "s/^\s*\(line\|char\|block\)\s\s//g")"
 yank="${str% *}"
-ft="${str##* }"
+ft="${str##* [ft=}"
+ft="${ft%?}"
 
 if command -v bat > /dev/null; then
   bat_cmd="bat --style="${BAT_STYLE:-numbers}" --color=always --pager=never"

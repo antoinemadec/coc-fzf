@@ -38,9 +38,9 @@ function! s:add_formatted_yank(yanks, yank_parts, metadata) abort
   let l:yank_type = s:yank_type_names[a:metadata[4]]
   let filetype = exists("a:metadata[5]") ? a:metadata[5] : "no_ft"
 
-  let l:yank = join(a:yank_parts, "\\n")
+  let l:yank = join(a:yank_parts, '\n')
   let l:yank = l:yank_type . '  ' . l:yank
-  call add(a:yanks, l:yank . " " . filetype)
+  call add(a:yanks, l:yank . " [ft=" . filetype . "]")
 endfunction
 
 function! s:get_yanks(raw_yanks) abort
@@ -50,7 +50,7 @@ function! s:get_yanks(raw_yanks) abort
 
   for l:line in a:raw_yanks
     if l:line =~ '^\t'
-      call add(l:yank_parts, l:line[1:])
+      call add(l:yank_parts, escape(l:line[1:], '\'))
     else
       if len(l:yank_parts) != 0
         " we are at the end of a yank, push it into the list
@@ -77,7 +77,7 @@ function! s:syntax() abort
     " apply syntax on everything but prompt
     exec 'syntax match CocFzf_YankHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
     syntax match CocFzf_YankType /^>\?\s*\(line\|char\|block\)/ contained containedin=CocFzf_YankHeader
-    syntax match CocFzf_YankFileType /\w*$/ contained containedin=CocFzf_YankHeader
+    syntax match CocFzf_YankFileType /\[ft=\w*\]/ contained containedin=CocFzf_YankHeader
     highlight default link CocFzf_YankType Typedef
     highlight default link CocFzf_YankFileType Ignore
   endif
@@ -88,7 +88,7 @@ function! s:parse_yanks(yanks) abort
 
   for str in a:yanks
     let match = matchlist(str, '^\s*\(char\|line\|block\)  \(.*\) .*$')
-    let yank = substitute(match[2], '\\n', '\n', 'g')
+    exe 'let yank = printf("' . escape(match[2], '"') .'")'
     let l:parsed_list += [yank]
   endfor
 
