@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-str="$(echo "$1" | sed "s/^\s*\(line\|char\|block\)\s\s//g")"
+str="$(echo -e "$1" | sed "s/^\s*\(line\|char\|block\)\s\s//g")"
 yank="${str% *}"
 ft="${str##* }"
 
