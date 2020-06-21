@@ -1,3 +1,5 @@
+" description: coc-fzf available list sources
+
 let s:prompt = 'Coc Lists> '
 
 function! coc_fzf#lists#fzf_run(...) abort
