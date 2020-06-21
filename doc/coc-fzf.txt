@@ -17,7 +17,7 @@ Contents ~
                                                          *coc-fzf-introduction*
 Introduction ~
 
-Use fzf [1] instead of coc.nvim [2] built-in fuzzy finder.
+Use FZF [1] instead of coc.nvim [2] built-in fuzzy finder.
 
   Image: (see reference [3])
 
@@ -25,43 +25,52 @@ Use fzf [1] instead of coc.nvim [2] built-in fuzzy finder.
                                                             *coc-fzf-rationale*
 Rationale ~
 
-**❗coc-fzf only supports nvim❗**, PR are welcome if you want to change this.
+This plugin uses FZF [1] fuzzy finder in place of Coc [2]'s built-in CocList
+sources [4]. It makes the interaction with Coc easier when you are used to FZF.
 
-Inspired by Robert Buhren's functions [4] and coc-denite [5] this plugin aims
-to use fzf [1] for CocList sources when possible. The goal is to keep the
-coc.nvim [2] style and leverage your FZF Vim integration [6], such as layout,
-shortcuts, options etc.
+The main features are:
+  - FZF preview
+  - FZF bindings for splits and tabs
+  - FZF layout (floating windows etc)
+  - FZF multi-select to populate the quickfix window
+
+It was inspired by Robert Buhren's functions [5] and coc-denite [6].
 
 ===============================================================================
                                                          *coc-fzf-installation*
 Installation ~
+
 Make sure to have the following plugins in your **vimrc**:
 >
   Plug 'coc.nvim',
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
   Plug 'antoinemadec/coc-fzf'
-
+<
 ===============================================================================
                                                              *coc-fzf-commands*
 Commands ~
 
-Preview and multi-select support: diagnostics, location, outline, symbols, yank
+| Command                               | List                                                            | Preview | Multi-select | Vim support | ~
+| `:CocFzfList`                           | Equivalent to :CocList                                          | -       | -            | ✅          |
+| `:CocFzfList actions`                   | Equivalent to :CocList actions                                  | -       | -            | ✅          |
+| `:CocFzfList commands`                  | Equivalent to :CocList commands                                 | -       | -            | ✅          |
+| `:CocFzfList diagnostics`               | Equivalent to :CocList diagnostics                              | ✅      | ✅           | ✅          |
+| `:CocFzfList diagnostics --current-buf` | Equivalent to :CocList diagnostics in the current buffer only   | ✅      | ✅           | ✅          |
+| `:CocFzfList extensions`                | Equivalent to :CocList extensions                               | -       | -            | ✅          |
+| `:CocFzfList location`                  | Equivalent to :CocList location. Requires fzf.vim [7]           | ✅      | ✅           | ✅          |
+| `:CocFzfList outline`                   | Equivalent to :CocList outline, with colors. Requires ctags [8] | -       | ✅           | ✅          |
+| `:CocFzfList symbols`                   | Equivalent to :CocList symbols                                  | ✅      | ✅           | ❌          |
+| `:CocFzfList symbols --kind {kind}`     | Equivalent to :CocList symbols -kind {kind}                     | ✅      | ✅           | ❌          |
+| `:CocFzfList services`                  | Equivalent to :CocList services                                 | -       | -            | ✅          |
+| `:CocFzfList yank`                      | Equivalent to :CocList yank. Requires coc-yank [9]              | ✅      | ✅           | ✅          |
+| `:CocFzfListResume`                     | Equivalent to :CocListResume                                    | -       | -            | ✅          |
 
-| Command                                 | List                                                            | ~
-| `:CocFzfList`                             | Equivalent to :CocList                                          |
-| `:CocFzfList actions`                     | Equivalent to :CocList actions                                  |
-| `:CocFzfList commands`                    | Equivalent to :CocList commands                                 |
-| `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics                              |
-| `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer only   |
-| `:CocFzfList extensions`                  | Equivalent to :CocList extensions                               |
-| `:CocFzfList location`                    | Equivalent to :CocList location. Requires fzf.vim [7]           |
-| `:CocFzfList outline`                     | Equivalent to :CocList outline with colors. Requires ctags [8]  |
-| `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                  |
-| `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                     |
-| `:CocFzfList services`                    | Equivalent to :CocList services                                 |
-| `:CocFzfList yank`                        | Equivalent to :CocList yank. Requires coc-yank [9]              |
-| `:CocFzfListResume`                       | Equivalent to :CocListResume                                    |
+FZF bindings (default):
+  - **ctrl-t**: open in tab
+  - **ctrl-x**: open in vertical split
+  - **ctrl-s**: open in horizontal split
+  - **tab**: multi-select, populate quickfix window
 
 ===============================================================================
                                                               *coc-fzf-options*
@@ -70,8 +79,7 @@ Options ~
 | Option                       | Type   | Description                                                    | Default value             | ~
 | `g:coc_fzf_preview_toggle_key` | string | Change the key to toggle the preview window                    | `'?'`                       |
 | `g:coc_fzf_preview`            | string | Change the preview window position                             | `'up:50%'`                  |
-| `g:coc_fzf_opts`               | array  | Pass additional parameters to fzf, e.g. `['--layout=reverse']`   | `['--layout=reverse-list']` |
-
+| `g:coc_fzf_opts`               | array  | Pass additional parameters to fzf, e.g. "['--layout=reverse']" | `['--layout=reverse-list']` |
 
 ===============================================================================
                                                         *coc-fzf-vimrc-example*
@@ -92,13 +100,10 @@ Vimrc Example ~
 FAQ ~
 
 **Q**: How to get the FZF floating window? **A**: You can look at FZF Vim
-integration [6]:
+integration [10]:
 >
   let g:fzf_layout = { 'window`: { 'width`: 0.9, 'height': 0.6 } }
 <
-**Q**: How to populate the quickfix window? **A**: Use the multi-select (Tab) on
-the supported lists.
-
 ===============================================================================
                                                               *coc-fzf-license*
 License ~
@@ -112,11 +117,12 @@ References ~
 [1] https://github.com/junegunn/fzf
 [2] https://github.com/neoclide/coc.nvim
 [3] https://raw.githubusercontent.com/antoinemadec/gif/master/coc_fzf.gif
-[4] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
-[5] https://github.com/neoclide/coc-denite
-[6] https://github.com/junegunn/fzf/blob/master/README-VIM.md
+[4] https://github.com/neoclide/coc.nvim/wiki/Using-coc-list#builtin-list-sources
+[5] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
+[6] https://github.com/neoclide/coc-denite
 [7] https://github.com/junegunn/fzf.vim
 [8] https://github.com/universal-ctags/ctags
 [9] https://github.com/neoclide/coc-yank
+[10] https://github.com/junegunn/fzf/blob/master/README-VIM.md
 
 vim: ft=help

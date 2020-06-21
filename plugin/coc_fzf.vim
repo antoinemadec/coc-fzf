@@ -8,11 +8,6 @@ else
   let g:loaded_coc_fzf = 'yes'
 endif
 
-if !has('nvim')
-  " coc-fzf only supports nvim, PR are welcome if you want to change this
-  finish
-endif
-
 if !exists("g:coc_fzf_preview_toggle_key")
     let g:coc_fzf_preview_toggle_key = '?'
 endif

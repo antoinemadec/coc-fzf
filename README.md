@@ -1,17 +1,23 @@
 fzf :heart: coc.nvim
 ===============
 
-Use [fzf][fzf] instead of [coc.nvim][coc.nvim] built-in fuzzy finder.
+Use [FZF][fzf] instead of [coc.nvim][coc.nvim] built-in fuzzy finder.
 
 ![](https://raw.githubusercontent.com/antoinemadec/gif/master/coc_fzf.gif)
 
 Rationale
 ---------
 
-**❗coc-fzf only supports nvim❗**, PR are welcome if you want to change this.
+This plugin uses [FZF][fzf] fuzzy finder in place of [Coc][coc.nvim]'s built-in [CocList sources][coc_sources].
+It makes the interaction with Coc easier when you are used to FZF.
 
-Inspired by [Robert Buhren's functions][RobertBuhren] and [coc-denite][coc_denite] this plugin aims to use [fzf][fzf] for CocList sources when possible.
-The goal is to keep the [coc.nvim][coc.nvim] style and leverage your [FZF Vim integration][fzf_vim_integration], such as layout, shortcuts, options etc.
+The main features are:
+- FZF preview
+- FZF bindings for splits and tabs
+- FZF layout (floating windows etc)
+- FZF multi-select to populate the quickfix window
+
+It was inspired by [Robert Buhren's functions][RobertBuhren] and [coc-denite][coc_denite].
 
 Installation
 ---------
@@ -27,23 +33,27 @@ Plug 'antoinemadec/coc-fzf'
 Commands
 ---------
 
-Preview and multi-select support: diagnostics, location, outline, symbols, yank
+| Command                                 | List                                                                 | Preview | Multi-select | Vim support |
+| ---                                     | ---                                                                  | ---     | ---          | ---         |
+| `:CocFzfList        `                   | Equivalent to :CocList                                               | -       | -            | ✅          |
+| `:CocFzfList actions`                   | Equivalent to :CocList actions                                       | -       | -            | ✅          |
+| `:CocFzfList commands`                  | Equivalent to :CocList commands                                      | -       | -            | ✅          |
+| `:CocFzfList diagnostics`               | Equivalent to :CocList diagnostics                                   | ✅      | ✅           | ✅          |
+| `:CocFzfList diagnostics --current-buf` | Equivalent to :CocList diagnostics in the current buffer only        | ✅      | ✅           | ✅          |
+| `:CocFzfList extensions`                | Equivalent to :CocList extensions                                    | -       | -            | ✅          |
+| `:CocFzfList location`                  | Equivalent to :CocList location. Requires [fzf.vim][fzfvim]          | ✅      | ✅           | ✅          |
+| `:CocFzfList outline`                   | Equivalent to :CocList outline, with colors. Requires [ctags][ctags] | -       | ✅           | ✅          |
+| `:CocFzfList symbols`                   | Equivalent to :CocList symbols                                       | ✅      | ✅           | ❌          |
+| `:CocFzfList symbols --kind {kind}`     | Equivalent to :CocList symbols -kind {kind}                          | ✅      | ✅           | ❌          |
+| `:CocFzfList services`                  | Equivalent to :CocList services                                      | -       | -            | ✅          |
+| `:CocFzfList yank`                      | Equivalent to :CocList yank. Requires [coc-yank][coc-yank]           | ✅      | ✅           | ✅          |
+| `:CocFzfListResume`                     | Equivalent to :CocListResume                                         | -       | -            | ✅          |
 
-| Command                                   | List                                                                             |
-| ---                                       | ---                                                                              |
-| `:CocFzfList        `                     | Equivalent to :CocList                                                           |
-| `:CocFzfList actions`                     | Equivalent to :CocList actions                                                   |
-| `:CocFzfList commands`                    | Equivalent to :CocList commands                                                  |
-| `:CocFzfList diagnostics`                 | Equivalent to :CocList diagnostics                                               |
-| `:CocFzfList diagnostics --current-buf`   | Equivalent to :CocList diagnostics in the current buffer only                    |
-| `:CocFzfList extensions`                  | Equivalent to :CocList extensions                                                |
-| `:CocFzfList location`                    | Equivalent to :CocList location. Requires [fzf.vim][fzfvim]                      |
-| `:CocFzfList outline`                     | Equivalent to :CocList outline, with colors. Requires [ctags][ctags]             |
-| `:CocFzfList symbols`                     | Equivalent to :CocList symbols                                                   |
-| `:CocFzfList symbols --kind {kind}`       | Equivalent to :CocList symbols -kind {kind}                                      |
-| `:CocFzfList services`                    | Equivalent to :CocList services                                                  |
-| `:CocFzfList yank`                        | Equivalent to :CocList yank. Requires [coc-yank][coc-yank]                       |
-| `:CocFzfListResume`                       | Equivalent to :CocListResume                                                     |
+FZF bindings (default):
+- **ctrl-t**: open in tab
+- **ctrl-x**: open in vertical split
+- **ctrl-s**: open in horizontal split
+- **tab**: multi-select, populate quickfix window
 
 Options
 ---------
@@ -76,17 +86,16 @@ FAQ
 ```vim
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 ```
-**Q**: How to populate the quickfix window?
-**A**: Use the multi-select (Tab) on the supported lists.
 
 License
 -------
 
 MIT
 
-[fzf_vim_integration]: https://github.com/junegunn/fzf/blob/master/README-VIM.md
 [fzf]:                 https://github.com/junegunn/fzf
+[fzf_vim_integration]: https://github.com/junegunn/fzf/blob/master/README-VIM.md
 [coc.nvim]:            https://github.com/neoclide/coc.nvim
+[coc_sources]:         https://github.com/neoclide/coc.nvim/wiki/Using-coc-list#builtin-list-sources
 [RobertBuhren]:        https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
 [coc_denite]:          https://github.com/neoclide/coc-denite
 [ctags]:               https://github.com/universal-ctags/ctags

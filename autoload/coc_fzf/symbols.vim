@@ -3,6 +3,12 @@
 let s:prompt = 'Coc Symbols> '
 
 function! coc_fzf#symbols#fzf_run(...) abort
+  if !has('nvim')
+    " get_workspace_symbols.py only supports nvim, PR are welcome
+    call coc_fzf#common#echom_error('symbols are only supported with neovim')
+    return
+  endif
+
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let python3 = get(g:, 'python3_host_prog', 'python3')
   if !executable(python3)
