@@ -87,11 +87,16 @@ function coc_fzf#common#with_preview(opts, ...) abort
   let wrapped_opts = {}
 
   if g:coc_fzf_preview_available
-    let wrapped_opts = fzf#vim#with_preview(a:opts, g:coc_fzf_preview, g:coc_fzf_preview_toggle_key)
-
-    if strlen(custom_preview_command)
-      let preview_command_index = index(wrapped_opts.options, '--preview') + 1
-      let wrapped_opts.options[preview_command_index] = custom_preview_command
+    let preview_window = g:coc_fzf_preview
+    if empty(preview_window)
+      let preview_window = get(g:, 'fzf_preview_window', &columns >= 120 ? 'right': '')
+    endif
+    if len(preview_window)
+      let wrapped_opts = fzf#vim#with_preview(a:opts, preview_window, g:coc_fzf_preview_toggle_key)
+      if strlen(custom_preview_command)
+        let preview_command_index = index(wrapped_opts.options, '--preview') + 1
+        let wrapped_opts.options[preview_command_index] = custom_preview_command
+      endif
     endif
   endif
 
