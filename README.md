@@ -54,6 +54,7 @@ FZF bindings (default):
 - **ctrl-x**: open in vertical split
 - **ctrl-s**: open in horizontal split
 - **tab**: multi-select, populate quickfix window
+- **?**: toggle preview window
 
 Options
 ---------
@@ -85,6 +86,12 @@ FAQ
 **A**: You can look at [FZF Vim integration][fzf_vim_integration]:
 ```vim
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+```
+**Q**: CocFzf looks different from my other Fzf commands. How to make it the same?
+**A**: By default, CocFzf tries to mimic CocList. Here is how to change this:
+```vim
+let g:coc_fzf_preview = ''
+let g:coc_fzf_opts = []
 ```
 
 License
