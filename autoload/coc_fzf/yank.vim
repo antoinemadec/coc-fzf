@@ -19,7 +19,7 @@ function! coc_fzf#yank#fzf_run() abort
   let opts = {
         \ 'source': s:get_yanks(raw_yanks),
         \ 'sink*': function('s:yank_handler'),
-        \ 'options': ['--multi', '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts
+        \ 'options': ['--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts
         \ }
   let opts = coc_fzf#common#with_preview(
     \   opts,
@@ -84,27 +84,25 @@ function! s:syntax() abort
 endfunction
 
 function! s:parse_yanks(yanks) abort
-  let l:parsed_list = []
-
-  for str in a:yanks
-    let match = matchlist(str, '^\s*\(char\|line\|block\)  \(.*\) .*$')
-    exe 'let yank = printf("' . escape(match[2], '"') .'")'
-    let l:parsed_list += [yank]
-  endfor
-
-  return l:parsed_list
+  let str = a:yanks[0]
+  let match = matchlist(str, '^\s*\(char\|line\|block\)  \(.*\) .*$')
+  let type = match[1][0]
+  exe 'let yank_str = printf("' . escape(match[2], '"') .'")'
+  return [type, yank_str]
 endfunction
 
-function! s:yank_handler(cmd) abort
-  let l:parsed_yanks = s:parse_yanks(a:cmd)
-  let content = join(l:parsed_yanks, "\n")
-
-  if &cb == 'unnamedplus'
-    let @+ = content
-  elseif &cb == 'unnamed'
-    let @* = content
-  else
-    let @" = content
+function! s:yank_handler(yank) abort
+  let [type, yank_str] = s:parse_yanks(a:yank)
+  if type == 'l'
+    let yank_str .= "\n"
   endif
-  put
+
+  if has('nvim')
+    call nvim_put(split(yank_str, "\n"), type, 1, 0)
+  else
+    let y_bak = @y
+    let @y = yank_str
+    put y
+    let @y = y_bak
+  endif
 endfunction
