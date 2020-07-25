@@ -77,7 +77,6 @@ nnoremap <silent> <space>e       :<C-u>CocFzfList extensions<CR>
 nnoremap <silent> <space>l       :<C-u>CocFzfList location<CR>
 nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
 nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
-nnoremap <silent> <space>S       :<C-u>CocFzfList services<CR>
 nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
 ```
 
