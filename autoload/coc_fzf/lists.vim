@@ -50,8 +50,5 @@ function! s:list_handler(list) abort
   let src = split(a:list[1])[0]
   if !empty(src)
     execute 'call coc_fzf#' . src . '#fzf_run()'
-    if &ft == 'fzf'
-      call feedkeys('i')
-    endif
   endif
 endfunction

@@ -18,7 +18,6 @@ function! coc_fzf#services#fzf_run(...) abort
     call coc_fzf#common#remap_enter_to_save_fzf_selector()
     call s:syntax()
     if (!first_call)
-      call feedkeys('i')
       call coc_fzf#common#fzf_selector_restore()
     endif
   else
