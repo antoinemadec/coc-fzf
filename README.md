@@ -43,9 +43,10 @@ Commands
 | `:CocFzfList extensions`                | Equivalent to :CocList extensions                                    | -       | -            | ✅          |
 | `:CocFzfList location`                  | Equivalent to :CocList location. Requires [fzf.vim][fzfvim]          | ✅      | ✅           | ✅          |
 | `:CocFzfList outline`                   | Equivalent to :CocList outline, with colors. Requires [ctags][ctags] | -       | ✅           | ✅          |
+| `:CocFzfList services`                  | Equivalent to :CocList services                                      | -       | -            | ✅          |
+| `:CocFzfList sources `                  | Equivalent to :CocList sources                                       | -       | -            | ✅          |
 | `:CocFzfList symbols`                   | Equivalent to :CocList symbols                                       | ✅      | ✅           | ❌          |
 | `:CocFzfList symbols --kind {kind}`     | Equivalent to :CocList symbols -kind {kind}                          | ✅      | ✅           | ❌          |
-| `:CocFzfList services`                  | Equivalent to :CocList services                                      | -       | -            | ✅          |
 | `:CocFzfList yank`                      | Equivalent to :CocList yank. Requires [coc-yank][coc-yank]           | ✅      | ✅           | ✅          |
 | `:CocFzfListResume`                     | Equivalent to :CocListResume                                         | -       | -            | ✅          |
 
@@ -68,15 +69,16 @@ Options
 Vimrc Example
 ---------
 ```vim
-nnoremap <silent> <space>a  :<C-u>CocFzfList diagnostics<CR>
-nnoremap <silent> <space>b  :<C-u>CocFzfList diagnostics --current-buf<CR>
-nnoremap <silent> <space>c  :<C-u>CocFzfList commands<CR>
-nnoremap <silent> <space>e  :<C-u>CocFzfList extensions<CR>
-nnoremap <silent> <space>l  :<C-u>CocFzfList location<CR>
-nnoremap <silent> <space>o  :<C-u>CocFzfList outline<CR>
-nnoremap <silent> <space>s  :<C-u>CocFzfList symbols<CR>
-nnoremap <silent> <space>S  :<C-u>CocFzfList services<CR>
-nnoremap <silent> <space>p  :<C-u>CocFzfListResume<CR>
+nnoremap <silent> <space><space> :<C-u>CocFzfList<CR>
+nnoremap <silent> <space>a       :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent> <space>b       :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> <space>c       :<C-u>CocFzfList commands<CR>
+nnoremap <silent> <space>e       :<C-u>CocFzfList extensions<CR>
+nnoremap <silent> <space>l       :<C-u>CocFzfList location<CR>
+nnoremap <silent> <space>o       :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
+nnoremap <silent> <space>S       :<C-u>CocFzfList services<CR>
+nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
 ```
 
 FAQ
