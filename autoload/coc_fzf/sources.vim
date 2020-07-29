@@ -63,7 +63,7 @@ endfunction
 function! s:source_handler(ext) abort
   let parsed = s:parse_source(a:ext[1:])
   if type(parsed) == v:t_dict
-    silent call CocAction("tokenSource", parsed.name)
+    silent call CocAction("toggleSource", parsed.name)
     call coc_fzf#sources#fzf_run(0)
   endif
 endfunction
