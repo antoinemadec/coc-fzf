@@ -12,7 +12,10 @@ function! coc_fzf#common#fzf_selector_save() abort
 endfunction
 
 function! coc_fzf#common#fzf_selector_restore() abort
-  " TODO: normal gg
+  if has('nvim')
+    " hack to ensure Fzf is loaded and ready to accept keys
+    call wait(50, 0)
+  endif
   if exists('t:fzf_selector_line_nb')
     let c = 1
     while c < t:fzf_selector_line_nb
