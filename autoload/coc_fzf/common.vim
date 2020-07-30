@@ -14,7 +14,8 @@ endfunction
 function! coc_fzf#common#fzf_selector_restore() abort
   if has('nvim')
     " hack to ensure Fzf is loaded and ready to accept keys
-    call wait(50, 0)
+    call wait(100, 'mode()=="t"')
+    call wait(100, 'search("^Coc.*>", "c")')
   endif
   if exists('t:fzf_selector_line_nb')
     let c = 1
