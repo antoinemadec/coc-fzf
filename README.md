@@ -33,22 +33,22 @@ Plug 'antoinemadec/coc-fzf'
 Commands
 ---------
 
-| Command                                 | List                                                                 | Preview | Multi-select | Vim support |
-| ---                                     | ---                                                                  | ---     | ---          | ---         |
-| `:CocFzfList        `                   | Equivalent to :CocList                                               | -       | -            | ✅          |
-| `:CocFzfList actions`                   | Equivalent to :CocList actions                                       | -       | -            | ✅          |
-| `:CocFzfList commands`                  | Equivalent to :CocList commands                                      | -       | -            | ✅          |
-| `:CocFzfList diagnostics`               | Equivalent to :CocList diagnostics                                   | ✅      | ✅           | ✅          |
-| `:CocFzfList diagnostics --current-buf` | Equivalent to :CocList diagnostics in the current buffer only        | ✅      | ✅           | ✅          |
-| `:CocFzfList extensions`                | Equivalent to :CocList extensions                                    | -       | -            | ✅          |
-| `:CocFzfList location`                  | Equivalent to :CocList location. Requires [fzf.vim][fzfvim]          | ✅      | ✅           | ✅          |
-| `:CocFzfList outline`                   | Equivalent to :CocList outline, with colors. Requires [ctags][ctags] | -       | ✅           | ✅          |
-| `:CocFzfList services`                  | Equivalent to :CocList services                                      | -       | -            | ✅          |
-| `:CocFzfList sources `                  | Equivalent to :CocList sources                                       | -       | -            | ✅          |
-| `:CocFzfList symbols`                   | Equivalent to :CocList symbols                                       | ✅      | ✅           | ❌          |
-| `:CocFzfList symbols --kind {kind}`     | Equivalent to :CocList symbols -kind {kind}                          | ✅      | ✅           | ❌          |
-| `:CocFzfList yank`                      | Equivalent to :CocList yank. Requires [coc-yank][coc-yank]           | ✅      | ✅           | ✅          |
-| `:CocFzfListResume`                     | Equivalent to :CocListResume                                         | -       | -            | ✅          |
+| Command                                       | List                                                                 | Preview | Multi-select | Vim support |
+| ---                                           | ---                                                                  | ---     | ---          | ---         |
+| `:CocFzfList        `                         | Equivalent to :CocList                                               | -       | -            | ✅          |
+| `:CocFzfList actions`                         | Equivalent to :CocList actions                                       | -       | -            | ✅          |
+| `:CocFzfList commands`                        | Equivalent to :CocList commands                                      | -       | -            | ✅          |
+| `:CocFzfList diagnostics`                     | Equivalent to :CocList diagnostics                                   | ✅      | ✅           | ✅          |
+| `:CocFzfList diagnostics --current-buf`       | Equivalent to :CocList diagnostics in the current buffer only        | ✅      | ✅           | ✅          |
+| `:CocFzfList extensions`                      | Equivalent to :CocList extensions                                    | -       | -            | ✅          |
+| `:CocFzfList location`                        | Equivalent to :CocList location. Requires [fzf.vim][fzfvim]          | ✅      | ✅           | ✅          |
+| `:CocFzfList outline`                         | Equivalent to :CocList outline, with colors. Requires [ctags][ctags] | -       | ✅           | ✅          |
+| `:CocFzfList services`                        | Equivalent to :CocList services                                      | -       | -            | ✅          |
+| `:CocFzfList sources `                        | Equivalent to :CocList sources                                       | -       | -            | ✅          |
+| `:CocFzfList symbols ({query})`               | Equivalent to :CocList symbols                                       | ✅      | ✅           | ❌          |
+| `:CocFzfList symbols --kind {kind} ({query})` | Equivalent to :CocList symbols -kind {kind}                          | ✅      | ✅           | ❌          |
+| `:CocFzfList yank`                            | Equivalent to :CocList yank. Requires [coc-yank][coc-yank]           | ✅      | ✅           | ✅          |
+| `:CocFzfListResume`                           | Equivalent to :CocListResume                                         | -       | -            | ✅          |
 
 FZF bindings (default):
 - **ctrl-t**: open in tab

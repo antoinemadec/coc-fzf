@@ -3,45 +3,55 @@
 let s:prompt = 'Coc Symbols> '
 
 function! coc_fzf#symbols#fzf_run(...) abort
+  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
+
   if !has('nvim')
     " get_workspace_symbols.py only supports nvim, PR are welcome
     call coc_fzf#common#echom_error('symbols are only supported with neovim')
     return
   endif
-
-  call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let python3 = get(g:, 'python3_host_prog', 'python3')
   if !executable(python3)
     call coc_fzf#common#echom_error(string(python3) . ' is not executable.')
     call coc_fzf#common#echom_error('You need to set g:python3_host_prog.')
     return
   endif
-
   if !CocHasProvider('workspaceSymbols')
     call coc_fzf#common#echom_info('Workspace symbols provider not found for current document')
     return
   endif
+
+  " parse arguments
+  let args = copy(a:000)
+  "   --kind <kind>
   let ws_symbols_opts = []
-  let kind_idx = index(a:000, '--kind')
+  let kind_idx = index(args, '--kind')
   if kind_idx >= 0
-    if len(a:000) < kind_idx+2
+    if len(args) < kind_idx+2
       call coc_fzf#common#echom_error('Missing kind argument')
       return
-    elseif index(g:coc_fzf#common#kinds, a:000[kind_idx+1]) < 0
-      call coc_fzf#common#echom_error('Kind ' . a:000[kind_idx+1] . ' does not exist')
+    elseif index(g:coc_fzf#common#kinds, args[kind_idx+1]) < 0
+      call coc_fzf#common#echom_error('Kind ' . args[kind_idx+1] . ' does not exist')
       return
     endif
-    let ws_symbols_opts += a:000[l:kind_idx : l:kind_idx+1]
+    let ws_symbols_opts += args[l:kind_idx : l:kind_idx+1]
+    call remove(args, l:kind_idx, l:kind_idx+1)
   endif
+  "   <query>
+  let initial_query = ""
+  if !empty(args)
+    let initial_query = join(args)
+  endif
+
   let expect_keys = coc_fzf#common#get_default_file_expect_keys()
   let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s %s'
-  let initial_command = printf(command_fmt, join(ws_symbols_opts), v:servername, bufnr(), "''")
+  let initial_command = printf(command_fmt, join(ws_symbols_opts), v:servername, bufnr(), "'" . initial_query . "'")
   let reload_command = printf(command_fmt, join(ws_symbols_opts), v:servername, bufnr(), '{q}')
   let opts = {
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys, '--bind', 'change:reload:'.reload_command,
-        \ '--phony', '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
+        \ '--phony', '-q', initial_query, '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
   call coc_fzf#common#fzf_run_with_preview(opts, {'placeholder': '{-1}'})
   call s:syntax()
