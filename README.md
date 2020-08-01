@@ -8,7 +8,7 @@ Use [FZF][fzf] instead of [coc.nvim][coc.nvim] built-in fuzzy finder.
 Rationale
 ---------
 
-This plugin uses [FZF][fzf] fuzzy finder in place of [Coc][coc.nvim]'s built-in [CocList sources][coc_sources].
+This plugin uses [FZF][fzf] fuzzy finder in place of [Coc][coc.nvim]'s built-in [CocList sources][coc_sources] as well as Coc's jumps (definition, reference etc).\
 It makes the interaction with Coc easier when you are used to FZF.
 
 The main features are:
@@ -24,9 +24,9 @@ Installation
 
 Make sure to have the following plugins in your **vimrc**:
 ```vim
-Plug 'coc.nvim',
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
+Plug 'junegunn/fzf.vim' " needed for previews
 Plug 'antoinemadec/coc-fzf'
 ```
 
@@ -83,12 +83,23 @@ nnoremap <silent> <space>p       :<C-u>CocFzfListResume<CR>
 FAQ
 ---------
 
-**Q**: How to get the FZF floating window?
+**Q**: How to get the FZF floating window?\
 **A**: You can look at [FZF Vim integration][fzf_vim_integration]:
 ```vim
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 ```
-**Q**: CocFzf looks different from my other Fzf commands. How to make it the same?
+**Q**: How to see references, definitions etc in a FZF window?\
+**A**: It is already supported by default, just make sure to have the default coc mappings:
+```vim
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+```
+**Q**: How to get colors in previews?\
+**A**: Install [bat][bat].
+
+**Q**: CocFzf looks different from my other Fzf commands. How to make it the same?\
 **A**: By default, CocFzf tries to mimic CocList. Here is how to change this:
 ```vim
 let g:coc_fzf_preview = ''
@@ -109,3 +120,4 @@ MIT
 [ctags]:               https://github.com/universal-ctags/ctags
 [fzfvim]:              https://github.com/junegunn/fzf.vim
 [coc-yank]:            https://github.com/neoclide/coc-yank
+[bat]:                 https://github.com/sharkdp/bat

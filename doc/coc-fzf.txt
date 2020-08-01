@@ -26,7 +26,8 @@ Use FZF [1] instead of coc.nvim [2] built-in fuzzy finder.
 Rationale ~
 
 This plugin uses FZF [1] fuzzy finder in place of Coc [2]'s built-in CocList
-sources [4]. It makes the interaction with Coc easier when you are used to FZF.
+sources [4] as well as Coc's jumps (definition, reference etc).
+It makes the interaction with Coc easier when you are used to FZF.
 
 The main features are:
   - FZF preview
@@ -42,9 +43,9 @@ Installation ~
 
 Make sure to have the following plugins in your **vimrc**:
 >
-  Plug 'coc.nvim',
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
+  Plug 'coc.nvim', {'branch`: 'release`}
+  Plug 'junegunn/fzf', {'dir`: '~/.fzf','do`: './install --all'}
+  Plug 'junegunn/fzf.vim' " needed for previews
   Plug 'antoinemadec/coc-fzf'
 <
 ===============================================================================
@@ -106,13 +107,23 @@ FAQ ~
 >
   let g:fzf_layout = { 'window`: { 'width`: 0.9, 'height': 0.6 } }
 <
+**Q**: How to see references, definitions etc in a FZF window?
+**A**: It is already supported by default, just make sure to have the default coc mappings:
+>
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+<
+**Q**: How to get colors in previews?
+**A**: Install bat [11].
+
 **Q**: CocFzf looks different from my other Fzf commands. How to make it the same?
 **A**: By default, CocFzf tries to mimic CocList. Here is how to change this:
 >
   let g:coc_fzf_preview = ''
   let g:coc_fzf_opts = []
 <
-
 ===============================================================================
                                                               *coc-fzf-license*
 License ~
@@ -133,5 +144,6 @@ References ~
 [8] https://github.com/universal-ctags/ctags
 [9] https://github.com/neoclide/coc-yank
 [10] https://github.com/junegunn/fzf/blob/master/README-VIM.md
+[11] https://github.com/sharkdp/bat
 
 vim: ft=help
