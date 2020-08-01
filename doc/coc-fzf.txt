@@ -43,8 +43,8 @@ Installation ~
 
 Make sure to have the following plugins in your **vimrc**:
 >
-  Plug 'coc.nvim', {'branch`: 'release`}
-  Plug 'junegunn/fzf', {'dir`: '~/.fzf','do`: './install --all'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
   Plug 'junegunn/fzf.vim' " needed for previews
   Plug 'antoinemadec/coc-fzf'
 <
@@ -105,7 +105,7 @@ FAQ ~
 **Q**: How to get the FZF floating window?
 **A**: You can look at FZF Vim integration [10]:
 >
-  let g:fzf_layout = { 'window`: { 'width`: 0.9, 'height': 0.6 } }
+  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 <
 **Q**: How to see references, definitions etc in a FZF window?
 **A**: It is already supported by default, just make sure to have the default coc mappings:

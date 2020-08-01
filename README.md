@@ -24,7 +24,7 @@ Installation
 
 Make sure to have the following plugins in your **vimrc**:
 ```vim
-Plug 'coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
 Plug 'junegunn/fzf.vim' " needed for previews
 Plug 'antoinemadec/coc-fzf'
