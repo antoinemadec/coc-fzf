@@ -1,0 +1,4 @@
+source vimrc_floating_default
+
+let g:coc_fzf_preview = ''
+let g:coc_fzf_opts = []
