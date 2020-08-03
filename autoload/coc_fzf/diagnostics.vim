@@ -14,8 +14,8 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
+    call coc_fzf#common#set_syntax(function('s:syntax'))
     call coc_fzf#common#fzf_run_with_preview(opts)
-    call s:syntax()
   else
     call coc_fzf#common#echom_info('diagnostics list is empty')
   endif

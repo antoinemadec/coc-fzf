@@ -14,9 +14,9 @@ function! coc_fzf#extensions#fzf_run(...) abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
+    call coc_fzf#common#set_syntax(function('s:syntax'))
     call fzf#run(fzf#wrap(opts))
     call coc_fzf#common#remap_enter_to_save_fzf_selector()
-    call s:syntax()
     if (!first_call)
       call coc_fzf#common#fzf_selector_restore()
     endif

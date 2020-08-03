@@ -13,8 +13,8 @@ function! coc_fzf#commands#fzf_run() abort
           \ 'options': ['--multi', '--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
+    call coc_fzf#common#set_syntax(function('s:syntax'))
     call fzf#run(fzf#wrap(opts))
-    call s:syntax()
   else
     call coc_fzf#common#echom_info('commands list is empty')
   endif

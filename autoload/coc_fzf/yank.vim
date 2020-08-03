@@ -25,8 +25,8 @@ function! coc_fzf#yank#fzf_run() abort
     \   opts,
     \   g:coc_fzf_plugin_dir . '/script/yank_preview.sh {}',
     \ )
+  call coc_fzf#common#set_syntax(function('s:syntax'))
   call fzf#run(fzf#wrap(opts))
-  call s:syntax()
 endfunction
 
 let s:yank_type_names = {
