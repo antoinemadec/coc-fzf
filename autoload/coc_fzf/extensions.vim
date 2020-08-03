@@ -67,6 +67,9 @@ function! s:syntax() abort
 endfunction
 
 function! s:extension_handler(ext) abort
+  if empty(a:ext)
+    return
+  endif
   let parsed = s:parse_extension(a:ext[1:])
   if type(parsed) == v:t_dict
     if parsed.state == '*'

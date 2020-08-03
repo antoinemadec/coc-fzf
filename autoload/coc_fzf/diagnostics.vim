@@ -60,6 +60,9 @@ function! s:syntax() abort
 endfunction
 
 function! s:error_handler(err) abort
+  if empty(a:err)
+    return
+  endif
   let parsed_dict_list = s:parse_error(a:err[1:])
   call coc_fzf#common#process_file_action(a:err[0], parsed_dict_list)
 endfunction

@@ -61,6 +61,9 @@ function! s:syntax() abort
 endfunction
 
 function! s:source_handler(ext) abort
+  if empty(a:ext)
+    return
+  endif
   let parsed = s:parse_source(a:ext[1:])
   if type(parsed) == v:t_dict
     silent call CocAction("toggleSource", parsed.name)

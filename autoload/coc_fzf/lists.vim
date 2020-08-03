@@ -41,6 +41,9 @@ function! s:syntax() abort
 endfunction
 
 function! s:list_handler(list) abort
+  if empty(a:list)
+    return
+  endif
   let cmd = coc_fzf#common#get_action_from_key(a:list[0])
   if !empty(cmd) && stridx('edit', cmd) < 0
     if stridx('edit', cmd) < 0

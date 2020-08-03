@@ -53,6 +53,9 @@ function! s:syntax() abort
 endfunction
 
 function! s:location_handler(loc) abort
+  if empty(a:loc)
+    return
+  endif
   let parsed_dict_list = s:parse_location(a:loc[1:])
   call coc_fzf#common#process_file_action(a:loc[0], parsed_dict_list)
 endfunction

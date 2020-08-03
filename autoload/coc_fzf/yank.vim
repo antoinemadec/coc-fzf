@@ -92,6 +92,9 @@ function! s:parse_yanks(yanks) abort
 endfunction
 
 function! s:yank_handler(yank) abort
+  if empty(a:yank)
+    return
+  endif
   let [type, yank_str] = s:parse_yanks(a:yank)
   if type == 'l'
     let yank_str .= "\n"

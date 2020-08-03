@@ -76,6 +76,9 @@ function! s:syntax() abort
 endfunction
 
 function! s:symbol_handler(sym) abort
+  if empty(a:sym)
+    return
+  endif
   let parsed_dict_list = s:parse_symbol(a:sym[1:])
   call coc_fzf#common#process_file_action(a:sym[0], parsed_dict_list)
 endfunction
