@@ -18,26 +18,25 @@ function! coc_fzf#lists#fzf_run(...) abort
     call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
-          \ 'source': coc_fzf#common#get_list_names(),
+          \ 'source': s:get_lists(),
           \ 'sink*': function('s:list_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
     call fzf#run(fzf#wrap(opts))
   endif
 endfunction
 
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_ListsHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_ListsDescription /\s.*$/ contained containedin=CocFzf_ListsHeader
-    syntax match CocFzf_ListsList /^>\?\s*\S\+/ contained containedin=CocFzf_ListsHeader
-    highlight default link CocFzf_ListsList Normal
-    highlight default link CocFzf_ListsDescription Comment
-  endif
+function s:get_lists() abort
+  let lists_with_color = []
+  for line in coc_fzf#common#get_list_names()
+    let line_split = split(line)
+    let list_name = line_split[0]
+    let list_description = join(line_split[1:])
+    let lists_with_color += [list_name . ' ' .
+          \ coc_fzf#common_fzf_vim#green(list_description, 'Comment')]
+  endfor
+  return lists_with_color
 endfunction
 
 function! s:list_handler(list) abort

@@ -44,35 +44,26 @@ function! coc_fzf#symbols#fzf_run(...) abort
   endif
 
   let expect_keys = coc_fzf#common#get_default_file_expect_keys()
-  let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir . '/script/get_workspace_symbols.py %s %s %s %s'
-  let initial_command = printf(command_fmt, join(ws_symbols_opts), v:servername, bufnr(), "'" . initial_query . "'")
-  let reload_command = printf(command_fmt, join(ws_symbols_opts), v:servername, bufnr(), '{q}')
+  " pass ansi code to script to avoid using syntax match
+  let ansi_typedef = "'" . coc_fzf#common_fzf_vim#yellow('STRING', 'Typedef') . "'"
+  let ansi_comment = "'" . coc_fzf#common_fzf_vim#green('STRING',  'Comment') . "'"
+  let ansi_ignore  = "'" . coc_fzf#common_fzf_vim#black('STRING',  'Ignore')  . "'"
+  let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir .
+        \ '/script/get_workspace_symbols.py %s %s %s %s %s %s %s'
+  let initial_command = printf(command_fmt,
+        \ join(ws_symbols_opts), v:servername, bufnr(), "'" . initial_query . "'",
+        \ ansi_typedef, ansi_comment, ansi_ignore)
+  let reload_command = printf(command_fmt,
+        \ join(ws_symbols_opts), v:servername, bufnr(), '{q}',
+        \ ansi_typedef, ansi_comment, ansi_ignore)
+  echom initial_command
   let opts = {
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys, '--bind', 'change:reload:'.reload_command,
         \ '--phony', '-q', initial_query, '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
   call coc_fzf#common#fzf_run_with_preview(opts, {'placeholder': '{-1}'})
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_SymbolsHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_SymbolsSymbol /\v^>\?\s*\S\+/ contained containedin=CocFzf_SymbolsHeader
-    syntax match CocFzf_SymbolsType /\v\s\[.*\]/ contained containedin=CocFzf_SymbolsHeader
-    syntax match CocFzf_SymbolsFile /\s\S*:\d\+:\d\+$/ contained containedin=CocFzf_SymbolsHeader
-    syntax match CocFzf_SymbolsLine /:\d\+/ contained containedin=CocFzf_SymbolsFile
-    syntax match CocFzf_SymbolsColumn /:\d\+$/ contained containedin=CocFzf_SymbolsFile
-    highlight default link CocFzf_SymbolsSymbol Normal
-    highlight default link CocFzf_SymbolsType Typedef
-    highlight default link CocFzf_SymbolsFile Comment
-    highlight default link CocFzf_SymbolsLine Ignore
-    highlight default link CocFzf_SymbolsColumn Ignore
-  endif
 endfunction
 
 function! s:symbol_handler(sym) abort

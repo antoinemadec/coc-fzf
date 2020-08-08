@@ -40,30 +40,6 @@ function! coc_fzf#common#call_last_logged_function() abort
   endif
 endfunction
 
-function coc_fzf#common#set_syntax(syntax_funcref) abort
-  let g:Coc_fzf_syntax_funcref = a:syntax_funcref
-  if has('nvim')
-    autocmd TermEnter * ++once call g:Coc_fzf_syntax_funcref()
-  else
-    " in Vim, FZF sometimes runs as a 'system' command, depending on the
-    " options
-    " we need to make sure to delete the 'terminal' autocmd in that case
-    augroup CocFzfSyntaxVim
-      autocmd!
-      autocmd TerminalWinOpen * ++once call timer_start(10, 'CocFzfSyntaxVimRun')
-    augroup END
-    function! CocFzfSyntaxVimRun(id) abort
-      call g:Coc_fzf_syntax_funcref()
-    endfunction
-    function! CocFzfSyntaxVimDelete(id) abort
-      augroup CocFzfSyntaxVim
-        autocmd!
-      augroup END
-    endfunction
-    let t = timer_start(100, 'CocFzfSyntaxVimDelete')
-  endif
-endfunction
-
 function! s:redir_exec(command) abort
     redir =>output
     silent exec a:command

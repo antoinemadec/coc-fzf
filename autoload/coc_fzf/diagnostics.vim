@@ -26,8 +26,10 @@ function! s:format_coc_diagnostic(item) abort
     let msg = substitute(a:item.message, "\n", " ", "g")
     let hl = get({'Error': 'cocerrorsign', 'Warning': 'cocwarningsign',
           \ 'Information': 'cocinfosign', 'Hint': 'cochintsign'}, a:item.severity, '')
-    return coc_fzf#common_fzf_vim#green(printf("%s:%s:%s ", file, a:item.lnum, a:item.col), 'Comment')
-          \ . coc_fzf#common_fzf_vim#red(a:item.severity, hl) . ' ' . msg
+    return coc_fzf#common_fzf_vim#green(printf("%s:%s:%s ",
+          \ file, a:item.lnum, a:item.col), 'Comment') .
+          \ coc_fzf#common_fzf_vim#red(a:item.severity, hl) . ' ' .
+          \ msg
   endif
   return ''
 endfunction

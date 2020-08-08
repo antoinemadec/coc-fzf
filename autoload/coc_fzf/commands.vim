@@ -13,7 +13,6 @@ function! coc_fzf#commands#fzf_run() abort
           \ 'options': ['--multi', '--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
     call fzf#run(fzf#wrap(opts))
   else
     call coc_fzf#common#echom_info('commands list is empty')
@@ -21,22 +20,12 @@ function! coc_fzf#commands#fzf_run() abort
 endfunction
 
 function! s:format_coc_command(item) abort
-  return a:item.id . ' ' . a:item.title
+  return a:item.id . ' ' .
+        \ coc_fzf#common_fzf_vim#green(a:item.title, 'Comment')
 endfunction
 
 function! s:get_commands(cmds) abort
   return map(a:cmds, 's:format_coc_command(v:val)')
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_CommandHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_CommandTitle /\s.*$/ contained containedin=CocFzf_CommandHeader
-    syntax match CocFzf_CommandId /^>\?\s*\S\+/ contained  containedin=CocFzf_CommandHeader
-    highlight default link CocFzf_CommandTitle Comment
-  endif
 endfunction
 
 function! s:command_handler(cmd) abort

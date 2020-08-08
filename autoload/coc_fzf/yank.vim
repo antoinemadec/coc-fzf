@@ -25,7 +25,6 @@ function! coc_fzf#yank#fzf_run() abort
     \   opts,
     \   g:coc_fzf_plugin_dir . '/script/yank_preview.sh {}',
     \ )
-  call coc_fzf#common#set_syntax(function('s:syntax'))
   call fzf#run(fzf#wrap(opts))
 endfunction
 
@@ -39,8 +38,9 @@ function! s:add_formatted_yank(yanks, yank_parts, metadata) abort
   let filetype = exists("a:metadata[5]") ? a:metadata[5] : "no_ft"
 
   let l:yank = join(a:yank_parts, '\n')
-  let l:yank = l:yank_type . '  ' . l:yank
-  call add(a:yanks, l:yank . " [ft=" . filetype . "]")
+  let l:yank = coc_fzf#common_fzf_vim#yellow(l:yank_type, 'Typedef') . '  ' . l:yank
+  call add(a:yanks, l:yank .
+        \ coc_fzf#common_fzf_vim#black(" [ft=" . filetype . "]", 'Ignore'))
 endfunction
 
 function! s:get_yanks(raw_yanks) abort
@@ -69,18 +69,6 @@ function! s:get_yanks(raw_yanks) abort
   endif
 
   return reverse(yanks)
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_YankHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_YankType /^>\?\s*\(line\|char\|block\)/ contained containedin=CocFzf_YankHeader
-    syntax match CocFzf_YankFileType /\[ft=\w*\]/ contained containedin=CocFzf_YankHeader
-    highlight default link CocFzf_YankType Typedef
-    highlight default link CocFzf_YankFileType Ignore
-  endif
 endfunction
 
 function! s:parse_yanks(yanks) abort
