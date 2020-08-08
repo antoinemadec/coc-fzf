@@ -4,7 +4,6 @@ let s:prompt = 'Coc Extensions> '
 
 function! coc_fzf#extensions#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let first_call = a:0 ? a:1 : 1
   let exts = CocAction('extensionStats')
   if !empty(exts)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
@@ -15,10 +14,6 @@ function! coc_fzf#extensions#fzf_run(...) abort
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(opts))
-    call coc_fzf#common#remap_enter_to_save_fzf_selector()
-    if (!first_call)
-      call coc_fzf#common#fzf_selector_restore()
-    endif
   else
     call coc_fzf#common#echom_info('extensions list is empty')
   endif
@@ -60,7 +55,7 @@ function! s:extension_handler(ext) abort
     elseif parsed.state == '+'
       silent call CocAction('activeExtension', parsed.id)
     endif
-    call coc_fzf#extensions#fzf_run(0)
+    call coc_fzf#extensions#fzf_run()
   endif
 endfunction
 

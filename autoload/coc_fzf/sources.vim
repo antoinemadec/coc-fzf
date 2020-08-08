@@ -4,7 +4,6 @@ let s:prompt = 'Coc Sources> '
 
 function! coc_fzf#sources#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let first_call = a:0 ? a:1 : 1
   let sources = CocAction('sourceStat')
   if !empty(sources)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
@@ -15,10 +14,6 @@ function! coc_fzf#sources#fzf_run(...) abort
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(opts))
-    call coc_fzf#common#remap_enter_to_save_fzf_selector()
-    if (!first_call)
-      call coc_fzf#common#fzf_selector_restore()
-    endif
   else
     call coc_fzf#common#echom_info('sources list is empty')
   endif
@@ -53,7 +48,7 @@ function! s:source_handler(ext) abort
   let parsed = s:parse_source(a:ext[1:])
   if type(parsed) == v:t_dict
     silent call CocAction("toggleSource", parsed.name)
-    call coc_fzf#sources#fzf_run(0)
+    call coc_fzf#sources#fzf_run()
   endif
 endfunction
 

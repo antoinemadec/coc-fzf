@@ -4,7 +4,6 @@ let s:prompt = 'Coc Services> '
 
 function! coc_fzf#services#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let first_call = a:0 ? a:1 : 1
   let serv = CocAction('services')
   if !empty(serv)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
@@ -15,10 +14,6 @@ function! coc_fzf#services#fzf_run(...) abort
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(opts))
-    call coc_fzf#common#remap_enter_to_save_fzf_selector()
-    if (!first_call)
-      call coc_fzf#common#fzf_selector_restore()
-    endif
   else
     call coc_fzf#common#echom_info('services list is empty')
   endif
@@ -48,7 +43,7 @@ function! s:service_handler(ext) abort
   let parsed = s:parse_service(a:ext[1:])
   if type(parsed) == v:t_dict
     silent call CocAction('toggleService', parsed.id)
-    call coc_fzf#services#fzf_run(0)
+    call coc_fzf#services#fzf_run()
   endif
 endfunction
 
