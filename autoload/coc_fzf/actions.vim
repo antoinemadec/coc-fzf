@@ -13,7 +13,6 @@ function! coc_fzf#actions#fzf_run() abort
           \ 'options': ['--multi', '--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
     call fzf#run(fzf#wrap(opts))
   else
     call coc_fzf#common#echom_info('actions list is empty')
@@ -22,9 +21,10 @@ endfunction
 
 function! s:format_coc_action(item) abort
   " title [clientId] (kind)
-  let str = a:item.title . ' [' . a:item.clientId . ']'
+  let str = a:item.title .
+        \ coc_fzf#common_fzf_vim#yellow(' [' . a:item.clientId . ']', 'Type')
   if exists('a:item.kind')
-    let str .=  ' (' . a:item.kind . ')'
+    let str .=  coc_fzf#common_fzf_vim#green(' (' . a:item.kind . ')', 'Comment')
   endif
   return str
 endfunction
@@ -33,26 +33,10 @@ function! s:get_actions() abort
   let entries = map(copy(g:coc_fzf_actions), 's:format_coc_action(v:val)')
   let index = 0
   while index < len(entries)
-     let entries[index] .= ' ' . index
+     let entries[index] .= ' ' . coc_fzf#common_fzf_vim#black(index, 'Ignore')
      let index = index + 1
   endwhile
   return entries
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_ActionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_ActionKind /([^)]\+)/ contained containedin=CocFzf_ActionHeader
-    syntax match CocFzf_ActionId /\[[^\]]\+\]/ contained containedin=CocFzf_ActionHeader
-    syntax match CocFzf_ActionTitle /^>\?\s*[^\[]\+/ contained  containedin=CocFzf_ActionHeader
-    syntax match CocFzf_ActionIndex /\d\+$/ contained containedin=CocFzf_ActionHeader
-    highlight default link CocFzf_ActionIndex Ignore
-    highlight default link CocFzf_ActionTitle Normal
-    highlight default link CocFzf_ActionId Type
-    highlight default link CocFzf_ActionKind Comment
-  endif
 endfunction
 
 function! s:action_handler(act) abort

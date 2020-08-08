@@ -14,7 +14,6 @@ function! coc_fzf#services#fzf_run(...) abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
     call fzf#run(fzf#wrap(opts))
     call coc_fzf#common#remap_enter_to_save_fzf_selector()
     if (!first_call)
@@ -32,27 +31,14 @@ function! s:format_coc_service(item) abort
     let state = '*'
   endif
   let languages = join(a:item.languageIds, ', ')
-  return state . ' ' . a:item.id . ' [' . a:item.state . '] '. l:languages
+  return  coc_fzf#common_fzf_vim#red(state . ' ', 'Special') .
+        \ coc_fzf#common_fzf_vim#yellow(a:item.id, 'Type') .
+        \ coc_fzf#common_fzf_vim#red(' [' . a:item.state . '] ', 'Statement') .
+        \ coc_fzf#common_fzf_vim#black(l:languages, 'Comment')
 endfunction
 
 function! s:get_services(serv) abort
   return map(a:serv, 's:format_coc_service(v:val)')
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_ExtensionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_ServiceStar /\v^\>?\s+\*/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ServiceName /\v%4c[^[]*(\[)@=/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ServiceState /\v\[[^[\]]*\]/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ServiceLanguages /\v(\])@<=.*$/ contained containedin=CocFzf_ExtensionHeader
-    highlight default link CocFzf_ServiceStar Special
-    highlight default link CocFzf_ServiceName Type
-    highlight default link CocFzf_ServiceState Statement
-    highlight default link CocFzf_ServiceLanguages Comment
-  endif
 endfunction
 
 function! s:service_handler(ext) abort

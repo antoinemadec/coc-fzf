@@ -14,7 +14,6 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
     call coc_fzf#common#fzf_run_with_preview(opts)
   else
     call coc_fzf#common#echom_info('diagnostics list is empty')
@@ -25,9 +24,12 @@ function! s:format_coc_diagnostic(item) abort
   if has_key(a:item, 'file')
     let file = substitute(a:item.file, getcwd() . "/" , "", "")
     let msg = substitute(a:item.message, "\n", " ", "g")
-    return file
-          \ . ':' . a:item.lnum . ':' . a:item.col . ' '
-          \ . a:item.severity . ' ' . msg
+    let hl = get({'Error': 'cocerrorsign', 'Warning': 'cocwarningsign',
+          \ 'Information': 'cocinfosign', 'Hint': 'cochintsign'}, a:item.severity, '')
+    return coc_fzf#common_fzf_vim#green(printf("%s:%s:%s ",
+          \ file, a:item.lnum, a:item.col), 'Comment') .
+          \ coc_fzf#common_fzf_vim#red(a:item.severity, hl) . ' ' .
+          \ msg
   endif
   return ''
 endfunction
@@ -39,24 +41,6 @@ function! s:get_diagnostics(diags, current_buffer_only) abort
     let diags = a:diags
   endif
   return map(diags, 's:format_coc_diagnostic(v:val)')
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_DiagnosticHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_DiagnosticFile /^>\?\s*\S\+/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticError /\sError\s/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticWarning /\sWarning\s/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticInfo /\sInformation\s/ contained containedin=CocFzf_DiagnosticHeader
-    syntax match CocFzf_DiagnosticHint /\sHint\s/ contained containedin=CocFzf_DiagnosticHeader
-    highlight default link CocFzf_DiagnosticFile Comment
-    highlight default link CocFzf_DiagnosticError CocErrorSign
-    highlight default link CocFzf_DiagnosticWarning CocWarningSign
-    highlight default link CocFzf_DiagnosticInfo CocInfoSign
-    highlight default link CocFzf_DiagnosticHint CocHintSign
-  endif
 endfunction
 
 function! s:error_handler(err) abort

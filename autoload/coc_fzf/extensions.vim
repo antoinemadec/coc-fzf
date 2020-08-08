@@ -14,7 +14,6 @@ function! coc_fzf#extensions#fzf_run(...) abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
     call fzf#run(fzf#wrap(opts))
     call coc_fzf#common#remap_enter_to_save_fzf_selector()
     if (!first_call)
@@ -29,12 +28,16 @@ function! s:format_coc_extension(item) abort
   " state id version root
   let state = '+'
   if a:item.state == 'activated'
-    let state = '*'
+    let state = coc_fzf#common_fzf_vim#yellow('*', 'MoreMsg')
   elseif a:item.state == 'disabled'
-    let state = '-'
+    let state = coc_fzf#common_fzf_vim#green('-', 'Comment')
   endif
-  let local = a:.item.isLocal ? ' [RTP] ' : ' '
-  return state . ' ' . a:item.id . local .  a:item.version . ' ' . a:item.root
+  let local = a:.item.isLocal ? coc_fzf#common_fzf_vim#green(' [RTP] ', 'MoreMsg') : ' '
+  return state . ' ' .
+        \ coc_fzf#common_fzf_vim#green(a:item.id, 'String') .
+        \ local .
+        \ a:item.version . ' ' .
+        \ coc_fzf#common_fzf_vim#green(a:item.root, 'Comment')
 endfunction
 
 function! s:get_extensions(exts) abort
@@ -44,26 +47,6 @@ function! s:get_extensions(exts) abort
   let exts = extend(l:exts_activated, l:exts_loaded)
   let exts = extend(l:exts, l:exts_disabled)
   return map(exts, 's:format_coc_extension(v:val)')
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_ExtensionHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_ExtensionRoot /\v\s*\f+$/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionActivited /\v^\>?\s+\*/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionLoaded /\v^\>?\s+\+\s/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionDisabled /\v^\>?\s+-\s/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionName /\v%5c\S+/ contained containedin=CocFzf_ExtensionHeader
-    syntax match CocFzf_ExtensionsLocal /\v\[RTP\]/ contained containedin=CocFzf_ExtensionHeader
-    highlight default link CocFzf_ExtensionRoot Comment
-    highlight default link CocFzf_ExtensionDisabled Comment
-    highlight default link CocFzf_ExtensionActivited MoreMsg
-    highlight default link CocFzf_ExtensionLoaded Normal
-    highlight default link CocFzf_ExtensionName String
-    highlight default link CocFzf_ExtensionsLocal MoreMsg
-  endif
 endfunction
 
 function! s:extension_handler(ext) abort

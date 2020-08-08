@@ -14,7 +14,6 @@ function! coc_fzf#location#fzf_run() abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
     call coc_fzf#common#fzf_run_with_preview(opts)
   else
     call coc_fzf#common#echom_info('location list is empty')
@@ -27,29 +26,15 @@ function! s:format_coc_location(item) abort
   " reason: this format is needed for fzf preview
   let cwd = getcwd()
   let filename = substitute(a:item.filename, l:cwd . "/", "", "")
-  return filename . ':' . a:item.lnum . ':' . a:item.col . ':' . a:item.text
-endfunction
-
-function! s:relpath(filename)
-    return s
+  return  coc_fzf#common_fzf_vim#green(filename, 'Directory') .
+        \ coc_fzf#common_fzf_vim#green(printf(':%d:%d:', a:item.lnum, a:item.col),
+        \ 'Comment') .
+        \ a:item.text
 endfunction
 
 function! s:get_location(locs) abort
   let locs = a:locs
   return map(locs, 's:format_coc_location(v:val)')
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_JumplocationHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax region CocFzf_JumplocationRegion start="^" end="[│╭╰]" keepend contains=CocFzf_JumplocationHeader
-    syntax match CocFzf_JumplocationFile /^>\?\s*[^:││╭╰]\+/ contained containedin=CocFzf_JumplocationHeader
-    syntax match CocFzf_JumplocationLineNumber /:\d\+:\d\+:/ contained containedin=CocFzf_JumplocationHeader
-    highlight default link CocFzf_JumplocationFile Directory
-    highlight default link CocFzf_JumplocationLineNumber LineNr
-  endif
 endfunction
 
 function! s:location_handler(loc) abort

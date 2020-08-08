@@ -11,7 +11,6 @@ function! coc_fzf#outline#fzf_run() abort
         \ 'options': ['--multi','--expect='.expect_keys,
         \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
-  call coc_fzf#common#set_syntax(function('s:syntax'))
   call fzf#run(fzf#wrap(opts))
 endfunction
 
@@ -23,14 +22,20 @@ function! s:format_coc_outline_ctags(item) abort
     let type = '[' . parts[3] . ']'
     call cursor(line, 0)
     let [l, l:col] = searchpos('\V'.l:sym, 'nc', l:line)
-    return sym . " " . l:type . " " . l:line . ',' . l:col
+    return sym . " " .
+          \ coc_fzf#common_fzf_vim#yellow(l:type, 'Typedef') . " " .
+          \ coc_fzf#common_fzf_vim#green(l:line, 'Comment') .
+          \ coc_fzf#common_fzf_vim#black(',' . l:col, 'Ignore')
   else
     return ''
   endif
 endfunction
 
 function! s:format_coc_outline_docsym(item) abort
-  let msg = a:item.text . ' [' . a:item.kind . '] ' . a:item.lnum . ',' . a:item.col
+  let msg = a:item.text .
+        \ coc_fzf#common_fzf_vim#yellow(' [' . a:item.kind . '] ', 'Typedef') .
+        \ coc_fzf#common_fzf_vim#green(a:item.lnum, 'Comment') .
+        \ coc_fzf#common_fzf_vim#black(',' . a:item.col, 'Ignore')
   let indent = ''
   let c = 0
   while c < a:item.level
@@ -59,22 +64,6 @@ function! s:get_outline() abort
     return return_list
   else
     return map(symbols, 's:format_coc_outline_docsym(v:val)')
-  endif
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_OutlineHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_OutlineSymbol /\v^>\?\s*\S\+/ contained containedin=CocFzf_OutlineHeader
-    syntax match CocFzf_OutlineType /\v\s\[.*\]/ contained containedin=CocFzf_OutlineHeader
-    syntax match CocFzf_OutlineLine /\s\d\+/ contained containedin=CocFzf_OutlineHeader
-    syntax match CocFzf_OutlineColumn /,\d\+$/ contained containedin=CocFzf_OutlineHeader
-    highlight default link CocFzf_OutlineSymbol Normal
-    highlight default link CocFzf_OutlineType Typedef
-    highlight default link CocFzf_OutlineLine Comment
-    highlight default link CocFzf_OutlineColumn Ignore
   endif
 endfunction
 

@@ -14,7 +14,6 @@ function! coc_fzf#sources#fzf_run(...) abort
           \ 'options': ['--multi','--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
-    call coc_fzf#common#set_syntax(function('s:syntax'))
     call fzf#run(fzf#wrap(opts))
     call coc_fzf#common#remap_enter_to_save_fzf_selector()
     if (!first_call)
@@ -34,30 +33,17 @@ function! s:format_coc_source(item) abort
   let trigger_chars = join(a:item.triggerCharacters, '')
   let file_types = join(a:item.filetypes, ',')
   let shortcut = '['. a:item.shortcut .']'
-  return printf('%s %-30s %-10s %-10s %-3d %s',
-        \ state, a:item.name, shortcut, trigger_chars, a:item.priority, file_types)
+  return printf('%s %-40s %-40s %-40s %25s %s',
+        \ coc_fzf#common_fzf_vim#red(state, 'Special'),
+        \ coc_fzf#common_fzf_vim#yellow(a:item.name, 'Type'),
+        \ coc_fzf#common_fzf_vim#red(shortcut, 'Statement'),
+        \ coc_fzf#common_fzf_vim#cyan(trigger_chars, 'Normal'),
+        \ coc_fzf#common_fzf_vim#magenta(a:item.priority, 'Number'),
+        \ coc_fzf#common_fzf_vim#green(file_types, 'Comment'))
 endfunction
 
 function! s:get_sources(sources) abort
   return map(a:sources, 's:format_coc_source(v:val)')
-endfunction
-
-function! s:syntax() abort
-  if has('syntax') && exists('g:syntax_on')
-    syntax case ignore
-    " apply syntax on everything but prompt
-    exec 'syntax match CocFzf_SourceHeader /^\(\(\s*' . s:prompt . '\?.*\)\@!.\)*$/'
-    syntax match CocFzf_SourceStar /\v^\>?\s+\*/ contained containedin=CocFzf_SourceHeader
-    syntax match CocFzf_SourceName /\v%4c[^[]*(\[)@=/ contained containedin=CocFzf_SourceHeader
-    syntax match CocFzf_SourceState /\v\[[^ ]*\]/ contained containedin=CocFzf_SourceHeader
-    syntax match CocFzf_SourcePriority /\v \d+/ contained containedin=CocFzf_SourceHeader
-    syntax match CocFzf_SourceLanguages /\v( \d+ )@<=.*$/ contained containedin=CocFzf_SourceHeader
-    highlight default link CocFzf_SourceStar Special
-    highlight default link CocFzf_SourceName Type
-    highlight default link CocFzf_SourceState Statement
-    highlight default link CocFzf_SourcePriority Number
-    highlight default link CocFzf_SourceLanguages Comment
-  endif
 endfunction
 
 function! s:source_handler(ext) abort

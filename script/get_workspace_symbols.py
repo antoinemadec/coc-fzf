@@ -9,6 +9,9 @@ parser.add_argument('socket', help="returned by Nvim's v:servername")
 parser.add_argument('bufnr', help="Nvim buffer where query should be done")
 parser.add_argument(
     'query', help="query to pass to CocAction('getWorkspaceSymbols')")
+parser.add_argument('ansi_typedef', help="ansi code for highlight Typedef")
+parser.add_argument('ansi_comment', help="ansi code for highlight Comment")
+parser.add_argument('ansi_ignore', help="ansi code for highlight Ignore")
 parser.add_argument(
     '--kind', nargs=1, help='only search for a specific "kind" (class, function, etc)')
 args = parser.parse_args()
@@ -61,5 +64,10 @@ for item in items:
     kind = get_kind(item['kind'])
     if args.kind is not None and args.kind[0].lower() != kind.lower():
         continue
-    print("{0} [{1}] {2}:{3}:{4}".format(
-        item['name'], kind, filename, lnum, col))
+    name_with_ansi     = item['name']
+    kind_with_ansi     = args.ansi_typedef.replace('STRING', '[' + kind + ']')
+    filename_with_ansi = args.ansi_comment.replace('STRING', filename)
+    lnum_col_with_ansi     = args.ansi_ignore.replace('STRING',
+                                                      ':' + str(lnum) + ':' + str(col))
+    print("{0} {1} {2}{3}".format(
+        name_with_ansi, kind_with_ansi, filename_with_ansi, lnum_col_with_ansi))
