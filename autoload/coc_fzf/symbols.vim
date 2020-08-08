@@ -56,7 +56,6 @@ function! coc_fzf#symbols#fzf_run(...) abort
   let reload_command = printf(command_fmt,
         \ join(ws_symbols_opts), v:servername, bufnr(), '{q}',
         \ ansi_typedef, ansi_comment, ansi_ignore)
-  echom initial_command
   let opts = {
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
