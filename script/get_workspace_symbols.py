@@ -2,6 +2,7 @@
 
 import argparse
 from pynvim import attach
+from urllib.parse import unquote
 
 parser = argparse.ArgumentParser(
     description='connect to running Nvim to get CocAction("getWorkspaceSymbols", query)')
@@ -60,7 +61,7 @@ if items is None or len(items) == 0:
 for item in items:
     lnum = item['location']['range']['start']['line'] + 1
     col = item['location']['range']['start']['character']
-    filename = item['location']['uri'].replace('file://', '')
+    filename = unquote(item['location']['uri'].replace('file://', ''))
     kind = get_kind(item['kind'])
     if args.kind is not None and args.kind[0].lower() != kind.lower():
         continue
