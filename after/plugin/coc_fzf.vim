@@ -11,7 +11,7 @@ if g:coc_fzf_preview_available
   augroup CocFzfLocation
     autocmd!
     let g:coc_enable_locationlist = 0
-    if ('nvim')
+    if has('nvim')
       autocmd User CocLocationsChange call coc_fzf#location#fzf_run()
     else
       " avoid weird race condition in Vim
