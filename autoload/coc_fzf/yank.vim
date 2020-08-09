@@ -21,11 +21,8 @@ function! coc_fzf#yank#fzf_run() abort
         \ 'sink*': function('s:yank_handler'),
         \ 'options': ['--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts
         \ }
-  let opts = coc_fzf#common#with_preview(
-    \   opts,
-    \   g:coc_fzf_plugin_dir . '/script/yank_preview.sh {}',
-    \ )
-  call fzf#run(fzf#wrap(opts))
+  call coc_fzf#common#fzf_run_with_preview(opts, {},
+        \ g:coc_fzf_plugin_dir . '/script/yank_preview.sh {}')
 endfunction
 
 let s:yank_type_names = {
