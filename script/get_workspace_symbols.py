@@ -57,6 +57,8 @@ items = nvim.call('CocAction', 'getWorkspaceSymbols', args.query,
 if items is None or len(items) == 0:
     exit(0)
 
+ignored_colon = args.ansi_ignore.replace('STRING', ':')
+
 for item in items:
     lnum = item['location']['range']['start']['line'] + 1
     col = item['location']['range']['start']['character']
@@ -69,5 +71,6 @@ for item in items:
     filename_with_ansi = args.ansi_comment.replace('STRING', filename)
     lnum_col_with_ansi     = args.ansi_ignore.replace('STRING',
                                                       ':' + str(lnum) + ':' + str(col))
-    print("{0} {1} {2}{3}".format(
-        name_with_ansi, kind_with_ansi, filename_with_ansi, lnum_col_with_ansi))
+    print("{0} {1}{2}{3}{4}".format(
+        name_with_ansi, kind_with_ansi, ignored_colon, filename_with_ansi,
+        lnum_col_with_ansi))

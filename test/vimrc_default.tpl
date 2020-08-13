@@ -6,6 +6,7 @@ Plug '__COCFZFDIR__'
 call plug#end()
 
 set nocompatible
+set mouse=a
 
 let $FZF_DEFAULT_OPTS=''
 

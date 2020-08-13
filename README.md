@@ -69,6 +69,10 @@ Options
 Vimrc Example
 ---------
 ```vim
+" allow to scroll in the preview
+set mouse=a
+
+" mappings
 nnoremap <silent> <space><space> :<C-u>CocFzfList<CR>
 nnoremap <silent> <space>a       :<C-u>CocFzfList diagnostics<CR>
 nnoremap <silent> <space>b       :<C-u>CocFzfList diagnostics --current-buf<CR>

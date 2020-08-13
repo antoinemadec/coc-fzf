@@ -62,8 +62,10 @@ function coc_fzf#common#echom_info(msg) abort
   exe "echohl MoreMsg | echom '[coc-fzf] " . a:msg . "' | echohl None"
 endfunction
 
-function s:with_preview(opts, custom_cmd) abort
+function s:with_preview(placeholder, custom_cmd) abort
   let wrapped_opts = {}
+  let placeholder_opt = {}
+  let preview_window_opt = '--preview-window=+{2}-5'
 
   if g:coc_fzf_preview_available
     let preview_window = g:coc_fzf_preview
@@ -71,11 +73,17 @@ function s:with_preview(opts, custom_cmd) abort
       let preview_window = get(g:, 'fzf_preview_window', &columns >= 120 ? 'right': '')
     endif
     if len(preview_window)
-      let wrapped_opts = fzf#vim#with_preview(a:opts, preview_window, g:coc_fzf_preview_toggle_key)
-      if strlen(a:custom_cmd)
+      if !empty(a:placeholder)
+        let placeholder_opt = {'placeholder': a:placeholder}
+        let scroll = split(a:placeholder, ':')[1]
+        let preview_window_opt = '--preview-window=+' . scroll . '-5'
+      endif
+      let wrapped_opts = fzf#vim#with_preview(placeholder_opt, preview_window, g:coc_fzf_preview_toggle_key)
+      if !empty(a:custom_cmd)
         let preview_command_index = index(wrapped_opts.options, '--preview') + 1
         let wrapped_opts.options[preview_command_index] = a:custom_cmd
       endif
+      let wrapped_opts.options += ['--delimiter=:', preview_window_opt]
     endif
   endif
 
@@ -83,9 +91,9 @@ function s:with_preview(opts, custom_cmd) abort
 endfunction
 
 function coc_fzf#common#fzf_run_with_preview(opts, ...) abort
-  let preview_opts = a:0 >= 1 ? a:1 : {}
+  let preview_placeholder = a:0 >= 1 ? a:1 : ""
   let preview_custom_cmd = a:0 >= 2 ? a:2 : ""
-  let extra = s:with_preview(preview_opts, preview_custom_cmd)
+  let extra = s:with_preview(preview_placeholder, preview_custom_cmd)
   let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
   let merged = extend(copy(a:opts), extra)
   call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
