@@ -11,6 +11,7 @@ function! coc_fzf#extensions#fzf_run(...) abort
           \ 'source': s:get_extensions(exts),
           \ 'sink*': function('s:extension_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
+          \ '--delimiter=:', '--preview-window=+{2}-5',
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(opts))

@@ -11,6 +11,7 @@ function! coc_fzf#actions#fzf_run() abort
           \ 'source': s:get_actions(),
           \ 'sink*': function('s:action_handler'),
           \ 'options': ['--multi', '--expect='.expect_keys,
+          \ '--delimiter=:', '--preview-window=+{2}-5',
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(opts))

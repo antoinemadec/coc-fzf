@@ -12,6 +12,7 @@ function! coc_fzf#diagnostics#fzf_run(...) abort
           \ 'source': s:get_diagnostics(diags, l:current_buffer_only),
           \ 'sink*': function('s:error_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
+          \ '--delimiter=:', '--preview-window=+{2}-5',
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call coc_fzf#common#fzf_run_with_preview(opts)

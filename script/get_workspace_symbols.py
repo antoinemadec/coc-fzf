@@ -69,5 +69,5 @@ for item in items:
     filename_with_ansi = args.ansi_comment.replace('STRING', filename)
     lnum_col_with_ansi     = args.ansi_ignore.replace('STRING',
                                                       ':' + str(lnum) + ':' + str(col))
-    print("{0} {1} {2}{3}".format(
+    print("{0} {1}:{2}{3}".format(
         name_with_ansi, kind_with_ansi, filename_with_ansi, lnum_col_with_ansi))

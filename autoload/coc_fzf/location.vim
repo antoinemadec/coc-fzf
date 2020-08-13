@@ -12,6 +12,7 @@ function! coc_fzf#location#fzf_run() abort
           \ 'source': s:get_location(locs),
           \ 'sink*': function('s:location_handler'),
           \ 'options': ['--multi','--expect='.expect_keys,
+          \ '--delimiter=:', '--preview-window=+{2}-5',
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call coc_fzf#common#fzf_run_with_preview(opts)

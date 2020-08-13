@@ -60,9 +60,10 @@ function! coc_fzf#symbols#fzf_run(...) abort
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys, '--bind', 'change:reload:'.reload_command,
+        \ '--delimiter=:', '--preview-window=+{3}-5',
         \ '--phony', '-q', initial_query, '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
-  call coc_fzf#common#fzf_run_with_preview(opts, {'placeholder': '{-1}'})
+  call coc_fzf#common#fzf_run_with_preview(opts, {'placeholder': '{2}:{3}'})
 endfunction
 
 function! s:symbol_handler(sym) abort
@@ -77,7 +78,7 @@ function! s:parse_symbol(sym) abort
   let parsed_dict_list = []
   for str in a:sym
     let parsed_dict = {}
-    let match = matchlist(str, '^\(.* \[[^[]*\]\) \(.*\):\(\d\+\):\(\d\+\)')[1:4]
+    let match = matchlist(str, '^\(.* \[[^[]*\]\):\(.*\):\(\d\+\):\(\d\+\)')[1:4]
     if empty(match) || empty(l:match[0])
       return
     endif
