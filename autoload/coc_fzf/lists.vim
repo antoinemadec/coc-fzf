@@ -20,7 +20,7 @@ function! coc_fzf#lists#fzf_run(...) abort
     let opts = {
           \ 'source': s:get_lists(),
           \ 'sink*': function('s:list_handler'),
-          \ 'options': ['--multi','--expect='.expect_keys,
+          \ 'options': ['--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call fzf#run(fzf#wrap(opts))
