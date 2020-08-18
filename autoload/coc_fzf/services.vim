@@ -44,6 +44,7 @@ function! s:service_handler(ext) abort
   if type(parsed) == v:t_dict
     silent call CocAction('toggleService', parsed.id)
     call coc_fzf#services#fzf_run()
+    call coc_fzf#common#enter_term_mode()
   endif
 endfunction
 

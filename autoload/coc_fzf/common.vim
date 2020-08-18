@@ -16,6 +16,13 @@ function! coc_fzf#common#call_last_logged_function() abort
   endif
 endfunction
 
+function coc_fzf#common#enter_term_mode() abort
+  " see: https://github.com/neovim/neovim/pull/12254
+    if has('nvim') && !has('nvim-0.5.0')
+      call feedkeys('i')
+    endif
+endfunction
+
 function! s:redir_exec(command) abort
     redir =>output
     silent exec a:command

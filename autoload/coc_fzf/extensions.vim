@@ -56,6 +56,7 @@ function! s:extension_handler(ext) abort
       silent call CocAction('activeExtension', parsed.id)
     endif
     call coc_fzf#extensions#fzf_run()
+    call coc_fzf#common#enter_term_mode()
   endif
 endfunction
 
