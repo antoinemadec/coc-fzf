@@ -135,8 +135,8 @@ function coc_fzf#common#process_file_action(key, parsed_dict_list) abort
     execute 'buffer' bufnr(first["filename"], 1)
   endif
   if type(first) == v:t_dict
-    mark '
     call cursor(first["lnum"], first["col"])
+    mark '
     normal! zz
   endif
 
