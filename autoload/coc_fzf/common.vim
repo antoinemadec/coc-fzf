@@ -30,9 +30,22 @@ function! s:redir_exec(command) abort
     return output
 endfunction
 
-function coc_fzf#common#get_list_names(...) abort
-  let opt = a:0 ? ' ' . a:1 . ' ' : ' '
-  return systemlist(g:coc_fzf_plugin_dir . '/script/get_lists.sh' . opt . join(coc#rpc#request('listNames', [])))
+let s:list_sources = {}
+
+function coc_fzf#common#get_list_sources(...) abort
+  let s:list_sources = map(CocAction('listDescriptions'), '{"description": v:val, "wrapper": v:null}')
+  let all_sources = keys(s:list_sources)
+  let original_sources = []
+  for src in all_sources
+    if filereadable(printf('%s/autoload/coc_fzf/%s.vim', g:coc_fzf_plugin_dir, src))
+      let original_sources += [src]
+    endif
+  endfor
+  let wrapper_sources = filter(copy(all_sources), 'index(original_sources, v:val)==-1')
+  for src in wrapper_sources
+    let s:list_sources[src].wrapper = 'CocList ' . src
+  endfor
+  return s:list_sources
 endfunction
 
 let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', 'Method',
@@ -54,9 +67,9 @@ function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
     endif
     return join(symbols_opts, "\n")
   endif
-  let sources_list = coc_fzf#common#get_list_names('--no-description')
-  if index(sources_list, source) < 0
-    return join(sources_list, "\n")
+  let list_sources = sort(keys(coc_fzf#common#get_list_sources()))
+  if index(list_sources, source) < 0
+    return join(list_sources, "\n")
   endif
   return ''
 endfunction
