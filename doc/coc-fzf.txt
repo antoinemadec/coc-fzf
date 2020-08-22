@@ -3,15 +3,17 @@
 ===============================================================================
 Contents ~
 
- 1. Introduction                                         |coc-fzf-introduction|
- 2. Rationale                                               |coc-fzf-rationale|
- 3. Installation                                         |coc-fzf-installation|
- 4. Commands                                                 |coc-fzf-commands|
- 5. Options                                                   |coc-fzf-options|
- 6. Vimrc Example                                       |coc-fzf-vimrc-example|
- 7. FAQ                                                           |coc-fzf-faq|
- 8. License                                                   |coc-fzf-license|
- 9. References                                             |coc-fzf-references|
+ 1. Introduction                            |coc-fzf-introduction|
+ 2. Rationale                               |coc-fzf-rationale|
+ 3. Installation                            |coc-fzf-installation|
+ 4. Commands                                |coc-fzf-commands|
+  4.1. Original Sources                     |coc-fzf-original-sources|
+  4.2. Wrapper Sources                      |coc-fzf-wrapper-sources|
+ 5. Options                                 |coc-fzf-options|
+ 6. Vimrc Example                           |coc-fzf-vimrc-example|
+ 7. FAQ                                     |coc-fzf-faq|
+ 8. License                                 |coc-fzf-license|
+ 9. References                              |coc-fzf-references|
 
 ===============================================================================
                                                          *coc-fzf-introduction*
@@ -52,21 +54,31 @@ Make sure to have the following plugins in your **vimrc**:
                                                              *coc-fzf-commands*
 Commands ~
 
-| Command                                     | List                                                            | Preview | Multi-select | Vim support | ~
-| `:CocFzfList`                                 | Equivalent to :CocList                                          | -       | -            | ✅          |
-| `:CocFzfList actions`                         | Equivalent to :CocList actions                                  | -       | -            | ✅          |
-| `:CocFzfList commands`                        | Equivalent to :CocList commands                                 | -       | -            | ✅          |
-| `:CocFzfList diagnostics`                     | Equivalent to :CocList diagnostics                              | ✅      | ✅           | ✅          |
-| `:CocFzfList diagnostics --current-buf`       | Equivalent to :CocList diagnostics in the current buffer only   | ✅      | ✅           | ✅          |
-| `:CocFzfList extensions`                      | Equivalent to :CocList extensions                               | -       | -            | ✅          |
-| `:CocFzfList location`                        | Equivalent to :CocList location. Requires fzf.vim [7]           | ✅      | ✅           | ✅          |
-| `:CocFzfList outline`                         | Equivalent to :CocList outline, with colors. Requires ctags [8] | -       | ✅           | ✅          |
-| `:CocFzfList services`                        | Equivalent to :CocList services                                 | -       | -            | ✅          |
-| `:CocFzfList sources `                        | Equivalent to :CocList sources                                  | -       | -            | ✅          |
-| `:CocFzfList symbols ({query})`               | Equivalent to :CocList symbols                                  | ✅      | ✅           | ❌          |
-| `:CocFzfList symbols --kind {kind} ({query})` | Equivalent to :CocList symbols -kind {kind}                     | ✅      | ✅           | ❌          |
-| `:CocFzfList yank`                            | Equivalent to :CocList yank. Requires coc-yank [9]              | ✅      | ✅           | ✅          |
-| `:CocFzfListResume`                           | Equivalent to :CocListResume                                    | -       | -            | ✅          |
+| Command                     | List                       | ~
+| `:CocFzfList`                 | List all list sources      |
+| `:CocFzfList --original-only` | List only original sources |
+| `:CocFzfList {source}`        | Run a list source          |
+| `:CocFzfListResume`           | Retrieve last list source  |
+
+-------------------------------------------------------------------------------
+                                                     *coc-fzf-original-sources*
+Original Sources ~
+
+These are the list sources implemented with FZF:
+
+| Source                          | List                                                            | Preview | Multi-select | Vim support | ~
+| `actions`                         | Equivalent to :CocList actions                                  | -       | -            | ✅          |
+| `commands`                        | Equivalent to :CocList commands                                 | -       | -            | ✅          |
+| `diagnostics`                     | Equivalent to :CocList diagnostics                              | ✅      | ✅           | ✅          |
+| `diagnostics --current-buf`       | Equivalent to :CocList diagnostics in the current buffer only   | ✅      | ✅           | ✅          |
+| `extensions`                      | Equivalent to :CocList extensions                               | -       | -            | ✅          |
+| `location`                        | Equivalent to :CocList location. Requires fzf.vim [7]           | ✅      | ✅           | ✅          |
+| `outline`                         | Equivalent to :CocList outline, with colors. Requires ctags [8] | -       | ✅           | ✅          |
+| `services`                        | Equivalent to :CocList services                                 | -       | -            | ✅          |
+| `sources`                         | Equivalent to :CocList sources                                  | -       | -            | ✅          |
+| `symbols ({query})`               | Equivalent to :CocList symbols                                  | ✅      | ✅           | ❌          |
+| `symbols --kind {kind} ({query})` | Equivalent to :CocList symbols -kind {kind}                     | ✅      | ✅           | ❌          |
+| `yank`                            | Equivalent to :CocList yank. Requires coc-yank [9]              | ✅      | ✅           | ✅          |
 
 FZF bindings (default):
   - **ctrl-t**: open in tab
@@ -74,6 +86,15 @@ FZF bindings (default):
   - **ctrl-s**: open in horizontal split
   - **tab**: multi-select, populate quickfix window
   - **?**: toggle preview window
+
+-------------------------------------------------------------------------------
+                                                      *coc-fzf-wrapper-sources*
+Wrapper Sources ~
+
+Not every list source is implementable with FZF.
+For those sources, `:CocFzfList' acts as a wrapper calling `:CocList'
+
+Wrapper Sources appear with the **[wrapper]** mention when running `:CocFzfList`
 
 ===============================================================================
                                                               *coc-fzf-options*

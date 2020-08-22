@@ -30,9 +30,22 @@ function! s:redir_exec(command) abort
     return output
 endfunction
 
-function coc_fzf#common#get_list_names(...) abort
-  let opt = a:0 ? ' ' . a:1 . ' ' : ' '
-  return systemlist(g:coc_fzf_plugin_dir . '/script/get_lists.sh' . opt . join(coc#rpc#request('listNames', [])))
+let s:list_sources = {}
+
+function coc_fzf#common#get_list_sources(...) abort
+  let s:list_sources = map(CocAction('listDescriptions'), '{"description": v:val, "wrapper": v:null}')
+  let all_sources = keys(s:list_sources)
+  let original_sources = []
+  for src in all_sources
+    if filereadable(printf('%s/autoload/coc_fzf/%s.vim', g:coc_fzf_plugin_dir, src))
+      let original_sources += [src]
+    endif
+  endfor
+  let wrapper_sources = filter(copy(all_sources), 'index(original_sources, v:val)==-1')
+  for src in wrapper_sources
+    let s:list_sources[src].wrapper = 'CocList ' . src
+  endfor
+  return s:list_sources
 endfunction
 
 let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', 'Method',
@@ -42,31 +55,55 @@ let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', '
       \ 'TypeParameter']
 
 function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
+  let coc_fzf_list_opts = ['--original-only']
   let diagnostics_opts = ['--current-buf']
   let symbols_opts = ['--kind']
-  let CmdLineList = split(a:CmdLine)
-  let source = len(l:CmdLineList) >= 2 ? l:CmdLineList[1] : ''
+  let args_list = split(a:CmdLine)[1:]
+  " CocFzfList options
+  if len(args_list) && args_list[0][0] == '-'
+    if args_list[0] == '--original-only'
+      return ''
+    else
+      return join(coc_fzf_list_opts, "\n")
+    endif
+  endif
+  " source options
+  let source = len(args_list) >= 1 ? args_list[0] : ''
   if source == 'diagnostics'
     return join(diagnostics_opts, "\n")
   elseif source == 'symbols'
-    if index(CmdLineList[-2:-1], '--kind') >= 0
+    if index(args_list[-2:-1], '--kind') >= 0
       return join(g:coc_fzf#common#kinds, "\n")
     endif
     return join(symbols_opts, "\n")
   endif
-  let sources_list = coc_fzf#common#get_list_names('--no-description')
-  if index(sources_list, source) < 0
-    return join(sources_list, "\n")
+  let list_sources = sort(keys(coc_fzf#common#get_list_sources()))
+  if index(list_sources, source) < 0
+    return join(coc_fzf_list_opts + list_sources, "\n")
   endif
   return ''
 endfunction
 
-function coc_fzf#common#echom_error(msg) abort
-  exe "echohl Error | echom '[coc-fzf] " . a:msg . "' | echohl None"
+function coc_fzf#common#echom_error(msg, ...) abort
+  let delay = a:0 ? a:1 : 0
+  call s:echom_core(a:msg, 'Error', delay)
 endfunction
 
-function coc_fzf#common#echom_info(msg) abort
-  exe "echohl MoreMsg | echom '[coc-fzf] " . a:msg . "' | echohl None"
+function coc_fzf#common#echom_info(msg, ...) abort
+  let delay = a:0 ? a:1 : 0
+  call s:echom_core(a:msg, 'MoreMsg', delay)
+endfunction
+
+function s:echom_core(msg, highlight, delay)
+  let cmd = "echohl " .  a:highlight . " | echom '[coc-fzf] " . a:msg . "' | echohl None"
+  if a:delay == 0
+    exe cmd
+  else
+    exe "function! s:echom_cb(timer) abort\n"
+          \ cmd . "\n"
+          \ "endfunction"
+    let timer = timer_start(a:delay, function('s:echom_cb'))
+  endif
 endfunction
 
 function s:with_preview(placeholder, custom_cmd) abort

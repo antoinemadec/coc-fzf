@@ -5,19 +5,21 @@ let s:prompt = 'Coc Symbols> '
 function! coc_fzf#symbols#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
 
+  if !CocHasProvider('workspaceSymbols')
+    call coc_fzf#common#echom_info('Workspace symbols provider not found for current document')
+    return
+  endif
   if !has('nvim')
     " get_workspace_symbols.py only supports nvim, PR are welcome
-    call coc_fzf#common#echom_error('symbols are only supported with neovim')
+    call coc_fzf#common#echom_info('"CocFzfList symbols" only supported with neovim, '.
+          \ 'fallback to CocList', 300)
+    execute 'CocList symbols'
     return
   endif
   let python3 = get(g:, 'python3_host_prog', 'python3')
   if !executable(python3)
     call coc_fzf#common#echom_error(string(python3) . ' is not executable.')
     call coc_fzf#common#echom_error('You need to set g:python3_host_prog.')
-    return
-  endif
-  if !CocHasProvider('workspaceSymbols')
-    call coc_fzf#common#echom_info('Workspace symbols provider not found for current document')
     return
   endif
 
