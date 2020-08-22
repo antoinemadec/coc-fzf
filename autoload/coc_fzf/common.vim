@@ -84,12 +84,26 @@ function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
   return ''
 endfunction
 
-function coc_fzf#common#echom_error(msg) abort
-  exe "echohl Error | echom '[coc-fzf] " . a:msg . "' | echohl None"
+function coc_fzf#common#echom_error(msg, ...) abort
+  let delay = a:0 ? a:1 : 0
+  call s:echom_core(a:msg, 'Error', delay)
 endfunction
 
-function coc_fzf#common#echom_info(msg) abort
-  exe "echohl MoreMsg | echom '[coc-fzf] " . a:msg . "' | echohl None"
+function coc_fzf#common#echom_info(msg, ...) abort
+  let delay = a:0 ? a:1 : 0
+  call s:echom_core(a:msg, 'MoreMsg', delay)
+endfunction
+
+function s:echom_core(msg, highlight, delay)
+  let cmd = "echohl " .  a:highlight . " | echom '[coc-fzf] " . a:msg . "' | echohl None"
+  if a:delay == 0
+    exe cmd
+  else
+    exe "function! s:echom_cb(timer) abort\n"
+          \ cmd . "\n"
+          \ "endfunction"
+    let timer = timer_start(a:delay, function('s:echom_cb'))
+  endif
 endfunction
 
 function s:with_preview(placeholder, custom_cmd) abort

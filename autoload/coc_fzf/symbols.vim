@@ -11,7 +11,8 @@ function! coc_fzf#symbols#fzf_run(...) abort
   endif
   if !has('nvim')
     " get_workspace_symbols.py only supports nvim, PR are welcome
-    call coc_fzf#common#echom_info('symbols are only supported with neovim, fallback to CocList')
+    call coc_fzf#common#echom_info('"CocFzfList symbols" only supported with neovim, '.
+          \ 'fallback to CocList', 300)
     execute 'CocList symbols'
     return
   endif
