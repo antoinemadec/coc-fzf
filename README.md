@@ -29,11 +29,12 @@ Plug 'antoinemadec/coc-fzf'
 
 ## Commands
 
-| Command                | List                      |
-| ---                    | ---                       |
-| `:CocFzfList`          | List all list sources     |
-| `:CocFzfList {source}` | Run a list source         |
-| `:CocFzfListResume`    | Retrieve last list source |
+| Command                       | List                       |
+| ---                           | ---                        |
+| `:CocFzfList`                 | List all list sources      |
+| `:CocFzfList --original-only` | List only original sources |
+| `:CocFzfList {source}`        | Run a list source          |
+| `:CocFzfListResume`           | Retrieve last list source  |
 
 ### Original Sources
 

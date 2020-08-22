@@ -4,17 +4,18 @@ let s:prompt = 'Coc Lists> '
 
 function! coc_fzf#lists#fzf_run(...) abort
   let s:list_sources = coc_fzf#common#get_list_sources()
-  if a:0
+  if a:0 && a:1[0] != '-'
     " execute one source/list
     let src = a:000[0]
     let src_opts = a:000[1:]
     call s:run_source(src, src_opts)
   else
     " prompt all available lists
+    let list_opt = a:0 ? a:1 : ''
     call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
-          \ 'source': s:get_lists(),
+          \ 'source': s:get_lists(list_opt),
           \ 'sink*': function('s:list_handler'),
           \ 'options': ['--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
@@ -24,7 +25,7 @@ function! coc_fzf#lists#fzf_run(...) abort
 endfunction
 
 function s:run_source(src, ...) abort
-  let src_opts = a:000
+  let src_opts = a:0 ? a:1 : []
   if index(sort(keys(s:list_sources)), a:src) < 0
     call coc_fzf#common#echom_error('List ' . a:src . ' does not exist')
     return
@@ -37,9 +38,12 @@ function s:run_source(src, ...) abort
   endif
 endfunction
 
-function s:get_lists() abort
+function s:get_lists(list_opt) abort
   let lists_with_color = []
   for src in sort(keys(s:list_sources))
+    if a:list_opt == '--original-only' && s:list_sources[src].wrapper != v:null
+      continue
+    endif
     let description = s:list_sources[src].description
     let description = description != v:null ? description : ''
     let wrapper = s:list_sources[src].wrapper == v:null ? '' : '[wrapper]'

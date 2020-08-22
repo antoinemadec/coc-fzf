@@ -55,21 +55,31 @@ let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', '
       \ 'TypeParameter']
 
 function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
+  let coc_fzf_list_opts = ['--original-only']
   let diagnostics_opts = ['--current-buf']
   let symbols_opts = ['--kind']
-  let CmdLineList = split(a:CmdLine)
-  let source = len(l:CmdLineList) >= 2 ? l:CmdLineList[1] : ''
+  let args_list = split(a:CmdLine)[1:]
+  " CocFzfList options
+  if len(args_list) && args_list[0][0] == '-'
+    if args_list[0] == '--original-only'
+      return ''
+    else
+      return join(coc_fzf_list_opts, "\n")
+    endif
+  endif
+  " source options
+  let source = len(args_list) >= 1 ? args_list[0] : ''
   if source == 'diagnostics'
     return join(diagnostics_opts, "\n")
   elseif source == 'symbols'
-    if index(CmdLineList[-2:-1], '--kind') >= 0
+    if index(args_list[-2:-1], '--kind') >= 0
       return join(g:coc_fzf#common#kinds, "\n")
     endif
     return join(symbols_opts, "\n")
   endif
   let list_sources = sort(keys(coc_fzf#common#get_list_sources()))
   if index(list_sources, source) < 0
-    return join(list_sources, "\n")
+    return join(coc_fzf_list_opts + list_sources, "\n")
   endif
   return ''
 endfunction
