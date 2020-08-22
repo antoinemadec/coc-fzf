@@ -69,6 +69,15 @@ For those sources, `:CocFzfList` acts as a wrapper calling `:CocList`
 
 Wrapper Sources appear with the **[wrapper]** mention when running `:CocFzfList`
 
+### Add/Delete Sources
+```vim
+" add_list_source(name, description, command)
+call coc_fzf#common#add_list_source('fzf-buffers', 'display open buffers', 'Buffers')
+
+" delete_list_source(name)
+call coc_fzf#common#delete_list_source('fzf-buffers')
+```
+
 ## Options
 
 | Option                         | Type   | Description                                                    | Default value               |

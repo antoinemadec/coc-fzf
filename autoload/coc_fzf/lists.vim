@@ -34,7 +34,8 @@ function s:run_source(src, ...) abort
   if wrapper == v:null
     call call('coc_fzf#' . a:src . '#fzf_run', src_opts)
   else
-    execute wrapper . ' ' . join(src_opts)
+    let str_opts = empty(src_opts) ? '' : ' ' . join(src_opts)
+    execute wrapper . str_opts
   endif
 endfunction
 

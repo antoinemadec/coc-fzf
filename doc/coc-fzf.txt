@@ -9,6 +9,7 @@ Contents ~
  4. Commands                                |coc-fzf-commands|
   4.1. Original Sources                     |coc-fzf-original-sources|
   4.2. Wrapper Sources                      |coc-fzf-wrapper-sources|
+  4.3. Add/Delete Sources                   |coc-fzf-add-delete-sources|
  5. Options                                 |coc-fzf-options|
  6. Vimrc Example                           |coc-fzf-vimrc-example|
  7. FAQ                                     |coc-fzf-faq|
@@ -96,6 +97,16 @@ For those sources, `:CocFzfList' acts as a wrapper calling `:CocList'
 
 Wrapper Sources appear with the **[wrapper]** mention when running `:CocFzfList`
 
+-------------------------------------------------------------------------------
+                                                   *coc-fzf-add-delete-sources*
+Add/Delete Sources ~
+>
+  " add_list_source(name, description, command)
+  call coc_fzf#common#add_list_source('fzf-buffers', 'display open buffers', 'Buffers')
+
+  " delete_list_source(name)
+  call coc_fzf#common#delete_list_source('fzf-buffers')
+<
 ===============================================================================
                                                               *coc-fzf-options*
 Options ~

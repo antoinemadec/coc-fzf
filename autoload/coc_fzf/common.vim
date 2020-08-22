@@ -30,10 +30,18 @@ function! s:redir_exec(command) abort
     return output
 endfunction
 
+" list_sources['name'] = {
+"   'description': 'string',
+"   'wrapper':     'command' or v:null,
+"   'deleted':     0
+" }
 let s:list_sources = {}
 
-function coc_fzf#common#get_list_sources(...) abort
-  let s:list_sources = map(CocAction('listDescriptions'), '{"description": v:val, "wrapper": v:null}')
+function coc_fzf#common#get_list_sources() abort
+  let s:list_sources = extend(
+        \ map(CocAction('listDescriptions'),
+        \ '{"description": v:val, "wrapper": v:null, "deleted": 0}'),
+        \ s:list_sources)
   let all_sources = keys(s:list_sources)
   let original_sources = []
   for src in all_sources
@@ -43,9 +51,22 @@ function coc_fzf#common#get_list_sources(...) abort
   endfor
   let wrapper_sources = filter(copy(all_sources), 'index(original_sources, v:val)==-1')
   for src in wrapper_sources
-    let s:list_sources[src].wrapper = 'CocList ' . src
+    if s:list_sources[src].wrapper == v:null
+      let s:list_sources[src].wrapper = 'CocList ' . src
+    endif
   endfor
-  return s:list_sources
+  return filter(copy(s:list_sources), 'v:val.deleted == 0')
+endfunction
+
+function coc_fzf#common#add_list_source(name, description, wrapper) abort
+  let s:list_sources[a:name] = {
+        \ "description": a:description,
+        \ "wrapper": a:wrapper,
+        \ "deleted": 0}
+endfunction
+
+function coc_fzf#common#delete_list_source(name) abort
+  let s:list_sources[a:name].deleted = 1
 endfunction
 
 let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', 'Method',
