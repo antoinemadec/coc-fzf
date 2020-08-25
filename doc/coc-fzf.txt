@@ -58,7 +58,7 @@ Or, if you prefer using the **release** branch:
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 
-Also consider installing bat [11] for colorful previews.
+Also consider installing bat [7] for colorful previews.
 
 ===============================================================================
                                                              *coc-fzf-commands*
@@ -76,19 +76,20 @@ Original Sources ~
 
 These are the list sources implemented with FZF:
 
-| Source                          | List                                                            | Preview | Multi-select | Vim support | ~
-| `actions`                         | Equivalent to :CocList actions                                  | -       | -            | ✅          |
-| `commands`                        | Equivalent to :CocList commands                                 | -       | -            | ✅          |
-| `diagnostics`                     | Equivalent to :CocList diagnostics                              | ✅      | ✅           | ✅          |
-| `diagnostics --current-buf`       | Equivalent to :CocList diagnostics in the current buffer only   | ✅      | ✅           | ✅          |
-| `extensions`                      | Equivalent to :CocList extensions                               | -       | -            | ✅          |
-| `location`                        | Equivalent to :CocList location. Requires fzf.vim [7]           | ✅      | ✅           | ✅          |
-| `outline`                         | Equivalent to :CocList outline, with colors. Requires ctags [8] | -       | ✅           | ✅          |
-| `services`                        | Equivalent to :CocList services                                 | -       | -            | ✅          |
-| `sources`                         | Equivalent to :CocList sources                                  | -       | -            | ✅          |
-| `symbols ({query})`               | Equivalent to :CocList symbols                                  | ✅      | ✅           | ❌          |
-| `symbols --kind {kind} ({query})` | Equivalent to :CocList symbols -kind {kind}                     | ✅      | ✅           | ❌          |
-| `yank`                            | Equivalent to :CocList yank. Requires coc-yank [9]              | ✅      | ✅           | ✅          |
+| Source                          | List                                                   | Preview | Multi-select | Vim support |~
+| `actions`                         | Like :CocList actions                                  | -       | -            | ✅          |
+| `commands`                        | Like :CocList commands                                 | -       | -            | ✅          |
+| `diagnostics`                     | Like :CocList diagnostics                              | ✅      | ✅           | ✅          |
+| `diagnostics --current-buf`       | Like :CocList diagnostics in the current buffer only   | ✅      | ✅           | ✅          |
+| `extensions`                      | Like :CocList extensions                               | -       | -            | ✅          |
+| `location`                        | Like :CocList location.  Requires fzf.vim [8]          | ✅      | ✅           | ✅          |
+| `outline`                         | Like :CocList outline, with colors. Requires ctags [9] | -       | ✅           | ✅          |
+| `services`                        | Like :CocList services                                 | -       | -            | ✅          |
+| `snippets`                        | Like :CocList snippets. Requires coc-snippets [10]     | ✅      | ✅           | ✅          |
+| `sources`                         | Like :CocList sources                                  | -       | -            | ✅          |
+| `symbols ({query})`               | Like :CocList symbols                                  | ✅      | ✅           | ❌          |
+| `symbols --kind {kind} ({query})` | Like :CocList symbols -kind {kind}                     | ✅      | ✅           | ❌          |
+| `yank`                            | Like :CocList yank. Requires coc-yank [11]             | ✅      | ✅           | ✅          |
 
 FZF bindings (default):
   - **ctrl-t**: open in tab
@@ -148,7 +149,7 @@ Vimrc Example ~
 FAQ ~
 
 **Q**: How to get the FZF floating window?
-**A**: You can look at FZF Vim integration [10]:
+**A**: You can look at FZF Vim integration [12]:
 >
   let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 <
@@ -161,7 +162,7 @@ FAQ ~
   nmap <silent> gr <Plug>(coc-references)
 <
 **Q**: How to get colors in previews?
-**A**: Install bat [11].
+**A**: Install bat [7].
 
 **Q**: CocFzf looks different from my other Fzf commands. How to make it the same?
 **A**: By default, CocFzf tries to mimic CocList. Here is how to change this:
@@ -185,10 +186,11 @@ References ~
 [4] https://github.com/neoclide/coc.nvim/wiki/Using-coc-list#builtin-list-sources
 [5] https://gist.github.com/RobertBuhren/02e05506255c667c0038ce74ee1cef96
 [6] https://github.com/neoclide/coc-denite
-[7] https://github.com/junegunn/fzf.vim
-[8] https://github.com/universal-ctags/ctags
-[9] https://github.com/neoclide/coc-yank
-[10] https://github.com/junegunn/fzf/blob/master/README-VIM.md
-[11] https://github.com/sharkdp/bat
+[7] https://github.com/sharkdp/bat
+[8] https://github.com/junegunn/fzf.vim
+[9] https://github.com/universal-ctags/ctags
+[10] https://github.com/neoclide/coc-snippets
+[11] https://github.com/neoclide/coc-yank
+[12] https://github.com/junegunn/fzf/blob/master/README-VIM.md
 
 vim: ft=help
