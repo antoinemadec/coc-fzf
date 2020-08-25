@@ -21,11 +21,21 @@ It was inspired by [Robert Buhren's functions][RobertBuhren] and [coc-denite][co
 
 Make sure to have the following plugins in your **vimrc**:
 ```vim
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
 Plug 'junegunn/fzf.vim' " needed for previews
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'antoinemadec/coc-fzf'
 ```
+
+Or, if you prefer using the **release** branch:
+```vim
+Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
+Plug 'junegunn/fzf.vim' " needed for previews
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
+```
+
+Also consider installing [bat][bat] for colorful previews.
 
 ## Commands
 

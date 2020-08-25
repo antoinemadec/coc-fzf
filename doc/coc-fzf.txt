@@ -46,11 +46,20 @@ Installation ~
 
 Make sure to have the following plugins in your **vimrc**:
 >
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
   Plug 'junegunn/fzf.vim' " needed for previews
+  Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
   Plug 'antoinemadec/coc-fzf'
-<
+
+Or, if you prefer using the **release** branch:
+>
+  Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
+  Plug 'junegunn/fzf.vim' " needed for previews
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
+
+Also consider installing bat [11] for colorful previews.
+
 ===============================================================================
                                                              *coc-fzf-commands*
 Commands ~
