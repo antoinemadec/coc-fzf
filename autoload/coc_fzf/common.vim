@@ -138,10 +138,12 @@ function s:with_preview(placeholder, custom_cmd) abort
       let scroll = split(a:placeholder, ':')[1]
       let preview_window_scroll_offset = '+' . scroll . '-5'
     endif
+    let preview_window_opt = preview_window_pos_size
+    if empty(a:custom_cmd)
+      let preview_window_opt .= ':' . preview_window_scroll_offset
+    endif
     let wrapped_opts = fzf#vim#with_preview(
-          \ placeholder_opt,
-          \ preview_window_pos_size . ':' . preview_window_scroll_offset,
-          \ g:coc_fzf_preview_toggle_key)
+          \ placeholder_opt, preview_window_opt, g:coc_fzf_preview_toggle_key)
     let wrapped_opts.options += ['--delimiter=:']
     if !empty(a:custom_cmd)
       let preview_command_index = index(wrapped_opts.options, '--preview') + 1

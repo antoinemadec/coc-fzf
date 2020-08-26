@@ -57,6 +57,7 @@ These are the list sources implemented with FZF:
 | `diagnostics`                     | Like :CocList diagnostics                                     | ✅      | ✅           | ✅          |
 | `diagnostics --current-buf`       | Like :CocList diagnostics in the current buffer only          | ✅      | ✅           | ✅          |
 | `extensions`                      | Like :CocList extensions                                      | -       | -            | ✅          |
+| `issues`                          | Like :CocList issues. Requires [coc-git][coc-git]             | ✅      | -            | ✅          |
 | `location`                        | Like :CocList location. Requires [fzf.vim][fzfvim]            | ✅      | ✅           | ✅          |
 | `outline`                         | Like :CocList outline, with colors. Requires [ctags][ctags]   | -       | ✅           | ✅          |
 | `output`                          | Like :CocList output                                          | -       | ✅           | ✅          |
@@ -156,3 +157,4 @@ MIT
 [coc-snippets]:        https://github.com/neoclide/coc-snippets
 [coc-yank]:            https://github.com/neoclide/coc-yank
 [bat]:                 https://github.com/sharkdp/bat
+[coc-git]:             https://github.com/neoclide/coc-git
