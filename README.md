@@ -59,6 +59,7 @@ These are the list sources implemented with FZF:
 | `extensions`                      | Like :CocList extensions                                      | -       | -            | ✅          |
 | `location`                        | Like :CocList location. Requires [fzf.vim][fzfvim]            | ✅      | ✅           | ✅          |
 | `outline`                         | Like :CocList outline, with colors. Requires [ctags][ctags]   | -       | ✅           | ✅          |
+| `output`                          | Like :CocList output                                          | -       | ✅           | ✅          |
 | `services`                        | Like :CocList services                                        | -       | -            | ✅          |
 | `snippets `                       | Like :CocList snippets. Requires [coc-snippets][coc-snippets] | ✅      | ✅           | ✅          |
 | `sources `                        | Like :CocList sources                                         | -       | -            | ✅          |
