@@ -19,7 +19,8 @@ function! coc_fzf#issues#fzf_run(...) abort
           \'--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
     call coc_fzf#common#fzf_run_with_preview(opts, {},
-          \ g:coc_fzf_plugin_dir . '/script/issues_preview.sh ' . s:issues_tmp_dir . ' {}')
+          \ g:coc_fzf_plugin_dir . '/script/issues_preview.sh ' . s:issues_tmp_dir . ' {}',
+          \ 1)
   else
     call coc_fzf#common#echom_info('issues list is empty')
   endif

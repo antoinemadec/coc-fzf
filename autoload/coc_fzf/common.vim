@@ -123,7 +123,7 @@ function s:echom_core(msg, highlight, delay)
   let timer = timer_start(a:delay, function('s:echom_cb'))
 endfunction
 
-function s:with_preview(placeholder, custom_cmd) abort
+function s:with_preview(placeholder, custom_cmd, wrap) abort
   let wrapped_opts = {}
   let placeholder_opt = {}
   let preview_window_pos_size = g:coc_fzf_preview
@@ -132,6 +132,9 @@ function s:with_preview(placeholder, custom_cmd) abort
   if g:coc_fzf_preview_available
     if empty(preview_window_pos_size)
       let preview_window_pos_size = get(g:, 'fzf_preview_window', &columns >= 120 ? 'right': '')
+      if empty(preview_window_pos_size)
+        return {}
+      endif
     endif
     if !empty(a:placeholder)
       let placeholder_opt = {'placeholder': a:placeholder}
@@ -139,6 +142,9 @@ function s:with_preview(placeholder, custom_cmd) abort
       let preview_window_scroll_offset = '+' . scroll . '-5'
     endif
     let preview_window_opt = preview_window_pos_size
+    if a:wrap
+      let preview_window_opt .= ":wrap"
+    endif
     if empty(a:custom_cmd)
       let preview_window_opt .= ':' . preview_window_scroll_offset
     endif
@@ -157,7 +163,8 @@ endfunction
 function coc_fzf#common#fzf_run_with_preview(opts, ...) abort
   let preview_placeholder = a:0 >= 1 ? a:1 : ""
   let preview_custom_cmd = a:0 >= 2 ? a:2 : ""
-  let extra = s:with_preview(preview_placeholder, preview_custom_cmd)
+  let preview_wrap = a:0 >= 3 ? a:3 : 0
+  let extra = s:with_preview(preview_placeholder, preview_custom_cmd, preview_wrap)
   let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
   let merged = extend(copy(a:opts), extra)
   call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
