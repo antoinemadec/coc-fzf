@@ -35,7 +35,9 @@ function s:run_source(src, ...) abort
     call call('coc_fzf#' . a:src . '#fzf_run', src_opts)
   else
     let str_opts = empty(src_opts) ? '' : ' ' . join(src_opts)
-    execute wrapper . str_opts
+    let cmd = wrapper . str_opts
+    call coc_fzf#common#log_function_call('execute', [cmd])
+    execute cmd
   endif
 endfunction
 
