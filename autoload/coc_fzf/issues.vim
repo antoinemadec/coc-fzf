@@ -9,7 +9,9 @@ function! coc_fzf#issues#fzf_run(...) abort
     call coc_fzf#common#echom_error("coc-git is not installed")
     return
   endif
+  call coc_fzf#common#echom_info("loading issues...", 0)
   let g:coc_fzf_issues = CocAction('listLoadItems', 'issues')
+  call coc_fzf#common#echom_info("loading issues... done", 0)
   if !empty(g:coc_fzf_issues)
     call s:write_body_to_file(g:coc_fzf_issues)
     let opts = {

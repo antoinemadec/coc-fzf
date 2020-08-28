@@ -107,20 +107,52 @@ endfunction
 
 function coc_fzf#common#echom_error(msg, ...) abort
   let delay = a:0 ? a:1 : 10
-  call s:echom_core(a:msg, 'Error', delay)
+  call s:echo_core(a:msg, 'Error', delay, 'echom')
 endfunction
 
 function coc_fzf#common#echom_info(msg, ...) abort
   let delay = a:0 ? a:1 : 10
-  call s:echom_core(a:msg, 'MoreMsg', delay)
+  call s:echo_core(a:msg, 'MoreMsg', delay, 'echom')
 endfunction
 
-function s:echom_core(msg, highlight, delay)
-  let cmd = "echohl " .  a:highlight . " | echom '[coc-fzf] " . a:msg . "' | echohl None"
-  exe "function! s:echom_cb(timer) abort\n"
-        \ cmd . "\n"
-        \ "endfunction"
-  let timer = timer_start(a:delay, function('s:echom_cb'))
+function coc_fzf#common#echo_progress_start(msg) abort
+  let g:coc_fzf_echo_progress = {
+    \ 'msg': a:msg,
+    \ 'frames': ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'],
+    \ 'index': 0,
+    \ 'timer': timer_start(100, function('s:echo_progress_cb'), {'repeat': -1})
+    \ }
+endfunction
+
+function coc_fzf#common#echo_progress_stop() abort
+  call timer_stop(g:coc_fzf_echo_progress.timer)
+endfunction
+
+function s:echo_progress_cb(timer)
+  let d = g:coc_fzf_echo_progress
+  let msg = d.msg . ' ' . d.frames[d.index]
+  call s:echo_core(msg, 'MoreMsg', 0, 'echo')
+  let d.index = (d.index+1) % len(d.frames)
+endfunction
+
+let s:echo_cmd_queue = []
+
+function s:echo_cb(timer) abort
+  if len(s:echo_cmd_queue)
+    exe s:echo_cmd_queue[0]
+    call remove(s:echo_cmd_queue, 0)
+  endif
+endfunction
+
+function s:echo_core(msg, highlight, delay, cmd)
+  let cmd = "echohl " .  a:highlight . " | " . a:cmd . " '[coc-fzf] " . a:msg .
+        \ "' | echohl None"
+  if a:delay == 0
+    exe cmd
+  else
+    let s:echo_cmd_queue += [cmd]
+    let timer = timer_start(a:delay, function('s:echo_cb'))
+  endif
 endfunction
 
 function s:with_preview(placeholder, custom_cmd, wrap) abort
