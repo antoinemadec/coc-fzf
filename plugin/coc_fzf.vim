@@ -8,6 +8,9 @@ else
   let g:loaded_coc_fzf = 'yes'
 endif
 
+if !exists("g:coc_fzf_default_open_mode")
+    let g:coc_fzf_default_open_mode = 'buffer'
+endif
 if !exists("g:coc_fzf_preview_toggle_key")
     let g:coc_fzf_preview_toggle_key = '?'
 endif

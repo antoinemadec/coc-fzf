@@ -97,6 +97,7 @@ call coc_fzf#common#delete_list_source('fzf-buffers')
 | `g:coc_fzf_preview_toggle_key` | string | Change the key to toggle the preview window                    | `'?'`                       |
 | `g:coc_fzf_preview`            | string | Change the preview window position                             | `'up:50%'`                  |
 | `g:coc_fzf_opts`               | array  | Pass additional parameters to fzf, e.g. `['--layout=reverse']` | `['--layout=reverse-list']` |
+| `g:coc_fzf_default_open_mode`  | string | Change the open file mode.                                     | `buffer`                    |
 
 ## Vimrc Example
 ```vim
@@ -138,6 +139,13 @@ nmap <silent> gr <Plug>(coc-references)
 ```vim
 let g:coc_fzf_preview = ''
 let g:coc_fzf_opts = []
+```
+
+**Q**: How to open file in new listed buffer?  
+**A**: You can set `g:coc_fzf_default_open_mode = 'edit'` in your .vimrc
+```vim
+let g:coc_fzf_default_open_mode = 'edit'
+// And u can try 'split', 'vsplit', 'tab split' as default
 ```
 
 License

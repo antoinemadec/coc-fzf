@@ -230,7 +230,11 @@ function coc_fzf#common#process_file_action(key, parsed_dict_list) abort
 
   if !empty(cmd) && stridx('edit', cmd) < 0
     execute 'silent' cmd first["filename"]
+  elseif g:coc_fzf_default_open_mode != 'buffer'
+    execute 'silent' g:coc_fzf_default_open_mode first["filename"]
   else
+    " buffer command will create a unlisted buffer if not created.
+    " edit command will open in exists buffer. Or create a new listed buffer.
     execute 'buffer' bufnr(first["filename"], 1)
   endif
   if type(first) == v:t_dict
