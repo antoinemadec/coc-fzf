@@ -122,11 +122,11 @@ Add/Delete Sources ~
                                                               *coc-fzf-options*
 Options ~
 
-| Option                          | Type   | Description                                                    | Default value             | ~
+| Option                          | Type   | Description                                                    | Default value               | ~
 | g:coc_fzf_preview_toggle_key    | string | Change the key to toggle the preview window                    | `'?'`                       |
-| `g:coc_fzf_preview`               | string | Change the preview window position                             | `'up:50%'`                  |
-| `g:coc_fzf_opts`                  | array  | Pass additional parameters to fzf, e.g. "['--layout=reverse']" | `['--layout=reverse-list']` |
-| g:coc_fzf_default_open_mode     | string | Change the open file mode.                                     | 'buffer'                  |
+| `g:coc_fzf_preview`             | string | Change the preview window position                             | `'up:50%'`                  |
+| `g:coc_fzf_opts`                | array  | Pass additional parameters to fzf, e.g. "['--layout=reverse']" | `['--layout=reverse-list']` |
+| g:coc_fzf_default_open_mode     | string | Change the open file mode.                                     | 'buffer'                    |
 
 ===============================================================================
                                                         *coc-fzf-vimrc-example*
