@@ -2,9 +2,21 @@
 
 let s:prompt = 'Coc Actions> '
 
-function! coc_fzf#actions#fzf_run() abort
+" Pass zero to run for the global buffer and current line, non-zero to run
+" according to visualmode()
+function! coc_fzf#actions#fzf_run(range) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let g:coc_fzf_actions = CocAction('codeActions')
+  if a:range != 0
+    " If the user has specified a range, respect that
+    let g:coc_fzf_actions = CocAction('codeActions', visualmode())
+  else
+    " Get the global actions as well as actions for the current line which are
+    " not already in the global actions.
+    let global_actions = CocAction('codeActions')
+    let line_actions = filter(CocAction('codeActions', 'n'), 'index(global_actions, v:val)==-1')
+    let g:coc_fzf_actions = map(line_actions, "extend(v:val, {'provenance': 'line'})")
+                        \ + map(global_actions, "extend(v:val, {'provenance': 'global'})")
+  endif
   if !empty(g:coc_fzf_actions)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
@@ -25,6 +37,9 @@ function! s:format_coc_action(item) abort
         \ coc_fzf#common_fzf_vim#yellow(' [' . a:item.clientId . ']', 'Type')
   if exists('a:item.kind')
     let str .=  coc_fzf#common_fzf_vim#green(' (' . a:item.kind . ')', 'Comment')
+  endif
+  if exists('a:item.provenance')
+    let str .=  coc_fzf#common_fzf_vim#green(' [' . a:item.provenance . ']', 'Provenance')
   endif
   return str
 endfunction

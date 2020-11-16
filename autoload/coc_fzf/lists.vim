@@ -2,12 +2,13 @@
 
 let s:prompt = 'Coc Lists> '
 
-function! coc_fzf#lists#fzf_run(...) abort
+function! coc_fzf#lists#fzf_run(range, ...) abort
   let s:list_sources = coc_fzf#common#get_list_sources()
   if a:0 && a:1[0] != '-'
     " execute one source/list
     let src = a:000[0]
-    let src_opts = a:000[1:]
+    " Append range to arguments
+    let src_opts = a:000[1:] + [a:range]
     call s:run_source(src, src_opts)
   else
     " prompt all available lists
