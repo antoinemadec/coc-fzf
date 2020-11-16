@@ -4,7 +4,11 @@ let s:prompt = 'Coc Actions> '
 
 function! coc_fzf#actions#fzf_run() abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  let g:coc_fzf_actions = CocAction('codeActions')
+  " Get the global actions as well as actions for the current line,
+  " deduplicate them as well, n^2 algo for uniq from
+  " https://stackoverflow.com/questions/6630860/remove-duplicates-from-a-list-in-vim
+  let actions_with_duplicates= CocAction('codeActions', 'n') + CocAction('codeActions')
+  let g:coc_fzf_actions = filter(copy(actions_with_duplicates), 'index(actions_with_duplicates, v:val, v:key+1)==-1')
   if !empty(g:coc_fzf_actions)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
