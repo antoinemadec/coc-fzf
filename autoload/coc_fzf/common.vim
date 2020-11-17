@@ -228,7 +228,7 @@ function coc_fzf#common#process_file_action(key, parsed_dict_list) abort
   let cmd = coc_fzf#common#get_action_from_key(a:key)
   let first = a:parsed_dict_list[0]
 
-  if !empty(cmd) && stridx('edit', cmd) < 0
+  if !empty(cmd)
     execute 'silent' cmd first["filename"]
   else
     execute 'buffer' bufnr(first["filename"], 1)
