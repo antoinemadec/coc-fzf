@@ -21,5 +21,5 @@ endif
 let g:coc_fzf_plugin_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let g:coc_fzf_plugin_dir = fnamemodify(g:coc_fzf_plugin_dir, ':h')
 
-command! -nargs=* -complete=custom,coc_fzf#common#list_options CocFzfList call coc_fzf#lists#fzf_run(<f-args>)
+command! -range -nargs=* -complete=custom,coc_fzf#common#list_options CocFzfList call coc_fzf#lists#fzf_run(<range>, <f-args>)
 command CocFzfListResume call coc_fzf#common#call_last_logged_function()

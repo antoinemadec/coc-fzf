@@ -2,13 +2,20 @@
 
 let s:prompt = 'Coc Actions> '
 
-function! coc_fzf#actions#fzf_run() abort
+" Pass zero to run for the global buffer and current line, non-zero to run
+" according to visualmode()
+function! coc_fzf#actions#fzf_run(range) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  " Get the global actions as well as actions for the current line,
-  " deduplicate them as well, n^2 algo for uniq from
-  " https://stackoverflow.com/questions/6630860/remove-duplicates-from-a-list-in-vim
-  let actions_with_duplicates= CocAction('codeActions', 'n') + CocAction('codeActions')
-  let g:coc_fzf_actions = filter(copy(actions_with_duplicates), 'index(actions_with_duplicates, v:val, v:key+1)==-1')
+  if a:range != 0
+    " If the user has specified a range, respect that
+    let g:coc_fzf_actions = CocAction('codeActions', visualmode())
+  else
+    " Get the global actions as well as actions for the current line,
+    " deduplicate them as well, n^2 algo for uniq from
+    " https://stackoverflow.com/questions/6630860/remove-duplicates-from-a-list-in-vim
+    let actions_with_duplicates= CocAction('codeActions', 'n') + CocAction('codeActions')
+    let g:coc_fzf_actions = filter(copy(actions_with_duplicates), 'index(actions_with_duplicates, v:val, v:key+1)==-1')
+  endif
   if !empty(g:coc_fzf_actions)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
