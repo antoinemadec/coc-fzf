@@ -2,20 +2,19 @@
 
 let s:prompt = 'Coc Actions> '
 
-" Pass zero to run for the global buffer and current line, non-zero to run
-" according to visualmode()
-function! coc_fzf#actions#fzf_run(range) abort
+" pass nothing or range=0 to list codeActions for the file and current line,
+" range>0 to run on selected region
+function! coc_fzf#actions#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
-  if a:range != 0
-    " If the user has specified a range, respect that
-    let g:coc_fzf_actions = CocAction('codeActions', visualmode())
+  let range = a:0 ? a:1 : 0
+  if range != 0
+    let g:coc_fzf_actions = map(CocAction('codeActions', visualmode()),
+          \ "extend(v:val, {'provenance': 'selected'})")
   else
-    " Get the global actions as well as actions for the current line which are
-    " not already in the global actions.
-    let global_actions = CocAction('codeActions')
-    let line_actions = filter(CocAction('codeActions', 'n'), 'index(global_actions, v:val)==-1')
+    let file_actions = CocAction('codeActions')
+    let line_actions = filter(CocAction('codeActions', 'n'), 'index(file_actions, v:val)==-1')
     let g:coc_fzf_actions = map(line_actions, "extend(v:val, {'provenance': 'line'})")
-                        \ + map(global_actions, "extend(v:val, {'provenance': 'global'})")
+                        \ + map(file_actions, "extend(v:val, {'provenance': 'file'})")
   endif
   if !empty(g:coc_fzf_actions)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()

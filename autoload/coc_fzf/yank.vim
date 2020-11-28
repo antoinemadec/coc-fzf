@@ -3,7 +3,7 @@
 let s:prompt = 'Coc Yank> '
 let s:yank_relative_file_path = '/coc-yank-data/yank'
 
-function! coc_fzf#yank#fzf_run() abort
+function! coc_fzf#yank#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   if !coc_fzf#common#coc_has_extension('coc-yank')
     call coc_fzf#common#echom_error("coc-yank is not installed")

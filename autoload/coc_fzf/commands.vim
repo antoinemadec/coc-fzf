@@ -2,7 +2,7 @@
 
 let s:prompt = 'Coc Commands> '
 
-function! coc_fzf#commands#fzf_run() abort
+function! coc_fzf#commands#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let cmds = CocAction('commands')
   if !empty(cmds)

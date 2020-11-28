@@ -2,7 +2,7 @@
 
 let s:prompt = 'Coc Outline> '
 
-function! coc_fzf#outline#fzf_run() abort
+function! coc_fzf#outline#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let expect_keys = coc_fzf#common#get_default_file_expect_keys()
   let opts = {

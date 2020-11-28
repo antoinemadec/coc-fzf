@@ -7,7 +7,7 @@ function! coc_fzf#lists#fzf_run(range, ...) abort
   if a:0 && a:1[0] != '-'
     " execute one source/list
     let src = a:000[0]
-    " Append range to arguments
+    " append range to arguments
     let src_opts = a:000[1:] + [a:range]
     call s:run_source(src, src_opts)
   else

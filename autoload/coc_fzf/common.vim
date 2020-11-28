@@ -44,7 +44,7 @@ function coc_fzf#common#get_list_sources() abort
         \ s:list_sources)
   " add 'actions' despite its removal from the original CocList
   let s:list_sources = extend({'actions':
-        \ {'description': 'code actions of selected range',
+        \ {'description': 'code actions of file and line or selected region',
         \ 'wrapper': v:null, 'deleted': 0}}, s:list_sources)
   let all_sources = keys(s:list_sources)
   let original_sources = []

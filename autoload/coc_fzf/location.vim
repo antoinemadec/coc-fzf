@@ -2,7 +2,7 @@
 
 let s:prompt = 'Coc Location> '
 
-function! coc_fzf#location#fzf_run() abort
+function! coc_fzf#location#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   " deepcopy() avoids g:coc_jump_locations corruption
   let locs = deepcopy(get(g:, 'coc_jump_locations', ''))
