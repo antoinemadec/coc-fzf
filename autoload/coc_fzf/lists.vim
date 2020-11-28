@@ -17,7 +17,7 @@ function! coc_fzf#lists#fzf_run(range, ...) abort
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
     let opts = {
           \ 'source': s:get_lists(list_opt),
-          \ 'sink*': function('s:list_handler'),
+          \ 'sink*': function('s:list_handler', [a:range]),
           \ 'options': ['--expect='.expect_keys,
           \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
           \ }
@@ -60,7 +60,7 @@ function s:get_lists(list_opt) abort
   return lists_with_color
 endfunction
 
-function! s:list_handler(list) abort
+function! s:list_handler(range, list) abort
   if empty(a:list)
     return
   endif
@@ -72,7 +72,7 @@ function! s:list_handler(list) abort
   endif
   let src = split(a:list[1])[0]
   if !empty(src)
-    call s:run_source(src)
+    call s:run_source(src, [a:range])
     call coc_fzf#common#enter_term_mode()
   endif
 endfunction
