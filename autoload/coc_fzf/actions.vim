@@ -10,11 +10,12 @@ function! coc_fzf#actions#fzf_run(range) abort
     " If the user has specified a range, respect that
     let g:coc_fzf_actions = CocAction('codeActions', visualmode())
   else
-    " Get the global actions as well as actions for the current line,
-    " deduplicate them as well, n^2 algo for uniq from
-    " https://stackoverflow.com/questions/6630860/remove-duplicates-from-a-list-in-vim
-    let actions_with_duplicates= CocAction('codeActions', 'n') + CocAction('codeActions')
-    let g:coc_fzf_actions = filter(copy(actions_with_duplicates), 'index(actions_with_duplicates, v:val, v:key+1)==-1')
+    " Get the global actions as well as actions for the current line which are
+    " not already in the global actions.
+    let global_actions = CocAction('codeActions')
+    let line_actions = filter(CocAction('codeActions', 'n'), 'index(global_actions, v:val)==-1')
+    let g:coc_fzf_actions = map(line_actions, "extend(v:val, {'provenance': 'line'})")
+                        \ + map(global_actions, "extend(v:val, {'provenance': 'global'})")
   endif
   if !empty(g:coc_fzf_actions)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
@@ -36,6 +37,9 @@ function! s:format_coc_action(item) abort
         \ coc_fzf#common_fzf_vim#yellow(' [' . a:item.clientId . ']', 'Type')
   if exists('a:item.kind')
     let str .=  coc_fzf#common_fzf_vim#green(' (' . a:item.kind . ')', 'Comment')
+  endif
+  if exists('a:item.provenance')
+    let str .=  coc_fzf#common_fzf_vim#green(' [' . a:item.provenance . ']', 'Provenance')
   endif
   return str
 endfunction
