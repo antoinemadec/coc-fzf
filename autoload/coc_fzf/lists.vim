@@ -8,8 +8,8 @@ function! coc_fzf#lists#fzf_run(range, ...) abort
     " execute one source/list
     let src = a:000[0]
     " append range to arguments
-    let src_opts = a:000[1:] + [a:range]
-    call s:run_source(src, src_opts)
+    let src_opts = a:000[1:]
+    call s:run_source(src, a:range, src_opts)
   else
     " prompt all available lists
     let list_opt = a:0 ? a:1 : ''
@@ -25,7 +25,7 @@ function! coc_fzf#lists#fzf_run(range, ...) abort
   endif
 endfunction
 
-function s:run_source(src, ...) abort
+function s:run_source(src, range, ...) abort
   let src_opts = a:0 ? a:1 : []
   if index(sort(keys(s:list_sources)), a:src) < 0
     call coc_fzf#common#echom_error('List ' . a:src . ' does not exist')
@@ -33,7 +33,7 @@ function s:run_source(src, ...) abort
   endif
   let wrapper = s:list_sources[a:src].wrapper
   if wrapper == v:null
-    call call('coc_fzf#' . a:src . '#fzf_run', src_opts)
+    call call('coc_fzf#' . a:src . '#fzf_run', src_opts + [a:range])
   else
     let str_opts = empty(src_opts) ? '' : ' ' . join(src_opts)
     let cmd = wrapper . str_opts
@@ -72,7 +72,7 @@ function! s:list_handler(range, list) abort
   endif
   let src = split(a:list[1])[0]
   if !empty(src)
-    call s:run_source(src, [a:range])
+    call s:run_source(src, a:range)
     call coc_fzf#common#enter_term_mode()
   endif
 endfunction
