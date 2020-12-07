@@ -231,7 +231,7 @@ function coc_fzf#common#process_file_action(key, parsed_dict_list) abort
   if !empty(cmd)
     execute 'silent' cmd first["filename"]
   else
-    execute 'buffer' bufnr(first["filename"], 1)
+    execute 'silent edit' first["filename"]
   endif
   if type(first) == v:t_dict
     call cursor(first["lnum"], first["col"])
