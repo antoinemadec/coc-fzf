@@ -32,10 +32,6 @@ function! s:command_handler(cmd) abort
   if empty(a:cmd)
     return
   endif
-  let cmd = coc_fzf#common#get_action_from_key(a:cmd[0])
-  if !empty(cmd) && stridx('edit', cmd) < 0
-    execute 'silent' cmd
-  endif
   let parsed = s:parse_command(a:cmd[1:])
   if type(parsed) == v:t_dict
     call CocActionAsync('runCommand', parsed.id)

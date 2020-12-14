@@ -57,10 +57,6 @@ function! s:action_handler(act) abort
   if empty(a:act)
     return
   endif
-  let cmd = coc_fzf#common#get_action_from_key(a:act[0])
-  if !empty(cmd) && stridx('edit', cmd) < 0
-    execute 'silent' cmd
-  endif
   let index = s:parse_action(a:act[1:])
   if type(index) == v:t_number
     call CocAction('doCodeAction', g:coc_fzf_actions[index])
