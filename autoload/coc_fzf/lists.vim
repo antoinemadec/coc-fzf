@@ -64,12 +64,6 @@ function! s:list_handler(range, list) abort
   if empty(a:list)
     return
   endif
-  let cmd = coc_fzf#common#get_action_from_key(a:list[0])
-  if !empty(cmd) && stridx('edit', cmd) < 0
-    if stridx('edit', cmd) < 0
-      execute 'silent' cmd
-    endif
-  endif
   let src = split(a:list[1])[0]
   if !empty(src)
     call s:run_source(src, a:range)
