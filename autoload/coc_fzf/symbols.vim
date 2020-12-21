@@ -24,7 +24,7 @@ function! coc_fzf#symbols#fzf_run(...) abort
   endif
 
   " parse arguments
-  let args = copy(a:000)
+  let args = copy(a:000)[:-2] " remove range
   "   --kind <kind>
   let ws_symbols_opts = []
   let kind_idx = index(args, '--kind')
