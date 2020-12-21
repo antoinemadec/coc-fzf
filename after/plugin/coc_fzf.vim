@@ -11,19 +11,16 @@ else
   endtry
 endif
 
-
-if g:coc_fzf_preview_available
-  augroup CocFzfLocation
-    autocmd!
-    let g:coc_enable_locationlist = 0
-    if has('nvim')
-      autocmd User CocLocationsChange call coc_fzf#location#fzf_run()
-    else
-      " avoid weird race condition in Vim
-      autocmd User CocLocationsChange call timer_start(10, 'CocFzfLocationsVimRun')
-      function! CocFzfLocationsVimRun(id)
-        call coc_fzf#location#fzf_run()
-      endfunction
-    endif
-  augroup END
-endif
+augroup CocFzfLocation
+  autocmd!
+  let g:coc_enable_locationlist = 0
+  if has('nvim')
+    autocmd User CocLocationsChange call coc_fzf#location#fzf_run()
+  else
+    " avoid weird race condition in Vim
+    autocmd User CocLocationsChange call timer_start(10, 'CocFzfLocationsVimRun')
+    function! CocFzfLocationsVimRun(id)
+      call coc_fzf#location#fzf_run()
+    endfunction
+  endif
+augroup END
