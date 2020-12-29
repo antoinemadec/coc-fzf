@@ -1,5 +1,5 @@
 function coc_fzf#common#coc_has_extension(ext) abort
-  return len(filter(CocAction('extensionStats'), {key, val -> val.id == a:ext}))
+  return index(CocAction('loadedExtensions'), a:ext) != -1
 endfunction
 
 " [function_name, args_string]
