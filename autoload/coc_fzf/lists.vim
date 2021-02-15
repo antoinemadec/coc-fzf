@@ -66,6 +66,9 @@ function! s:list_handler(range, list) abort
   endif
   let src = split(a:list[1])[0]
   if !empty(src)
+    " empty typeahead buffer to unfreeze commands in the pipeline,
+    " this is a workaround caused by fzf.on_exit()'s feedkeys()
+    call feedkeys('', 'x')
     call s:run_source(src, a:range)
     call coc_fzf#common#enter_term_mode()
   endif
