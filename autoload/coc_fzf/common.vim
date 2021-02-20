@@ -228,10 +228,15 @@ function coc_fzf#common#process_file_action(key, parsed_dict_list) abort
   let cmd = coc_fzf#common#get_action_from_key(a:key)
   let first = a:parsed_dict_list[0]
 
+  " empty typeahead buffer to unfreeze commands in the pipeline,
+  " this is a workaround caused by fzf.on_exit()'s feedkeys()
+  call feedkeys('', 'x')
+
   if !empty(cmd)
     execute 'silent' cmd first["filename"]
   else
-    execute 'silent edit' first["filename"]
+    execute 'buffer' bufnr(first["filename"], 1)
+    set buflisted
   endif
   if type(first) == v:t_dict
     call cursor(first["lnum"], first["col"])
