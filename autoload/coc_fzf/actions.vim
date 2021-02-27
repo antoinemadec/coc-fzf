@@ -12,9 +12,12 @@ function! coc_fzf#actions#fzf_run(...) abort
           \ "extend(v:val, {'provenance': 'selected'})")
   else
     let file_actions = CocAction('codeActions')
-    let line_actions = filter(CocAction('codeActions', 'n'), 'index(file_actions, v:val)==-1')
-    let g:coc_fzf_actions = map(line_actions, "extend(v:val, {'provenance': 'line'})")
-                        \ + map(file_actions, "extend(v:val, {'provenance': 'file'})")
+    let line_actions = filter(CocAction('codeActions', 'line'), 'index(file_actions, v:val)==-1')
+    let cursor_actions = filter(CocAction('codeActions', 'cursor'), 'index(file_actions, v:val)==-1')
+    let g:coc_fzf_actions =
+                        \   map(file_actions, "extend(v:val, {'provenance': 'file'})")
+                        \ + map(line_actions, "extend(v:val, {'provenance': 'line'})")
+                        \ + map(cursor_actions, "extend(v:val, {'provenance': 'cursor'})")
   endif
   if !empty(g:coc_fzf_actions)
     let expect_keys = coc_fzf#common#get_default_file_expect_keys()
