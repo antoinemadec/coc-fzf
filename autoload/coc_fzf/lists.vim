@@ -67,6 +67,5 @@ function! s:list_handler(range, list) abort
   let src = split(a:list[1])[0]
   if !empty(src)
     call s:run_source(src, a:range)
-    call coc_fzf#common#enter_term_mode()
   endif
 endfunction
