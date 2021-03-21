@@ -87,6 +87,11 @@ function! s:yank_handler(yank) abort
 
   if has('nvim')
     call nvim_put(split(yank_str, "\n"), type, 1, 0)
+  elseif type == 'c'
+    let y_bak = @y
+    let @y = yank_str
+    normal! "yp
+    let @y = y_bak
   else
     let y_bak = @y
     let @y = yank_str
