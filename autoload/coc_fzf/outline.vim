@@ -6,7 +6,7 @@ function! coc_fzf#outline#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let expect_keys = coc_fzf#common#get_default_file_expect_keys()
   let opts = {
-        \ 'source': s:get_outline(),
+        \ 'source': s:get_outline(a:000),
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys,
         \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
@@ -14,57 +14,44 @@ function! coc_fzf#outline#fzf_run(...) abort
   call fzf#run(fzf#wrap(opts))
 endfunction
 
-function! s:format_coc_outline_ctags(item) abort
-  if len(a:item) >= 4
-    let parts = split(a:item, "\t")
-    let sym = parts[0]
-    let line = substitute(parts[2], ';".*$', '', '')
-    let type = '[' . parts[3] . ']'
-    call cursor(line, 0)
-    let [l, l:col] = searchpos('\V'.l:sym, 'nc', l:line)
-    return sym . " " .
-          \ coc_fzf#common_fzf_vim#yellow(l:type, 'Typedef') . " " .
-          \ coc_fzf#common_fzf_vim#green(l:line, 'Comment') .
-          \ coc_fzf#common_fzf_vim#black(',' . l:col, 'Ignore')
-  else
+function! s:format_coc_outline(item, kind_filter) abort
+  let match = matchlist(a:item.label, '^\(\(| \)*\)\(.*\)\s\+\[\([^\[\]]*\)\].*')[1:4]
+  if empty(match)
     return ''
   endif
-endfunction
-
-function! s:format_coc_outline_docsym(item) abort
-  let msg = a:item.text .
-        \ coc_fzf#common_fzf_vim#yellow(' [' . a:item.kind . '] ', 'Typedef') .
-        \ coc_fzf#common_fzf_vim#green(a:item.lnum, 'Comment') .
-        \ coc_fzf#common_fzf_vim#black(',' . a:item.col, 'Ignore')
-  let indent = ''
-  let c = 0
-  while c < a:item.level
-    let indent .= '  '
-    let c += 1
-  endwhile
-  return indent . l:msg
-endfunction
-
-function! s:get_outline() abort
-  let symbols = CocAction('documentSymbols')
-  if type(symbols) != v:t_list
-    " ctags: try force language to filtetype
-    let ctags_base_cmd = 'set -o pipefail && ctags -f - --excmd=number'
-    let shell_cmd = l:ctags_base_cmd . " --language-force=" . &ft . ' '  . expand("%")
-          \ . ' | sort -n --key=3'
-    let symbols = systemlist(shell_cmd)
-    if (!(len(symbols) && v:shell_error == 0))
-      " ctags: try without forcing language
-      let shell_cmd = l:ctags_base_cmd . ' '  . expand("%") . ' | sort -n --key=3'
-      let symbols = systemlist(shell_cmd)
-    endif
-    let cur_pos = getpos('.')
-    let return_list = v:shell_error == 0 ? map(l:symbols, 's:format_coc_outline_ctags(v:val)'):[]
-    call cursor(cur_pos[1:2])
-    return return_list
-  else
-    return map(symbols, 's:format_coc_outline_docsym(v:val)')
+  let level = match[0]
+  let text = match[2]
+  let kind = match[3]
+  let line = a:item.location.range.start.line + 1
+  let col = a:item.location.range.start.character + 1
+  if !empty(a:kind_filter) && a:kind_filter != kind
+    return ''
   endif
+  return printf('%s%s %s %s%s',
+        \ coc_fzf#common_fzf_vim#green(level, 'Comment'),
+        \ text,
+        \ coc_fzf#common_fzf_vim#yellow('[' . kind . ']', 'Typedef'),
+        \ coc_fzf#common_fzf_vim#green(line, 'Comment'),
+        \ coc_fzf#common_fzf_vim#black(',' . col, 'Ignore'))
+endfunction
+
+function! s:get_outline(args_list) abort
+  " parse arguments
+  let args = a:args_list[:-2] " remove range
+  "   --kind <kind>
+  let kind = ''
+  let kind_idx = index(args, '--kind')
+  if kind_idx >= 0
+    if len(args) < kind_idx+2
+      call coc_fzf#common#echom_error('Missing kind argument')
+      return
+    endif
+    let kind = args[l:kind_idx+1]
+    call remove(args, l:kind_idx, l:kind_idx+1)
+  endif
+  " get outline
+  let outline = CocAction('listLoadItems', 'outline')
+  return filter(map(outline, 's:format_coc_outline(v:val, kind)'), '!empty(v:val)')
 endfunction
 
 function! s:symbol_handler(sym) abort

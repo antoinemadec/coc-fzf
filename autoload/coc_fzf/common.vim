@@ -66,11 +66,12 @@ function coc_fzf#common#delete_list_source(name) abort
   let s:list_sources[a:name].deleted = 1
 endfunction
 
-let coc_fzf#common#kinds = ['File', 'Module', 'Namespace', 'Package', 'Class', 'Method',
+let coc_fzf#common#kinds = sort(
+      \ ['File', 'Module', 'Namespace', 'Package', 'Class', 'Method',
       \ 'Property', 'Field', 'Constructor', 'Enum', 'Interface', 'Function',
       \ 'Variable', 'Constant', 'String', 'Number', 'Boolean', 'Array',
       \ 'Object', 'Key', 'Null', 'EnumMember', 'Struct', 'Event', 'Operator',
-      \ 'TypeParameter']
+      \ 'TypeParameter'])
 
 function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
   let coc_fzf_list_opts = ['--original-only']
@@ -89,7 +90,7 @@ function coc_fzf#common#list_options(ArgLead, CmdLine, CursorPos) abort
   let source = len(args_list) >= 1 ? args_list[0] : ''
   if source == 'diagnostics'
     return join(diagnostics_opts, "\n")
-  elseif source == 'symbols'
+  elseif source == 'symbols' || source == 'outline'
     if index(args_list[-2:-1], '--kind') >= 0
       return join(g:coc_fzf#common#kinds, "\n")
     endif
