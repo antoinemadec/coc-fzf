@@ -198,7 +198,7 @@ function coc_fzf#common#fzf_run_with_preview(opts, ...) abort
   let eopts  = has_key(extra, 'options') ? remove(extra, 'options') : ''
   let merged = extend(copy(a:opts), extra)
   call coc_fzf#common_fzf_vim#merge_opts(merged, eopts)
-  call fzf#run(fzf#wrap(merged))
+  call fzf#run(fzf#wrap(merged, g:coc_fzf_preview_fullscreen))
 endfunction
 
 let s:default_action = {

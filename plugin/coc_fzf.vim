@@ -14,6 +14,9 @@ endif
 if !exists("g:coc_fzf_preview")
     let g:coc_fzf_preview = 'up:50%'
 endif
+if !exists("g:coc_fzf_preview_fullscreen")
+    let g:coc_fzf_preview_fullscreen = 0
+endif
 if !exists("g:coc_fzf_opts")
     let g:coc_fzf_opts = ['--layout=reverse-list']
 endif
