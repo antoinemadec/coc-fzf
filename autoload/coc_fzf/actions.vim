@@ -35,8 +35,11 @@ endfunction
 
 function! s:format_coc_action(item) abort
   " title [clientId] (kind)
+  let command = get(get(a:item, 'command', {}), 'command', '')
+  let index = stridx(l:command, '.')
+  let client_id = l:index < 1 ? '' : l:command[:index - 1]
   let str = a:item.title .
-        \ coc_fzf#common_fzf_vim#yellow(' [' . a:item.clientId . ']', 'Type')
+        \ (empty(l:client_id) ? '' : coc_fzf#common_fzf_vim#yellow(' [' . l:client_id . ']', 'Type'))
   if exists('a:item.kind')
     let str .=  coc_fzf#common_fzf_vim#green(' (' . a:item.kind . ')', 'Comment')
   endif
