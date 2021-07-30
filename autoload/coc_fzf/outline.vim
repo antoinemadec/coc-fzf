@@ -11,7 +11,7 @@ function! coc_fzf#outline#fzf_run(...) abort
         \ 'options': ['--multi','--expect='.expect_keys,
         \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
-  call fzf#run(fzf#wrap(opts))
+  call coc_fzf#common#fzf_run_with_preview(opts, printf("%s:{-2}", expand('%:p')))
 endfunction
 
 function! s:format_coc_outline(item, kind_filter) abort
@@ -27,12 +27,13 @@ function! s:format_coc_outline(item, kind_filter) abort
   if !empty(a:kind_filter) && a:kind_filter != kind
     return ''
   endif
-  return printf('%s%s %s %s%s',
+  return printf('%s%s %s %s%s%s',
         \ coc_fzf#common_fzf_vim#green(level, 'Comment'),
         \ text,
         \ coc_fzf#common_fzf_vim#yellow('[' . kind . ']', 'Typedef'),
+        \ coc_fzf#common_fzf_vim#black(':', 'Ignore'),
         \ coc_fzf#common_fzf_vim#green(line, 'Comment'),
-        \ coc_fzf#common_fzf_vim#black(',' . col, 'Ignore'))
+        \ coc_fzf#common_fzf_vim#black(':' . col, 'Ignore'))
 endfunction
 
 function! s:get_outline(args_list) abort
@@ -66,7 +67,7 @@ function! s:parse_symbol(sym) abort
   let parsed_dict_list = []
   for str in a:sym
     let parsed_dict = {}
-    let match = matchlist(str, '^\s*\(.* \[[^[]*\]\) \(\d\+\),\(\d\+\)')[1:3]
+    let match = matchlist(str, '^\s*\(.* \[[^[]*\]\) :\(\d\+\):\(\d\+\)')[1:3]
     if empty(match) || empty(l:match[0])
       return
     endif
