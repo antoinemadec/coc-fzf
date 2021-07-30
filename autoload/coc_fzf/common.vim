@@ -16,13 +16,6 @@ function! coc_fzf#common#call_last_logged_function() abort
   endif
 endfunction
 
-function! s:redir_exec(command) abort
-    redir =>output
-    silent exec a:command
-    redir END
-    return output
-endfunction
-
 " list_sources['name'] = {
 "   'description': 'string',
 "   'wrapper':     'command' or v:null,
