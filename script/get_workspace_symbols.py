@@ -1,22 +1,15 @@
 #!/usr/bin/env python3
 
 import argparse
-from pynvim import attach
+import re
 from urllib.parse import unquote
 
-parser = argparse.ArgumentParser(
-    description='connect to running Nvim to get CocAction("getWorkspaceSymbols", query)')
-parser.add_argument('socket', help="returned by Nvim's v:servername")
-parser.add_argument('bufnr', help="Nvim buffer where query should be done")
-parser.add_argument(
-    'query', help="query to pass to CocAction('getWorkspaceSymbols')")
-parser.add_argument('ansi_typedef', help="ansi code for highlight Typedef")
-parser.add_argument('ansi_comment', help="ansi code for highlight Comment")
-parser.add_argument('ansi_ignore', help="ansi code for highlight Ignore")
-parser.add_argument(
-    '--kind', nargs=1, help='only search for a specific "kind" (class, function, etc)')
-args = parser.parse_args()
+from pynvim import attach
 
+
+# --------------------------------------------------------------
+# functions
+# --------------------------------------------------------------
 kind_dict = {}
 kind_dict[1] = 'File'
 kind_dict[2] = 'Module'
@@ -50,12 +43,49 @@ def get_kind(val):
     return kind_dict.get(val, 'Unkown')
 
 
+def get_exclude_re_patterns(nvim):
+    re_patterns = []
+    symbols_dict = nvim.call('coc#util#get_config', 'list.source.symbols')
+    for pattern in symbols_dict['excludes']:
+        re_pattern = re.sub(r'\.', r'\.', pattern)
+        re_pattern = re.sub(r'\*\*', r'.|', re_pattern)
+        re_pattern = re.sub(r'\*', r'[^/]*', re_pattern)
+        re_pattern = re.sub(r'\|', r'*', re_pattern)
+        re_patterns.append(re_pattern)
+    return re_patterns
+
+
+def file_is_excluded(filename, exclude_re_patterns):
+    for pattern in exclude_re_patterns:
+        if re.match(pattern, filename):
+            return True
+    return False
+
+
+# --------------------------------------------------------------
+# execution
+# --------------------------------------------------------------
+parser = argparse.ArgumentParser(
+    description='connect to running Nvim to get CocAction("getWorkspaceSymbols", query)')
+parser.add_argument('socket', help="returned by Nvim's v:servername")
+parser.add_argument('bufnr', help="Nvim buffer where query should be done")
+parser.add_argument(
+    'query', help="query to pass to CocAction('getWorkspaceSymbols')")
+parser.add_argument('ansi_typedef', help="ansi code for highlight Typedef")
+parser.add_argument('ansi_comment', help="ansi code for highlight Comment")
+parser.add_argument('ansi_ignore', help="ansi code for highlight Ignore")
+parser.add_argument(
+    '--kind', nargs=1, help='only search for a specific "kind" (class, function, etc)')
+args = parser.parse_args()
+
 nvim = attach('socket', path=args.socket)
+
 items = nvim.call('CocAction', 'getWorkspaceSymbols', args.query,
                   int(args.bufnr))
-
 if items is None or len(items) == 0:
     exit(0)
+
+exclude_re_patterns = get_exclude_re_patterns(nvim)
 
 ignored_colon = args.ansi_ignore.replace('STRING', ':')
 
@@ -64,13 +94,18 @@ for item in items:
     col = item['location']['range']['start']['character']
     filename = unquote(item['location']['uri'].replace('file://', ''))
     kind = get_kind(item['kind'])
+
+    # filters
     if args.kind is not None and args.kind[0].lower() != kind.lower():
         continue
-    name_with_ansi     = item['name']
-    kind_with_ansi     = args.ansi_typedef.replace('STRING', '[' + kind + ']')
+    if file_is_excluded(filename, exclude_re_patterns):
+        continue
+
+    name_with_ansi = item['name']
+    kind_with_ansi = args.ansi_typedef.replace('STRING', '[' + kind + ']')
     filename_with_ansi = args.ansi_comment.replace('STRING', filename)
-    lnum_col_with_ansi     = args.ansi_ignore.replace('STRING',
-                                                      ':' + str(lnum) + ':' + str(col))
+    lnum_col_with_ansi = args.ansi_ignore.replace('STRING',
+                                                  ':' + str(lnum) + ':' + str(col))
     print("{0} {1}{2}{3}{4}".format(
         name_with_ansi, kind_with_ansi, ignored_colon, filename_with_ansi,
         lnum_col_with_ansi))
