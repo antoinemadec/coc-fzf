@@ -12,12 +12,13 @@ function! coc_fzf#outline#fzf_run(...) abort
         \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
   let file_path = expand('%:p')
-  " adding the path to the preview options fails if it features a colon
+  " adding the path to the preview options fails if it features a colon,
+  " create a temp file to workaround this
   if match(file_path, ':') != -1
-    call fzf#run(fzf#wrap(opts))
-  else
-    call coc_fzf#common#fzf_run_with_preview(opts, printf("%s:{-2}", file_path))
+    let file_path = printf("%s.%s", tempname(), expand('%:e'))
+    silent execute 'write' file_path
   endif
+  call coc_fzf#common#fzf_run_with_preview(opts, printf("%s:{-2}", file_path))
 endfunction
 
 function! s:format_coc_outline(item, kind_filter) abort
