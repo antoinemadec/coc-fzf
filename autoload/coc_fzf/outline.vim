@@ -11,7 +11,13 @@ function! coc_fzf#outline#fzf_run(...) abort
         \ 'options': ['--multi','--expect='.expect_keys,
         \ '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
-  call coc_fzf#common#fzf_run_with_preview(opts, printf("%s:{-2}", expand('%:p')))
+  let file_path = expand('%:p')
+  " adding the path to the preview options fails if it features a colon
+  if match(file_path, ':') != -1
+    call fzf#run(fzf#wrap(opts))
+  else
+    call coc_fzf#common#fzf_run_with_preview(opts, printf("%s:{-2}", file_path))
+  endif
 endfunction
 
 function! s:format_coc_outline(item, kind_filter) abort
