@@ -43,10 +43,9 @@ def get_kind(val):
     return kind_dict.get(val, 'Unkown')
 
 
-def get_exclude_re_patterns(nvim):
+def get_exclude_re_patterns(symbol_excludes):
     re_patterns = []
-    symbols_dict = nvim.call('coc#util#get_config', 'list.source.symbols')
-    for pattern in symbols_dict['excludes']:
+    for pattern in symbol_excludes:
         re_pattern = re.sub(r'\.', r'\.', pattern)
         re_pattern = re.sub(r'\*\*', r'.|', re_pattern)
         re_pattern = re.sub(r'\*', r'[^/]*', re_pattern)
@@ -74,6 +73,7 @@ parser.add_argument(
 parser.add_argument('ansi_typedef', help="ansi code for highlight Typedef")
 parser.add_argument('ansi_comment', help="ansi code for highlight Comment")
 parser.add_argument('ansi_ignore', help="ansi code for highlight Ignore")
+parser.add_argument('symbol_excludes', help="Coc config symbol excludes list")
 parser.add_argument(
     '--kind', nargs=1, help='only search for a specific "kind" (class, function, etc)')
 args = parser.parse_args()
@@ -85,7 +85,8 @@ items = nvim.call('CocAction', 'getWorkspaceSymbols', args.query,
 if items is None or len(items) == 0:
     exit(0)
 
-exclude_re_patterns = get_exclude_re_patterns(nvim)
+symbol_excludes = eval(args.symbol_excludes)
+exclude_re_patterns = get_exclude_re_patterns(symbol_excludes)
 
 ignored_colon = args.ansi_ignore.replace('STRING', ':')
 

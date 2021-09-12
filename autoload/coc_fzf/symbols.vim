@@ -46,18 +46,23 @@ function! coc_fzf#symbols#fzf_run(...) abort
   endif
 
   let expect_keys = coc_fzf#common#get_default_file_expect_keys()
+
   " pass ansi code to script to avoid using syntax match
   let ansi_typedef = "'" . coc_fzf#common_fzf_vim#yellow('STRING', 'Typedef') . "'"
   let ansi_comment = "'" . coc_fzf#common_fzf_vim#green('STRING',  'Comment') . "'"
   let ansi_ignore  = "'" . coc_fzf#common_fzf_vim#black('STRING',  'Ignore')  . "'"
+
+  let config_symbol_dict = coc#util#get_config('list.source.symbols')
+  let symbol_excludes = '"' . string(config_symbol_dict.excludes) . '"'
+
   let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir .
-        \ '/script/get_workspace_symbols.py %s %s %s %s %s %s %s'
+        \ '/script/get_workspace_symbols.py %s %s %s %s %s %s %s %s'
   let initial_command = printf(command_fmt,
         \ join(ws_symbols_opts), v:servername, bufnr(), "'" . initial_query . "'",
-        \ ansi_typedef, ansi_comment, ansi_ignore)
+        \ ansi_typedef, ansi_comment, ansi_ignore, symbol_excludes)
   let reload_command = printf(command_fmt,
         \ join(ws_symbols_opts), v:servername, bufnr(), '{q}',
-        \ ansi_typedef, ansi_comment, ansi_ignore)
+        \ ansi_typedef, ansi_comment, ansi_ignore, symbol_excludes)
   let opts = {
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
