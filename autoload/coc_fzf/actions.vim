@@ -8,7 +8,8 @@ function! coc_fzf#actions#fzf_run(...) abort
   call coc_fzf#common#log_function_call(expand('<sfile>'), a:000)
   let range = a:0 ? a:1 : 0
   if range != 0
-    let g:coc_fzf_actions = map(CocAction('codeActions', visualmode()),
+    let g:coc_fzf_visualmode_used = visualmode()
+    let g:coc_fzf_actions = map(CocAction('codeActions', g:coc_fzf_visualmode_used),
           \ "extend(v:val, {'provenance': 'selected'})")
   else
     let file_actions = CocAction('codeActions')
@@ -65,7 +66,19 @@ function! s:action_handler(act) abort
   endif
   let index = s:parse_action(a:act[1:])
   if type(index) == v:t_number
-    call CocAction('doCodeAction', g:coc_fzf_actions[index])
+    let item = g:coc_fzf_actions[index]
+    " Coc stores some global state to remember results of 'codeActions', of
+    " our previous multiple calls, only one set is remembered, call it again
+    " to make sure coc is on the same page, yuck.
+    " See https://github.com/antoinemadec/coc-fzf/issues/105
+    " Should be changed when https://github.com/neoclide/coc.nvim/issues/3418 is closed
+    if l:item.provenance == 'file'
+      call CocAction('codeActions')
+    else
+      let r = l:item.provenance == 'selected' ? g:coc_fzf_visualmode_used : l:item.provenance
+      call CocAction('codeActions', l:r)
+    endif
+    call CocAction('doCodeAction', item)
   endif
 endfunction
 
