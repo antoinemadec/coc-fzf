@@ -52,8 +52,7 @@ function! coc_fzf#symbols#fzf_run(...) abort
   let ansi_comment = "'" . coc_fzf#common_fzf_vim#green('STRING',  'Comment') . "'"
   let ansi_ignore  = "'" . coc_fzf#common_fzf_vim#black('STRING',  'Ignore')  . "'"
 
-  let config_symbol_dict = coc#util#get_config('list.source.symbols')
-  let symbol_excludes = '"' . string(config_symbol_dict.excludes) . '"'
+  let symbol_excludes = '"' . string(coc#util#get_config('list.source.symbols').excludes) . '"'
 
   let command_fmt = python3 . ' ' . g:coc_fzf_plugin_dir .
         \ '/script/get_workspace_symbols.py %s %s %s %s %s %s %s %s'
