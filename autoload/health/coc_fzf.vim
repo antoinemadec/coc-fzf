@@ -4,13 +4,8 @@ function s:check_ctags() abort
     call health#report_ok('ctag found')
   else
     call health#report_warn("ctags not found, outline won't work if symbols are not supported",
-          \ ['git clone https://github.com/universal-ctags/ctags.git',
-          \ 'cd ctags',
-          \ './autogen.sh',
-          \ './configure',
-          \ 'make',
-          \ 'sudo make install'
-          \ ])
+          \ ['Install universal-ctags via your distributions package manager'
+          \ 'See https://github.com/universal-ctags/ctags for compile instructions'])
   endif
 endfunction
 
