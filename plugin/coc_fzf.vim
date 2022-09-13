@@ -20,6 +20,9 @@ endif
 if !exists("g:coc_fzf_opts")
     let g:coc_fzf_opts = ['--layout=reverse-list']
 endif
+if !exists("g:coc_fzf_location_delay")
+  let g:coc_fzf_location_delay = 0
+endif
 
 let g:coc_fzf_plugin_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let g:coc_fzf_plugin_dir = fnamemodify(g:coc_fzf_plugin_dir, ':h')
