@@ -38,7 +38,11 @@ function s:run_source(src, range, ...) abort
     let str_opts = empty(src_opts) ? '' : ' ' . join(src_opts)
     let cmd = wrapper . str_opts
     call coc_fzf#common#log_function_call('execute', [cmd])
-    call timer_start(g:coc_fzf_location_delay, { -> execute(cmd)})
+    if g:coc_fzf_command_delay > 0
+      call timer_start(g:coc_fzf_command_delay, { -> execute(cmd)})
+    else
+      execute cmd
+    endif
   endif
 endfunction
 

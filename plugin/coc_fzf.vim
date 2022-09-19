@@ -23,6 +23,9 @@ endif
 if !exists("g:coc_fzf_location_delay")
   let g:coc_fzf_location_delay = 0
 endif
+if !exists("g:coc_fzf_command_delay")
+  let g:coc_fzf_command_delay = 0
+endif
 
 let g:coc_fzf_plugin_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let g:coc_fzf_plugin_dir = fnamemodify(g:coc_fzf_plugin_dir, ':h')

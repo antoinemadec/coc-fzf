@@ -99,6 +99,7 @@ call coc_fzf#common#delete_list_source('fzf-buffers')
 | `g:coc_fzf_preview`            | string | Change the preview window position                             | `'up:50%'`                  |
 | `g:coc_fzf_opts`               | array  | Pass additional parameters to fzf, e.g. `['--layout=reverse']` | `['--layout=reverse-list']` |
 | `g:coc_fzf_location_delay`     | number | Delay(ms) fzf_run() to solve weird race conditions.            | 0                           |
+| `g:coc_fzf_command_delay`      | number | Delay(ms) source cmds to solve weird race conditions.          | 0                           |
 
 ## Vimrc Example
 ```vim
