@@ -17,6 +17,9 @@ function! coc_fzf#symbols#fzf_run(...) abort
     return
   endif
   let python3 = get(g:, 'python3_host_prog', 'python3')
+  if has('unix')
+    let python3 = substitute(python3, '\~', $HOME, "")
+  endif
   if !executable(python3)
     call coc_fzf#common#echom_error(string(python3) . ' is not executable.')
     call coc_fzf#common#echom_error('You need to set g:python3_host_prog.')
