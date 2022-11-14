@@ -69,7 +69,7 @@ function! coc_fzf#symbols#fzf_run(...) abort
         \ 'source': initial_command,
         \ 'sink*': function('s:symbol_handler'),
         \ 'options': ['--multi','--expect='.expect_keys, '--bind', 'change:reload:'.reload_command,
-        \ '--phony', '-q', initial_query, '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
+        \ '-q', initial_query, '--ansi', '--prompt=' . s:prompt] + g:coc_fzf_opts,
         \ }
   call coc_fzf#common#fzf_run_with_preview(opts, '{-3}:{-2}')
 endfunction
