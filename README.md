@@ -69,8 +69,8 @@ These are the list sources implemented with FZF:
 
 FZF bindings (default):
 - **ctrl-t**: open in tab
-- **ctrl-x**: open in vertical split
-- **ctrl-s**: open in horizontal split
+- **ctrl-v**: open in vertical split
+- **ctrl-x**: open in horizontal split
 - **tab**: multi-select, populate quickfix window
 - **?**: toggle preview window
 
