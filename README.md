@@ -63,8 +63,8 @@ These are the list sources implemented with FZF:
 | `services`                        | Like :CocList services                                        | -       | -            | ✅          |
 | `snippets `                       | Like :CocList snippets. Requires [coc-snippets][coc-snippets] | ✅      | ✅           | ✅          |
 | `sources `                        | Like :CocList sources                                         | -       | -            | ✅          |
-| `symbols ({query})`               | Like :CocList symbols                                         | ✅      | ✅           | ❌          |
-| `symbols --kind {kind} ({query})` | Like :CocList symbols -kind {kind}                            | ✅      | ✅           | ❌          |
+| `symbols ({query})`               | Like :CocList symbols. Requires [pynvim]                      | ✅      | ✅           | ❌          |
+| `symbols --kind {kind} ({query})` | Like :CocList symbols -kind {kind} Requires [pynvim]          | ✅      | ✅           | ❌          |
 | `yank`                            | Like :CocList yank. Requires [coc-yank][coc-yank]             | ✅      | ✅           | ✅          |
 
 FZF bindings (default):
@@ -142,6 +142,9 @@ let g:coc_fzf_preview = ''
 let g:coc_fzf_opts = []
 ```
 
+**Q**: CocFzf symbol search reports get_workspace_symbols.py could not be executed successfully
+**A**: You are most likely missing [pynvim]
+
 License
 -------
 
@@ -159,3 +162,4 @@ MIT
 [coc-yank]:            https://github.com/neoclide/coc-yank
 [bat]:                 https://github.com/sharkdp/bat
 [coc-git]:             https://github.com/neoclide/coc-git
+[pynvim]:              https://github.com/neovim/pynvim
